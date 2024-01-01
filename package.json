@@ -24,7 +24,7 @@
     "eslint-plugin-prettier": "^5.1.2",
     "alive-server": "^1.3.0",
     "live-server-https": "0.0.2",
-    "prettier": "^3.0.3"
+    "prettier": "^3.1.1"
   },
   "dependencies": {
     "@types/jquery": "^3.5.29"
