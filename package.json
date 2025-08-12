@@ -19,7 +19,7 @@
   "homepage": "https://coldout.beer",
   "devDependencies": {
     "alive-server": "^1.3.0",
-    "eslint": "^9.23.0",
+    "eslint": "^9.33.0",
     "eslint-config-prettier": "^10.1.1",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^5.2.5",
