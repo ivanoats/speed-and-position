@@ -7,18 +7,6 @@
   "background_color": "#ffffff",
   "theme_color": "#2563eb",
   "orientation": "portrait",
-  "icons": [
-    {
-      "src": "/images/beer-152-270546.png",
-      "sizes": "152x152",
-      "type": "image/png"
-    },
-    {
-      "src": "/images/beer-144-270546.png",
-      "sizes": "144x144",
-      "type": "image/png"
-    }
-  ],
   "categories": ["navigation", "utilities"],
   "screenshots": []
 }
