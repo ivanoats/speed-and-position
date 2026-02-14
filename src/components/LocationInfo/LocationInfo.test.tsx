@@ -7,6 +7,7 @@ describe('LocationInfo', () => {
     latitude: 47.6062,
     longitude: -122.3321,
     accuracy: 10.5,
+    speed: null,
   }
 
   it('renders the location heading', () => {
