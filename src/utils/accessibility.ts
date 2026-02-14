@@ -1,4 +1,8 @@
 /**
+ * Performance and accessibility utility functions
+ */
+
+/**
  * Debounce utility function
  * Delays function execution until after a specified delay
  * 

@@ -21,7 +21,7 @@ describe('LocationInfo', () => {
     render(<LocationInfo position={mockPosition} />)
     
     // Click to expand
-    const button = screen.getByRole('button', { name: /Location information, collapsed/i })
+    const button = screen.getByRole('button', { name: /Location information/i })
     await user.click(button)
     
     expect(screen.getByText(/47\.606200/)).toBeInTheDocument()

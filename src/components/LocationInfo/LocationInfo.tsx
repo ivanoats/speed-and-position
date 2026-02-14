@@ -39,7 +39,8 @@ export function LocationInfo({ position }: LocationInfoProps) {
       role="button"
       tabIndex={0}
       aria-expanded={isExpanded}
-      aria-label={`Location information, ${isExpanded ? 'expanded' : 'collapsed'}. Click or swipe to ${isExpanded ? 'collapse' : 'expand'}`}
+      aria-label="Location information"
+      aria-describedby="location-hint"
       onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault()
@@ -91,7 +92,7 @@ export function LocationInfo({ position }: LocationInfoProps) {
       )}
       
       {!isExpanded && (
-        <div className={css({ 
+        <div id="location-hint" className={css({ 
           fontSize: 'xs', 
           color: 'gray.500',
           marginTop: '2',

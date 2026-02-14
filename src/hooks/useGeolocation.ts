@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import type { Position } from '../types/position'
 import { debounce } from '../utils/accessibility'
 
@@ -18,12 +18,11 @@ export function useGeolocation(): GeolocationState {
   const [loading, setLoading] = useState<boolean>(true)
   const [error, setError] = useState<string | null>(null)
 
-  // Debounced position update to reduce re-renders
-  const debouncedSetPosition = useCallback(
+  // Store debounced function in ref to maintain same instance
+  const debouncedSetPositionRef = useRef(
     debounce((newPosition: Position) => {
       setPosition(newPosition)
-    }, 100), // 100ms debounce
-    []
+    }, 100)
   )
 
   useEffect(() => {
@@ -33,6 +32,8 @@ export function useGeolocation(): GeolocationState {
       return
     }
 
+    let isFirstPosition = true
+
     const successHandler = (pos: GeolocationPosition) => {
       const newPosition = {
         latitude: pos.coords.latitude,
@@ -41,12 +42,12 @@ export function useGeolocation(): GeolocationState {
         speed: pos.coords.speed,
       }
       
-      // Use debounced update for continuous tracking
-      if (position) {
-        debouncedSetPosition(newPosition)
-      } else {
-        // First position update is immediate
+      // First position update is immediate, subsequent updates are debounced
+      if (isFirstPosition) {
         setPosition(newPosition)
+        isFirstPosition = false
+      } else {
+        debouncedSetPositionRef.current(newPosition)
       }
       
       setLoading(false)
@@ -76,7 +77,7 @@ export function useGeolocation(): GeolocationState {
     )
 
     return () => navigator.geolocation.clearWatch(watchId)
-  }, [position, debouncedSetPosition])
+  }, []) // Empty dependency array - effect should only run once
 
   return { position, loading, error }
 }

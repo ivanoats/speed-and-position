@@ -109,8 +109,12 @@ export function Map({ position }: MapProps) {
         bg: 'gray.50',
       })}
       role="region"
-      aria-label="Interactive map showing your current location. Double-tap to center, long-press to copy coordinates"
+      aria-label="Interactive map"
+      aria-describedby="map-instructions"
     >
+      <span id="map-instructions" className={css({ srOnly: true })}>
+        Double-tap to center map on your location. Long-press to copy coordinates to clipboard.
+      </span>
       {notification && (
         <div className={css({
           position: 'absolute',
