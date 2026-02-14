@@ -254,7 +254,7 @@ The foundation is complete and ready for:
    - Node version: 18+
 
 5. **Browser Support**
-   - Modern browsers (ES2020+)
+   - Modern browsers (ES2022+)
    - No IE11 support
    - Geolocation API required
    - HTTPS required for geolocation
