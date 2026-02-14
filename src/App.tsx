@@ -1,7 +1,8 @@
 import { css } from '../styled-system/css'
 import { container } from '../styled-system/patterns'
+import { useState } from 'react'
 import { useGeolocation } from './hooks/useGeolocation'
-import { useSpeedCalculation } from './hooks/useSpeedCalculation'
+import { useSpeedCalculation, type SpeedUnit } from './hooks/useSpeedCalculation'
 import { Header } from './components/Header'
 import { SpeedDisplay } from './components/SpeedDisplay'
 import { LocationInfo } from './components/LocationInfo'
@@ -14,7 +15,12 @@ import { Footer } from './components/Footer'
  */
 function App() {
   const { position, loading, error } = useGeolocation()
-  const speed = useSpeedCalculation(position?.speed ?? null)
+  const [unit, setUnit] = useState<SpeedUnit>('mph')
+  const speed = useSpeedCalculation(position?.speed ?? null, unit)
+
+  const toggleUnit = () => {
+    setUnit(prev => prev === 'mph' ? 'kph' : 'mph')
+  }
 
   return (
     <div className={css({ minHeight: '100vh', display: 'flex', flexDirection: 'column' })}>
@@ -48,7 +54,7 @@ function App() {
 
           {!loading && !error && (
             <>
-              <SpeedDisplay speed={speed} />
+              <SpeedDisplay speed={speed} unit={unit} onToggleUnit={toggleUnit} />
               {position && <LocationInfo position={position} />}
               <Map position={position} />
             </>
