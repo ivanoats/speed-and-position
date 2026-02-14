@@ -29,7 +29,7 @@ export function Settings({ isOpen, onClose, unit, onUnitChange }: SettingsProps)
           width: '100vw',
           height: '100vh',
           bg: 'rgba(0, 0, 0, 0.5)',
-          zIndex: 40,
+          zIndex: 1100,
         })}
       />
       <Dialog.Positioner
@@ -42,7 +42,7 @@ export function Settings({ isOpen, onClose, unit, onUnitChange }: SettingsProps)
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          zIndex: 50,
+          zIndex: 1200,
           padding: '4',
         })}
       >
