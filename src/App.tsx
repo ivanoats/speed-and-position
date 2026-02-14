@@ -2,15 +2,21 @@ import { useState, useEffect } from 'react'
 import { css } from '../styled-system/css'
 import { container } from '../styled-system/patterns'
 
+interface Position {
+  latitude: number
+  longitude: number
+  accuracy: number
+}
+
 /**
  * Main App Component for Speed and Position
  * Mobile-first redesign using ParkUI
  */
 function App() {
-  const [speed, setSpeed] = useState(0)
-  const [position, setPosition] = useState(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
+  const [speed, setSpeed] = useState<number>(0)
+  const [position, setPosition] = useState<Position | null>(null)
+  const [loading, setLoading] = useState<boolean>(true)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     if (!navigator.geolocation) {
@@ -19,7 +25,7 @@ function App() {
       return
     }
 
-    const successHandler = (pos) => {
+    const successHandler = (pos: GeolocationPosition) => {
       setPosition({
         latitude: pos.coords.latitude,
         longitude: pos.coords.longitude,
@@ -29,7 +35,7 @@ function App() {
       setLoading(false)
     }
 
-    const errorHandler = (err) => {
+    const errorHandler = (err: GeolocationPositionError) => {
       setError(err.message)
       setLoading(false)
     }
