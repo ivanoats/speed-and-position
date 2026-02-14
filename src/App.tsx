@@ -50,7 +50,7 @@ function App() {
             <>
               <SpeedDisplay speed={speed} />
               {position && <LocationInfo position={position} />}
-              <Map />
+              <Map position={position} />
             </>
           )}
         </div>
