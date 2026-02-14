@@ -1,16 +1,17 @@
-# Mobile-First Redesign Plan Using ParkUI
+# Mobile-First Redesign Plan Using TypeScript and Modern Web Technologies
 
 ## Overview
-This document outlines the plan for redesigning the Speed and Position application (HowFastWhere.com) using ParkUI with a mobile-first approach.
+This document outlines the plan for redesigning the Speed and Position application (HowFastWhere.com) using TypeScript, React, and modern web technologies with a mobile-first approach.
 
 ## Current State Analysis
 
-### Technology Stack
-- **HTML/CSS/JavaScript**: Vanilla JavaScript single-page application
-- **UI Framework**: MUI CSS (mui-0.10.1) - an outdated Material Design framework
+### Technology Stack (Updated)
+- **Language**: TypeScript 5.5+ (converted from vanilla JavaScript)
+- **UI Framework**: React 18 with Panda CSS
 - **Map Library**: Leaflet 1.9.4
-- **Dependencies**: jQuery 3.7.0
-- **Server**: alive-server for development
+- **Build Tool**: Vite 5
+- **Testing**: Vitest with React Testing Library
+- **Linting**: ESLint 9 with TypeScript support
 
 ### Current Features
 1. Real-time geolocation tracking
@@ -63,29 +64,37 @@ ParkUI is a modern component library that builds on:
 - Great React support
 - Modern ESM-based architecture
 
-#### 1.3 Dependencies to Install
+#### 1.3 Dependencies Installed
 ```json
 {
   "dependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "@ark-ui/react": "^2.0.0",
-    "@park-ui/panda-preset": "latest",
+    "react": "^18.3.0",
+    "react-dom": "^18.3.0",
+    "@ark-ui/react": "^3.0.0",
     "leaflet": "^1.9.4",
     "react-leaflet": "^4.2.1"
   },
   "devDependencies": {
-    "@pandacss/dev": "latest",
-    "@vitejs/plugin-react": "^4.2.0",
-    "vite": "^5.0.0"
+    "@pandacss/dev": "^0.45.0",
+    "@vitejs/plugin-react": "^4.3.0",
+    "typescript": "^5.5.0",
+    "vite": "^5.4.0",
+    "vitest": "^4.0.0",
+    "@testing-library/react": "latest",
+    "@testing-library/jest-dom": "latest",
+    "eslint": "^9.0.0",
+    "@typescript-eslint/eslint-plugin": "^8.55.0",
+    "@typescript-eslint/parser": "^8.55.0"
   }
 }
 ```
 
 #### 1.4 Configuration Files
-- `vite.config.js`: Vite configuration
-- `panda.config.ts`: Panda CSS configuration with ParkUI preset
-- `tsconfig.json`: TypeScript configuration (optional but recommended)
+- `vite.config.js`: Vite configuration for building
+- `vitest.config.ts`: Vitest configuration for testing
+- `panda.config.ts`: Panda CSS configuration
+- `tsconfig.json`: TypeScript configuration (strict mode enabled)
+- `eslint.config.js`: ESLint 9 flat config with TypeScript support
 
 ### Phase 2: Mobile-First Component Architecture
 
