@@ -62,7 +62,7 @@ describe('App Component', () => {
 
     // Speed should be converted from m/s to mph (10 * 2.23694 ≈ 22.4)
     expect(screen.getByText(/22\.4/i)).toBeInTheDocument()
-    expect(screen.getByText(/mph/i)).toBeInTheDocument()
+    expect(screen.getAllByText(/mph/i).length).toBeGreaterThan(0)
 
     // Position should be displayed
     expect(screen.getByText(/Latitude:/i)).toBeInTheDocument()

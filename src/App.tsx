@@ -8,6 +8,7 @@ import { SpeedDisplay } from './components/SpeedDisplay'
 import { LocationInfo } from './components/LocationInfo'
 import { Map } from './components/Map'
 import { Footer } from './components/Footer'
+import { Settings } from './components/Settings'
 
 /**
  * Main App Component for Speed and Position
@@ -16,15 +17,23 @@ import { Footer } from './components/Footer'
 function App() {
   const { position, loading, error } = useGeolocation()
   const [unit, setUnit] = useState<SpeedUnit>('mph')
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false)
   const speed = useSpeedCalculation(position?.speed ?? null, unit)
 
   const toggleUnit = () => {
     setUnit(prev => prev === 'mph' ? 'kph' : 'mph')
   }
 
+  const handleUnitChange = (newUnit: SpeedUnit) => {
+    setUnit(newUnit)
+  }
+
   return (
     <div className={css({ minHeight: '100vh', display: 'flex', flexDirection: 'column' })}>
-      <Header />
+      <Header 
+        onSettingsClick={() => setIsSettingsOpen(true)}
+        hasGpsSignal={!!position && !loading}
+      />
 
       <main className={css({ flex: 1, padding: '4' })}>
         <div className={container()}>
@@ -63,6 +72,13 @@ function App() {
       </main>
 
       <Footer />
+
+      <Settings
+        isOpen={isSettingsOpen}
+        onClose={() => setIsSettingsOpen(false)}
+        unit={unit}
+        onUnitChange={handleUnitChange}
+      />
     </div>
   )
 }
