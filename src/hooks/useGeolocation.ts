@@ -38,9 +38,11 @@ export function useGeolocation(): GeolocationState {
       setLoading(false)
     }
 
-    // Get initial position
+    // Get initial position with timeout
     navigator.geolocation.getCurrentPosition(successHandler, errorHandler, {
       enableHighAccuracy: true,
+      timeout: 10000, // 10 second timeout
+      maximumAge: 0,
     })
 
     // Watch position for updates

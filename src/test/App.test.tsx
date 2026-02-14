@@ -15,9 +15,19 @@ describe('App Component', () => {
     globalThis.navigator.geolocation = originalGeolocation
   })
 
-  it('should render loading state initially', () => {
+  it('should render loading state initially with map visible', () => {
     render(<App />)
-    expect(screen.getByText(/Loading... Please stand by/i)).toBeInTheDocument()
+    expect(screen.getByText(/Requesting location access/i)).toBeInTheDocument()
+    expect(screen.getByText(/Waiting for GPS signal/i)).toBeInTheDocument()
+    // Map should be visible even during loading
+    const mapElement = screen.getByText(/OpenStreetMap/i)
+    expect(mapElement).toBeInTheDocument()
+  })
+
+  it('should show placeholder speed display when no position', () => {
+    render(<App />)
+    expect(screen.getByText(/--/)).toBeInTheDocument()
+    expect(screen.getByText(/Waiting for GPS signal/i)).toBeInTheDocument()
   })
 
   it('should display error when geolocation is not supported', async () => {
