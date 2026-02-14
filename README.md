@@ -24,10 +24,13 @@ This project has been redesigned using modern web technologies:
 
 - 📱 **Mobile-First Design** - Optimized for touch interfaces
 - 🎯 **Real-time Tracking** - Live speed and position updates
-- 🗺️ **Interactive Map** - Powered by Leaflet
+- 🗺️ **Interactive Map** - Powered by React-Leaflet with auto-centering
+- 🔄 **Unit Toggle** - Switch between MPH and KPH
+- ⚙️ **Settings Panel** - Customize your preferences
+- 📡 **GPS Indicator** - Visual feedback when GPS signal is active
 - ♿ **Accessible** - WCAG 2.1 AA compliant
 - 🚀 **Progressive Web App** - Install on your home screen
-- 🌓 **Modern UI** - Clean, responsive design with ParkUI
+- 🌓 **Modern UI** - Clean, responsive design with Panda CSS
 
 ### 🚀 Getting Started
 
@@ -65,25 +68,41 @@ npm run preview
 ```
 speed-and-position/
 ├── src/                    # React application source (TypeScript)
-│   ├── test/              # Test files
+│   ├── components/        # React components
+│   │   ├── Header/       # App header with settings & GPS indicator
+│   │   ├── SpeedDisplay/ # Speed display with unit toggle
+│   │   ├── LocationInfo/ # Position coordinates & accuracy
+│   │   ├── Map/          # React-Leaflet map component
+│   │   ├── Settings/     # Settings panel (Ark UI Dialog)
+│   │   └── Footer/       # App footer with attribution
+│   ├── hooks/            # Custom React hooks
+│   │   ├── useGeolocation.ts         # Geolocation API hook
+│   │   └── useSpeedCalculation.ts    # Speed conversion hook
+│   ├── utils/            # Utility functions
+│   │   └── conversions.ts # Unit conversion utilities
+│   ├── types/            # TypeScript type definitions
+│   │   └── position.ts   # Position interface
+│   ├── test/             # Test files
 │   │   ├── App.test.tsx  # App component tests
 │   │   └── setup.ts      # Test setup and mocks
-│   ├── App.tsx            # Main app component
-│   ├── main.tsx           # Entry point
-│   └── index.css          # Global styles
-├── public/                # Static assets
-│   ├── images/           # Icons and images
-│   └── manifest.json     # PWA manifest
-├── styled-system/        # Generated Panda CSS (git-ignored)
-├── index.ts               # Legacy TypeScript file
-├── panda.config.ts       # Panda CSS configuration
-├── vite.config.js        # Vite configuration
-├── vitest.config.ts      # Vitest test configuration
-├── tsconfig.json         # TypeScript configuration
-├── index.html            # React app entry point
-├── index-legacy.html     # Original version
-├── REDESIGN_PLAN.md      # Detailed redesign documentation
-└── package.json          # Dependencies and scripts
+│   ├── App.tsx           # Main app component
+│   ├── main.tsx          # Entry point
+│   └── index.css         # Global styles
+├── public/               # Static assets
+│   ├── images/          # Icons and images
+│   └── manifest.json    # PWA manifest
+├── styled-system/       # Generated Panda CSS (git-ignored)
+├── index.ts              # Legacy TypeScript file
+├── panda.config.ts      # Panda CSS configuration
+├── vite.config.js       # Vite configuration
+├── vitest.config.ts     # Vitest test configuration
+├── tsconfig.json        # TypeScript configuration
+├── index.html           # React app entry point
+├── index-legacy.html    # Original version
+├── REDESIGN_PLAN.md     # Detailed redesign documentation
+├── PHASE2_SUMMARY.md    # Phase 2 implementation summary
+├── PHASE3_SUMMARY.md    # Phase 3 implementation summary
+└── package.json         # Dependencies and scripts
 ```
 
 ### 🔧 Development
@@ -133,11 +152,11 @@ The redesign follows these principles:
 
 - **Language**: TypeScript 5.5+
 - **Frontend Framework**: React 18
-- **UI Components**: Ark UI primitives
+- **UI Components**: Ark UI primitives (Dialog, etc.)
 - **Styling**: Panda CSS (type-safe CSS-in-JS)
 - **Build Tool**: Vite 5
-- **Testing**: Vitest + React Testing Library
-- **Maps**: React-Leaflet (planned)
+- **Testing**: Vitest + React Testing Library (61 tests)
+- **Maps**: React-Leaflet with OpenStreetMap
 - **Geolocation**: Browser Geolocation API
 - **Linting**: ESLint 9 with TypeScript support
 - **PWA**: Service Worker (planned)
