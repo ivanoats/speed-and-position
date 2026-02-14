@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Speed and Position</title>
+  <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+  <link rel="apple-touch-icon" href="images/beer-152-270546.png">
+  <meta name="msapplication-TileColor" content="#ffffff" />
+  <meta name="msapplication-TileImage" content="images/beer-144-270546.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.muicss.com/mui-0.10.1/css/mui.min.css" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.muicss.com/mui-0.10.1/js/mui.min.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+  crossorigin=""/>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+   integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+   crossorigin=""></script>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-3487613-10"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-3487613-10');
+  </script>
+</head>
+
+<body>
+  <header class="mui-appbar mui--z1">
+    <table>
+      <tbody>
+        <tr class="mui--appbar-height">
+          <td class="titlerow mui-text-title">Speed and Location</td>
+        </tr>
+      </tbody>
+    </table>
+  </header>
+  <div id="mui-container">
+    <div class="mui-panel">
+      <h2 class="answer">Loading.... Please stand by. </h2>
+      <div id="map"></div>
+    </div>
+
+    <footer>
+      <div class="mui-container mui--text-center">
+        Made with ♥ by <a href="https://www.ivanstorck.com">Ivan Storck</a>
+      </div>
+    </footer>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js">
+  </script>
+  <script src="index.js"></script>
+</body>
+
+</html>
