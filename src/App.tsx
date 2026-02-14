@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { css } from '../styled-system/css'
 import { container } from '../styled-system/patterns'
+import { METERS_PER_SEC_TO_MPH } from './constants'
 
 interface Position {
   latitude: number
@@ -31,7 +32,7 @@ function App() {
         longitude: pos.coords.longitude,
         accuracy: pos.coords.accuracy,
       })
-      setSpeed(pos.coords.speed ? pos.coords.speed * 2.23694 : 0) // m/s to mph
+      setSpeed(pos.coords.speed ? pos.coords.speed * METERS_PER_SEC_TO_MPH : 0) // m/s to mph
       setLoading(false)
     }
 

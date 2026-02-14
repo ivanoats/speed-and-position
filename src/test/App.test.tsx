@@ -1,9 +1,20 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, beforeEach, afterEach } from 'vitest'
 import { render, screen, waitFor } from '@testing-library/react'
 import App from '../App'
 import { mockGeolocation } from './setup'
 
 describe('App Component', () => {
+  let originalGeolocation: Geolocation
+
+  beforeEach(() => {
+    originalGeolocation = globalThis.navigator.geolocation
+  })
+
+  afterEach(() => {
+    // Restore geolocation after each test
+    globalThis.navigator.geolocation = originalGeolocation
+  })
+
   it('should render loading state initially', () => {
     render(<App />)
     expect(screen.getByText(/Loading... Please stand by/i)).toBeInTheDocument()
@@ -11,7 +22,6 @@ describe('App Component', () => {
 
   it('should display error when geolocation is not supported', async () => {
     // Mock geolocation as undefined
-    const originalGeolocation = globalThis.navigator.geolocation
     // @ts-expect-error - intentionally setting to undefined for test
     globalThis.navigator.geolocation = undefined
 
@@ -20,9 +30,6 @@ describe('App Component', () => {
     await waitFor(() => {
       expect(screen.getByText(/Geolocation is not supported/i)).toBeInTheDocument()
     })
-
-    // Restore geolocation
-    globalThis.navigator.geolocation = originalGeolocation
   })
 
   it('should display speed and position when geolocation succeeds', async () => {

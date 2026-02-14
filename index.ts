@@ -12,6 +12,12 @@ declare global {
   }
 }
 
+/**
+ * Conversion factor from meters per second to miles per hour
+ * 1 m/s = 2.23694 mph
+ */
+const METERS_PER_SEC_TO_MPH = 2.23694
+
 function round(number: number, precision: number): number {
   const shift = function (num: number, precis: number, reverseShift?: boolean): number {
     if (reverseShift) {
@@ -25,8 +31,8 @@ function round(number: number, precision: number): number {
   return shift(Math.round(shift(number, precision, false)), precision, true)
 }
 
-function mstomph(ms: number): number { 
-  return ms * 2.23694 
+function metersPerSecondToMph(ms: number): number { 
+  return ms * METERS_PER_SEC_TO_MPH
 }
 
 window.onload = function (): void {
@@ -36,8 +42,8 @@ window.onload = function (): void {
       maxZoom: 19,
       attribution: '© OpenStreetMap'
     }).addTo(window.map);
-    setInterval(updater, 7000)
-    updater()
+    setInterval(updateSpeedAndPosition, 7000)
+    updateSpeedAndPosition()
   })
 }
 
@@ -47,10 +53,10 @@ function randomFromXtoY(x: number, y: number): number {
   return r + x
 }
 
-function updater(): void {
+function updateSpeedAndPosition(): void {
   navigator.geolocation.getCurrentPosition(function(l2: GeolocationPosition): void {
     console.log(l2)
-    const speed = round(mstomph(l2.coords.speed || 0), 2)
+    const speed = round(metersPerSecondToMph(l2.coords.speed || 0), 2)
     $('h2.answer').text(`${speed} mph`)
     window.map.setView([l2.coords.latitude, l2.coords.longitude], randomFromXtoY(9, 15));
     // const marker = L.marker([l2.coords.latitude, l2.coords.longitude]).addTo(window.map);
