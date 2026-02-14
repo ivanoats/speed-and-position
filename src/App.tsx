@@ -1,8 +1,9 @@
 import { css } from '../styled-system/css'
 import { container } from '../styled-system/patterns'
-import { useState } from 'react'
+import { useState, memo } from 'react'
 import { useGeolocation } from './hooks/useGeolocation'
 import { useSpeedCalculation, type SpeedUnit } from './hooks/useSpeedCalculation'
+import { useServiceWorker } from './hooks/useServiceWorker'
 import { Header } from './components/Header'
 import { SpeedDisplay } from './components/SpeedDisplay'
 import { LocationInfo } from './components/LocationInfo'
@@ -10,15 +11,26 @@ import { Map } from './components/Map'
 import { Footer } from './components/Footer'
 import { Settings } from './components/Settings'
 
+// Memoized components to prevent unnecessary re-renders
+const MemoizedSpeedDisplay = memo(SpeedDisplay)
+const MemoizedLocationInfo = memo(LocationInfo)
+const MemoizedMap = memo(Map)
+const MemoizedFooter = memo(Footer)
+const MemoizedSettings = memo(Settings)
+
 /**
  * Main App Component for Speed and Position
  * Mobile-first redesign using component architecture
+ * Phase 4: Enhanced with PWA support, touch gestures, and performance optimizations
  */
 function App() {
   const { position, loading, error } = useGeolocation()
   const [unit, setUnit] = useState<SpeedUnit>('mph')
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
   const speed = useSpeedCalculation(position?.speed ?? null, unit)
+
+  // Register service worker for PWA support
+  useServiceWorker()
 
   const toggleUnit = () => {
     setUnit(prev => prev === 'mph' ? 'kph' : 'mph')
@@ -46,7 +58,7 @@ function App() {
               padding: '4',
               borderRadius: 'md',
               marginBottom: '4',
-            })}>
+            })} role="alert">
               Error: {error}
             </div>
           )}
@@ -64,6 +76,7 @@ function App() {
             })}
             role="status"
             aria-label="Requesting location access"
+            aria-live="polite"
             >
               <span aria-hidden="true">📍</span> Requesting location access...
               <div className={css({ fontSize: 'sm', color: 'gray.600', marginTop: '2' })}>
@@ -74,9 +87,9 @@ function App() {
 
           {position ? (
             <>
-              <SpeedDisplay speed={speed} unit={unit} onToggleUnit={toggleUnit} />
-              <LocationInfo position={position} />
-              <Map position={position} />
+              <MemoizedSpeedDisplay speed={speed} unit={unit} onToggleUnit={toggleUnit} />
+              <MemoizedLocationInfo position={position} />
+              <MemoizedMap position={position} />
             </>
           ) : (
             <>
@@ -100,15 +113,15 @@ function App() {
                   Waiting for GPS signal...
                 </div>
               </div>
-              <Map position={null} />
+              <MemoizedMap position={null} />
             </>
           )}
         </div>
       </main>
 
-      <Footer />
+      <MemoizedFooter />
 
-      <Settings
+      <MemoizedSettings
         isOpen={isSettingsOpen}
         onClose={() => setIsSettingsOpen(false)}
         unit={unit}

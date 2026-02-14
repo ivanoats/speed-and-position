@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import type { Position } from '../types/position'
+import { debounce } from '../utils/accessibility'
 
 export interface GeolocationState {
   position: Position | null
@@ -9,12 +10,21 @@ export interface GeolocationState {
 
 /**
  * Custom hook for accessing geolocation with high accuracy
+ * Includes debouncing for performance optimization
  * @returns GeolocationState with position, loading, and error states
  */
 export function useGeolocation(): GeolocationState {
   const [position, setPosition] = useState<Position | null>(null)
   const [loading, setLoading] = useState<boolean>(true)
   const [error, setError] = useState<string | null>(null)
+
+  // Debounced position update to reduce re-renders
+  const debouncedSetPosition = useCallback(
+    debounce((newPosition: Position) => {
+      setPosition(newPosition)
+    }, 100), // 100ms debounce
+    []
+  )
 
   useEffect(() => {
     if (!navigator.geolocation) {
@@ -24,12 +34,21 @@ export function useGeolocation(): GeolocationState {
     }
 
     const successHandler = (pos: GeolocationPosition) => {
-      setPosition({
+      const newPosition = {
         latitude: pos.coords.latitude,
         longitude: pos.coords.longitude,
         accuracy: pos.coords.accuracy,
         speed: pos.coords.speed,
-      })
+      }
+      
+      // Use debounced update for continuous tracking
+      if (position) {
+        debouncedSetPosition(newPosition)
+      } else {
+        // First position update is immediate
+        setPosition(newPosition)
+      }
+      
       setLoading(false)
     }
 
@@ -51,13 +70,13 @@ export function useGeolocation(): GeolocationState {
       errorHandler,
       {
         enableHighAccuracy: true,
-        maximumAge: 0,
+        maximumAge: 1000, // Allow 1 second old position for performance
         timeout: 5000,
       }
     )
 
     return () => navigator.geolocation.clearWatch(watchId)
-  }, [])
+  }, [position, debouncedSetPosition])
 
   return { position, loading, error }
 }

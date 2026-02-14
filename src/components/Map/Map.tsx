@@ -6,6 +6,7 @@ import shadowUrl from 'leaflet/dist/images/marker-shadow.png'
 import { css } from '../../../styled-system/css'
 import type { Position } from '../../types/position'
 import { useEffect, useState } from 'react'
+import { useTouchGestures } from '../../hooks/useTouchGestures'
 
 // Fix Leaflet default marker icons not loading with module bundlers
 L.Icon.Default.mergeOptions({
@@ -46,11 +47,42 @@ function MapUpdater({ position }: { position: Position | null }) {
  * Map component - Interactive map with React-Leaflet
  * Shows current position with auto-centering
  * Defaults to Seattle, WA when no position available
+ * Supports double-tap to center and long-press to copy coordinates
  * 
  * @param position - Current position data from geolocation
  */
 export function Map({ position }: MapProps) {
   const [tileError, setTileError] = useState(false)
+  const [notification, setNotification] = useState<string>('')
+  
+  // Handle double tap to center map
+  const handleDoubleTap = () => {
+    if (position) {
+      // The MapUpdater will handle centering
+      setNotification('Map centered on your location')
+      setTimeout(() => setNotification(''), 2000)
+    }
+  }
+
+  // Handle long press to copy coordinates
+  const handleLongPress = async () => {
+    if (position) {
+      const coords = `${position.latitude.toFixed(6)}, ${position.longitude.toFixed(6)}`
+      try {
+        await navigator.clipboard.writeText(coords)
+        setNotification('Coordinates copied to clipboard!')
+      } catch (err) {
+        setNotification('Failed to copy coordinates')
+      }
+      setTimeout(() => setNotification(''), 2000)
+    }
+  }
+
+  // Touch gesture support
+  const gestureRef = useTouchGestures<HTMLDivElement>({
+    onDoubleTap: handleDoubleTap,
+    onLongPress: handleLongPress,
+  })
   
   // Default center (Seattle, WA) if no position yet
   const center: [number, number] = position 
@@ -63,17 +95,41 @@ export function Map({ position }: MapProps) {
     : 'default-seattle'
 
   return (
-    <div className={css({
-      marginTop: '4',
-      borderRadius: 'lg',
-      overflow: 'hidden',
-      height: { base: '300px', md: '400px', lg: '500px' },
-      width: '100%',
-      border: '2px solid',
-      borderColor: 'gray.200',
-      position: 'relative',
-      bg: 'gray.50',
-    })}>
+    <div 
+      ref={gestureRef}
+      className={css({
+        marginTop: '4',
+        borderRadius: 'lg',
+        overflow: 'hidden',
+        height: { base: '300px', md: '400px', lg: '500px' },
+        width: '100%',
+        border: '2px solid',
+        borderColor: 'gray.200',
+        position: 'relative',
+        bg: 'gray.50',
+      })}
+      role="region"
+      aria-label="Interactive map showing your current location. Double-tap to center, long-press to copy coordinates"
+    >
+      {notification && (
+        <div className={css({
+          position: 'absolute',
+          top: '4',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          bg: 'rgba(0, 0, 0, 0.8)',
+          color: 'white',
+          padding: '2 4',
+          borderRadius: 'md',
+          zIndex: 1000,
+          fontSize: 'sm',
+          fontWeight: 'semibold',
+          boxShadow: 'lg',
+          animation: 'fadeIn 0.3s ease',
+        })} role="status" aria-live="polite">
+          {notification}
+        </div>
+      )}
       {tileError && (
         <div className={css({
           position: 'absolute',
@@ -130,7 +186,10 @@ export function Map({ position }: MapProps) {
               You are here<br />
               Latitude: {position.latitude.toFixed(6)}<br />
               Longitude: {position.longitude.toFixed(6)}<br />
-              Accuracy: {position.accuracy.toFixed(0)}m
+              Accuracy: {position.accuracy.toFixed(0)}m<br />
+              <span className={css({ fontSize: 'xs', color: 'gray.600', marginTop: '1', display: 'block' })}>
+                💡 Long-press map to copy coordinates
+              </span>
             </Popup>
           </Marker>
         )}
