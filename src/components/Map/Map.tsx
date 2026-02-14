@@ -71,7 +71,7 @@ export function Map({ position }: MapProps) {
       try {
         await navigator.clipboard.writeText(coords)
         setNotification('Coordinates copied to clipboard!')
-      } catch (err) {
+      } catch {
         setNotification('Failed to copy coordinates')
       }
       setTimeout(() => setNotification(''), 2000)

@@ -74,10 +74,11 @@ describe('App Component', () => {
     expect(screen.getByText(/22\.4/i)).toBeInTheDocument()
     expect(screen.getAllByText(/mph/i).length).toBeGreaterThan(0)
 
-    // Position should be displayed
-    expect(screen.getByText(/Latitude:/i)).toBeInTheDocument()
-    expect(screen.getByText(/47\.606200/i)).toBeInTheDocument()
-    expect(screen.getByText(/Longitude:/i)).toBeInTheDocument()
+    // Location info should be present but collapsed initially
+    expect(screen.getByRole('button', { name: /Location information/i })).toBeInTheDocument()
+    
+    // The component should show hint text when collapsed
+    expect(screen.getByText(/Tap to view coordinates/i)).toBeInTheDocument()
   })
 
   it('should render header with correct title', () => {

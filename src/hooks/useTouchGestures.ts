@@ -28,7 +28,7 @@ export function useTouchGestures<T extends HTMLElement>(
   const elementRef = useRef<T>(null)
   const touchStart = useRef<TouchPoint | null>(null)
   const lastTap = useRef<number>(0)
-  const longPressTimer = useRef<NodeJS.Timeout | null>(null)
+  const longPressTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const handleTouchStart = useCallback((e: TouchEvent) => {
     const touch = e.touches[0]
