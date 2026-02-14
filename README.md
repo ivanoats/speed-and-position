@@ -12,11 +12,13 @@ Visit [https://howfastwhere.com](https://howfastwhere.com)
 
 ## 🎨 Mobile-First Redesign
 
-This project has been redesigned using [ParkUI](https://park-ui.com/), a modern component library built on:
+This project has been redesigned using modern web technologies:
+- **TypeScript** - Type-safe development
 - **React 18** - Modern UI framework
 - **Ark UI** - Accessible, headless UI primitives
 - **Panda CSS** - Type-safe, zero-runtime CSS-in-JS
 - **Vite** - Fast build tooling
+- **Vitest** - Fast unit testing
 
 ### ✨ Features
 
@@ -62,23 +64,26 @@ npm run preview
 
 ```
 speed-and-position/
-├── src/                    # React application source
-│   ├── components/        # React components
-│   ├── hooks/            # Custom React hooks
-│   ├── utils/            # Utility functions
-│   ├── App.jsx           # Main app component
-│   ├── main.jsx          # Entry point
-│   └── index.css         # Global styles
-├── public/               # Static assets
-│   ├── images/          # Icons and images
-│   └── manifest.json    # PWA manifest
-├── styled-system/       # Generated Panda CSS (git-ignored)
-├── panda.config.ts      # Panda CSS configuration
-├── vite.config.js       # Vite configuration
-├── index.html           # New React app entry point
-├── index-legacy.html    # Original vanilla JavaScript version
-├── REDESIGN_PLAN.md     # Detailed redesign documentation
-└── package.json         # Dependencies and scripts
+├── src/                    # React application source (TypeScript)
+│   ├── test/              # Test files
+│   │   ├── App.test.tsx  # App component tests
+│   │   └── setup.ts      # Test setup and mocks
+│   ├── App.tsx            # Main app component
+│   ├── main.tsx           # Entry point
+│   └── index.css          # Global styles
+├── public/                # Static assets
+│   ├── images/           # Icons and images
+│   └── manifest.json     # PWA manifest
+├── styled-system/        # Generated Panda CSS (git-ignored)
+├── index.ts               # Legacy TypeScript file
+├── panda.config.ts       # Panda CSS configuration
+├── vite.config.js        # Vite configuration
+├── vitest.config.ts      # Vitest test configuration
+├── tsconfig.json         # TypeScript configuration
+├── index.html            # React app entry point
+├── index-legacy.html     # Original version
+├── REDESIGN_PLAN.md      # Detailed redesign documentation
+└── package.json          # Dependencies and scripts
 ```
 
 ### 🔧 Development
@@ -88,13 +93,17 @@ speed-and-position/
 - `npm run dev` - Start development server with HMR
 - `npm run build` - Build for production
 - `npm run preview` - Preview production build
-- `npm run lint` - Run ESLint
+- `npm run lint` - Run ESLint on TypeScript files
+- `npm test` - Run tests in watch mode
+- `npm run test:run` - Run tests once
+- `npm run test:ui` - Run tests with UI
+- `npm run test:coverage` - Run tests with coverage report
 - `npm run panda` - Generate Panda CSS utilities
 - `npm run serve` - Serve original HTML (legacy)
 
 #### Legacy Version
 
-The original vanilla JavaScript version is preserved in `index.html` and can be served with:
+The original vanilla JavaScript version is preserved in `index-legacy.html` and can be served with:
 
 ```bash
 npm run serve
@@ -122,12 +131,15 @@ The redesign follows these principles:
 
 ### 🛠️ Technology Stack
 
+- **Language**: TypeScript 5.5+
 - **Frontend Framework**: React 18
-- **UI Components**: ParkUI + Ark UI
-- **Styling**: Panda CSS
-- **Build Tool**: Vite
-- **Maps**: React-Leaflet
+- **UI Components**: Ark UI primitives
+- **Styling**: Panda CSS (type-safe CSS-in-JS)
+- **Build Tool**: Vite 5
+- **Testing**: Vitest + React Testing Library
+- **Maps**: React-Leaflet (planned)
 - **Geolocation**: Browser Geolocation API
+- **Linting**: ESLint 9 with TypeScript support
 - **PWA**: Service Worker (planned)
 
 ### 📱 Browser Support
