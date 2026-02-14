@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from 'vitest'
+import { describe, it, expect } from 'vitest'
 import { render, screen, waitFor } from '@testing-library/react'
 import App from '../App'
 import { mockGeolocation } from './setup'
@@ -11,9 +11,9 @@ describe('App Component', () => {
 
   it('should display error when geolocation is not supported', async () => {
     // Mock geolocation as undefined
-    const originalGeolocation = global.navigator.geolocation
+    const originalGeolocation = globalThis.navigator.geolocation
     // @ts-expect-error - intentionally setting to undefined for test
-    global.navigator.geolocation = undefined
+    globalThis.navigator.geolocation = undefined
 
     render(<App />)
 
@@ -22,7 +22,7 @@ describe('App Component', () => {
     })
 
     // Restore geolocation
-    global.navigator.geolocation = originalGeolocation
+    globalThis.navigator.geolocation = originalGeolocation
   })
 
   it('should display speed and position when geolocation succeeds', async () => {

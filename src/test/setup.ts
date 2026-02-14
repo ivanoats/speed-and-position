@@ -1,4 +1,4 @@
-import { expect, afterEach } from 'vitest'
+import { afterEach } from 'vitest'
 import { cleanup } from '@testing-library/react'
 import '@testing-library/jest-dom/vitest'
 
@@ -14,7 +14,7 @@ const mockGeolocation = {
   clearWatch: vi.fn(),
 }
 
-Object.defineProperty(global.navigator, 'geolocation', {
+Object.defineProperty(globalThis.navigator, 'geolocation', {
   value: mockGeolocation,
   writable: true,
 })

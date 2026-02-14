@@ -55,7 +55,13 @@ export default [
         ...globals.browser,
         ...globals.es2021,
         L: 'readonly',
-        $: 'readonly'
+        $: 'readonly',
+        vi: 'readonly',
+        describe: 'readonly',
+        it: 'readonly',
+        expect: 'readonly',
+        beforeEach: 'readonly',
+        afterEach: 'readonly'
       },
       parserOptions: {
         ecmaFeatures: {
