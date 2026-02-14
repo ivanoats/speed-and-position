@@ -1,7 +1,18 @@
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet'
+import L from 'leaflet'
+import iconUrl from 'leaflet/dist/images/marker-icon.png'
+import iconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png'
+import shadowUrl from 'leaflet/dist/images/marker-shadow.png'
 import { css } from '../../../styled-system/css'
 import type { Position } from '../../types/position'
 import { useEffect, useState } from 'react'
+
+// Fix Leaflet default marker icons not loading with module bundlers
+L.Icon.Default.mergeOptions({
+  iconUrl,
+  iconRetinaUrl,
+  shadowUrl,
+})
 
 interface MapProps {
   position: Position | null
