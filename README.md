@@ -75,8 +75,8 @@ speed-and-position/
 ├── styled-system/       # Generated Panda CSS (git-ignored)
 ├── panda.config.ts      # Panda CSS configuration
 ├── vite.config.js       # Vite configuration
-├── index.html (legacy)  # Original HTML (for reference)
-├── index-new.html       # New React app HTML
+├── index.html           # New React app entry point
+├── index-legacy.html    # Original vanilla JavaScript version
 ├── REDESIGN_PLAN.md     # Detailed redesign documentation
 └── package.json         # Dependencies and scripts
 ```
