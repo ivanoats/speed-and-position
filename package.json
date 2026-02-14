@@ -11,7 +11,7 @@
     "preview": "vite preview",
     "test": "echo \"Error: no test specified\" && exit 1",
     "serve": "alive-server --ignore=.git/**/* --port=3000 --https=./node_modules/live-server-https",
-    "lint": "eslint index.js src/**/*.{js,jsx}",
+    "lint": "eslint index.js \"src/**/*.{js,jsx}\"",
     "prepare": "panda codegen",
     "panda": "panda"
   },

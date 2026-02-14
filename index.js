@@ -1,4 +1,3 @@
-/* global geolocator */
 function round(number, precision) {
   const shift = function (num, precis, reverseShift) {
     if (reverseShift) {
@@ -22,7 +21,7 @@ window.onload = function () {
       maxZoom: 19,
       attribution: '© OpenStreetMap'
     }).addTo(Window.map);
-    setInterval(updater, 7000, location)
+    setInterval(updater, 7000)
     updater(position)
   })
 }
@@ -33,7 +32,7 @@ function randomFromXtoY(x,y) {
   return r + x
 }
 
-function updater(location) {
+function updater() {
   navigator.geolocation.getCurrentPosition(function(l2){
     console.log(l2)
     const speed = round(mstomph(l2.coords.speed), 2)
