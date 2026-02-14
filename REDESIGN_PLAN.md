@@ -333,7 +333,7 @@ src/
 7. + PWA features
 
 #### 7.3 Deployment
-1. Deploy beta version to `/beta` path
+1. Deploy beta versions using Netlify's deploy previews features (already set up)
 2. User testing period
 3. A/B testing if possible
 4. Full migration
