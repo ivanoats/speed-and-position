@@ -1,33 +1,44 @@
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
+import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet'
 import { css } from '../../../styled-system/css'
 import type { Position } from '../../types/position'
-import { useEffect, useRef } from 'react'
-import type { Map as LeafletMap } from 'leaflet'
+import { useEffect } from 'react'
 
 interface MapProps {
   position: Position | null
 }
 
 /**
+ * Component to handle map view updates when position changes
+ */
+function MapUpdater({ position }: { position: Position | null }) {
+  const map = useMap()
+  
+  useEffect(() => {
+    if (position) {
+      map.setView([position.latitude, position.longitude], 15)
+    }
+  }, [position, map])
+  
+  return null
+}
+
+/**
  * Map component - Interactive map with React-Leaflet
  * Shows current position with auto-centering
+ * Defaults to Seattle, WA when no position available
  * 
  * @param position - Current position data from geolocation
  */
 export function Map({ position }: MapProps) {
-  const mapRef = useRef<LeafletMap | null>(null)
-
-  // Center map on position when it updates
-  useEffect(() => {
-    if (mapRef.current && position) {
-      mapRef.current.setView([position.latitude, position.longitude], 15)
-    }
-  }, [position])
-
-  // Default center (San Francisco) if no position yet
+  // Default center (Seattle, WA) if no position yet
   const center: [number, number] = position 
     ? [position.latitude, position.longitude]
-    : [37.7749, -122.4194]
+    : [47.6062, -122.3321] // Seattle, WA
+  
+  // Use a key to force MapContainer to re-render when center changes significantly
+  const mapKey = position 
+    ? `${position.latitude.toFixed(2)}-${position.longitude.toFixed(2)}`
+    : 'default-seattle'
 
   return (
     <div className={css({
@@ -40,14 +51,18 @@ export function Map({ position }: MapProps) {
       borderColor: 'gray.200',
     })}>
       <MapContainer
+        key={mapKey}
         center={center}
         zoom={15}
         style={{ height: '100%', width: '100%' }}
-        ref={mapRef}
+        scrollWheelZoom={true}
+        zoomControl={true}
       >
+        <MapUpdater position={position} />
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          maxZoom={19}
         />
         {position && (
           <Marker position={[position.latitude, position.longitude]}>
