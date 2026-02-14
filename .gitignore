@@ -38,3 +38,14 @@ node_modules
 
 #Mac
 .DS_Store
+
+# Vite
+dist
+dist-ssr
+*.local
+
+# Panda CSS
+styled-system
+
+# TypeScript
+*.tsbuildinfo
