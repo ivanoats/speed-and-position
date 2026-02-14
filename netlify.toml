@@ -1,0 +1,5 @@
+[build]
+  # Build command - explicitly run prepare to generate Panda CSS styled-system
+  command = "npm run prepare && npm run build"
+  # Directory to publish
+  publish = "dist"
