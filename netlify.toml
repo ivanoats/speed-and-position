@@ -3,18 +3,3 @@
   command = "npm run prepare && npm run build"
   # Directory to publish
   publish = "dist"
-
-# Production context
-[context.production]
-  command = "npm run prepare && npm run build"
-  publish = "dist"
-
-# Deploy Preview context
-[context.deploy-preview]
-  command = "npm run prepare && npm run build"
-  publish = "dist"
-
-# Branch Deploy context
-[context.branch-deploy]
-  command = "npm run prepare && npm run build"
-  publish = "dist"
