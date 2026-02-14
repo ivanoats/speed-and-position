@@ -8,7 +8,7 @@ import { metersPerSecToMph } from '../utils/conversions'
  */
 export function useSpeedCalculation(speed: number | null): number {
   return useMemo(() => {
-    if (speed === null || speed === undefined) {
+    if (speed === null) {
       return 0
     }
     return metersPerSecToMph(speed)

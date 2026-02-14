@@ -2,11 +2,11 @@ import { css } from '../styled-system/css'
 import { container } from '../styled-system/patterns'
 import { useGeolocation } from './hooks/useGeolocation'
 import { useSpeedCalculation } from './hooks/useSpeedCalculation'
-import { Header } from './components/Header/Header'
-import { SpeedDisplay } from './components/SpeedDisplay/SpeedDisplay'
-import { LocationInfo } from './components/LocationInfo/LocationInfo'
-import { Map } from './components/Map/Map'
-import { Footer } from './components/Footer/Footer'
+import { Header } from './components/Header'
+import { SpeedDisplay } from './components/SpeedDisplay'
+import { LocationInfo } from './components/LocationInfo'
+import { Map } from './components/Map'
+import { Footer } from './components/Footer'
 
 /**
  * Main App Component for Speed and Position

@@ -1,11 +1,5 @@
 import { useState, useEffect } from 'react'
-
-export interface Position {
-  latitude: number
-  longitude: number
-  accuracy: number
-  speed: number | null
-}
+import type { Position } from '../types/position'
 
 export interface GeolocationState {
   position: Position | null

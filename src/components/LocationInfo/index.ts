@@ -1,2 +1,2 @@
 export { LocationInfo } from './LocationInfo'
-export type { LocationInfoProps, Position } from './LocationInfo'
+export type { LocationInfoProps } from './LocationInfo'

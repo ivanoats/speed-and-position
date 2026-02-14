@@ -8,11 +8,6 @@ describe('useSpeedCalculation', () => {
     expect(result.current).toBe(0)
   })
 
-  it('returns 0 for undefined speed', () => {
-    const { result } = renderHook(() => useSpeedCalculation(undefined as unknown as null))
-    expect(result.current).toBe(0)
-  })
-
   it('converts meters per second to mph', () => {
     const { result } = renderHook(() => useSpeedCalculation(10))
     expect(result.current).toBeCloseTo(22.3694, 2)

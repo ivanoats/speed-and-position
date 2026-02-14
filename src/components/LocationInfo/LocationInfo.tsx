@@ -1,10 +1,5 @@
 import { css } from '../../../styled-system/css'
-
-export interface Position {
-  latitude: number
-  longitude: number
-  accuracy: number
-}
+import type { Position } from '../../types/position'
 
 export interface LocationInfoProps {
   position: Position
