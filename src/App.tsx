@@ -61,8 +61,11 @@ function App() {
               marginBottom: '4',
               border: '2px solid',
               borderColor: 'blue.200',
-            })}>
-              📍 Requesting location access...
+            })}
+            role="status"
+            aria-label="Requesting location access"
+            >
+              <span aria-hidden="true">📍</span> Requesting location access...
               <div className={css({ fontSize: 'sm', color: 'gray.600', marginTop: '2' })}>
                 Please allow location access in your browser to see your position
               </div>
