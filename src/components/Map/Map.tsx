@@ -43,6 +43,9 @@ function MapUpdater({ position }: { position: Position | null }) {
   return null
 }
 
+// Threshold for showing tile error warning (number of consecutive errors)
+const TILE_ERROR_THRESHOLD = 5
+
 /**
  * Map component - Interactive map with React-Leaflet
  * Shows current position with auto-centering
@@ -59,7 +62,6 @@ export function Map({ position }: MapProps) {
   // Only show tile error warning after multiple consecutive failures
   // This prevents false positives from transient network issues
   useEffect(() => {
-    const TILE_ERROR_THRESHOLD = 5 // Show warning after 5 consecutive errors
     if (consecutiveTileErrors >= TILE_ERROR_THRESHOLD) {
       setTileError(true)
     } else {
