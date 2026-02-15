@@ -1,5 +1,6 @@
-import { css } from '../styled-system/css'
+import { css, cx } from '../styled-system/css'
 import { container } from '../styled-system/patterns'
+import { card } from '../styled-system/recipes'
 import { useState, memo } from 'react'
 import { useGeolocation } from './hooks/useGeolocation'
 import { useSpeedCalculation, type SpeedUnit } from './hooks/useSpeedCalculation'
@@ -49,7 +50,7 @@ function App() {
   }
 
   return (
-    <div className={css({ minHeight: '100vh', display: 'flex', flexDirection: 'column' })}>
+    <div className={css({ minHeight: '100vh', display: 'flex', flexDirection: 'column', bg: 'bg.canvas' })}>
       <Header 
         onSettingsClick={() => setIsSettingsOpen(true)}
         hasGpsSignal={!!position && !loading}
@@ -63,39 +64,37 @@ function App() {
             <>
               {error && (
                 <div className={css({
-                  bg: 'red.100',
+                  bg: 'bg.error',
                   border: '2px solid',
-                  borderColor: 'red.500',
-                  color: 'red.800',
+                  borderColor: 'border.error',
+                  color: 'fg.error',
                   padding: '4',
-                  borderRadius: 'md',
+                  borderRadius: 'l2',
                   marginBottom: '4',
                 })} role="alert">
                   Error: {error}
                 </div>
               )}
 
-              {loading && !position && (
-                <div className={css({ 
-                  textAlign: 'center', 
-                  fontSize: 'xl',
-                  padding: '8',
-                  bg: 'blue.50',
-                  borderRadius: 'md',
-                  marginBottom: '4',
-                  border: '2px solid',
-                  borderColor: 'blue.200',
-                })}
-                role="status"
-                aria-label="Requesting location access"
-                aria-live="polite"
-                >
-                  <span aria-hidden="true">📍</span> Requesting location access...
-                  <div className={css({ fontSize: 'sm', color: 'gray.600', marginTop: '2' })}>
-                    Please allow location access in your browser to see your position
+              {loading && !position && (() => {
+                const cardStyles = card()
+                return (
+                  <div className={cx(cardStyles.root, css({ marginBottom: '4' }))}>
+                    <div className={cx(cardStyles.body, css({ textAlign: 'center' }))}
+                      role="status"
+                      aria-label="Requesting location access"
+                      aria-live="polite"
+                    >
+                      <div className={css({ fontSize: 'xl', marginBottom: '2' })}>
+                        <span aria-hidden="true">📍</span> Requesting location access...
+                      </div>
+                      <div className={css({ fontSize: 'sm', color: 'fg.muted' })}>
+                        Please allow location access in your browser to see your position
+                      </div>
+                    </div>
                   </div>
-                </div>
-              )}
+                )
+              })()}
 
               {position ? (
                 <>
@@ -105,26 +104,25 @@ function App() {
                 </>
               ) : (
                 <>
-                  <div className={css({
-                    bg: 'white',
-                    borderRadius: 'lg',
-                    padding: '6',
-                    marginBottom: '4',
-                    boxShadow: 'lg',
-                    textAlign: 'center',
-                  })}>
-                    <div className={css({
-                      fontSize: { base: '5xl', md: '6xl' },
-                      fontWeight: 'bold',
-                      color: 'gray.400',
-                      marginBottom: '2',
-                    })}>
-                      -- <span className={css({ fontSize: '3xl' })}>{unit}</span>
-                    </div>
-                    <div className={css({ fontSize: 'sm', color: 'gray.500' })}>
-                      Waiting for GPS signal...
-                    </div>
-                  </div>
+                  {(() => {
+                    const cardStyles = card()
+                    return (
+                      <div className={cx(cardStyles.root, css({ marginBottom: '4' }))}>
+                        <div className={cx(cardStyles.body, css({ textAlign: 'center' }))}>                          <div className={css({
+                            fontSize: { base: '5xl', md: '6xl' },
+                            fontWeight: 'bold',
+                            color: 'fg.subtle',
+                            marginBottom: '2',
+                          })}>
+                            -- <span className={css({ fontSize: '3xl' })}>{unit}</span>
+                          </div>
+                          <div className={css({ fontSize: 'sm', color: 'fg.muted' })}>
+                            Waiting for GPS signal...
+                          </div>
+                        </div>
+                      </div>
+                    )
+                  })()}
                   <MemoizedMap position={null} />
                 </>
               )}

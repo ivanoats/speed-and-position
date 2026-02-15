@@ -131,14 +131,14 @@ export function Map({ position }: MapProps) {
       ref={gestureRef}
       className={css({
         marginTop: '4',
-        borderRadius: 'lg',
+        borderRadius: 'l2',
         overflow: 'hidden',
         height: { base: '300px', md: '400px', lg: '500px' },
         width: '100%',
         border: '2px solid',
-        borderColor: 'gray.200',
+        borderColor: 'border.subtle',
         position: 'relative',
-        bg: 'gray.50',
+        bg: 'bg.subtle',
       })}
       role="region"
       aria-label="Interactive map"
@@ -185,7 +185,7 @@ export function Map({ position }: MapProps) {
           <div className={css({ fontSize: 'lg', fontWeight: 'bold', color: 'orange.700', marginBottom: '2' })}>
             ⚠️ Map Tiles Blocked
           </div>
-          <div className={css({ fontSize: 'sm', color: 'gray.700' })}>
+          <div className={css({ fontSize: 'sm', color: 'fg.default' })}>
             Map tiles are blocked by a browser extension.<br />
             Please disable your ad blocker for this site to see the map.
           </div>
@@ -230,7 +230,7 @@ export function Map({ position }: MapProps) {
               Latitude: {position.latitude.toFixed(6)}<br />
               Longitude: {position.longitude.toFixed(6)}<br />
               Accuracy: {position.accuracy.toFixed(0)}m<br />
-              <span className={css({ fontSize: 'xs', color: 'gray.600', marginTop: '1', display: 'block' })}>
+              <span className={css({ fontSize: 'xs', color: 'fg.muted', marginTop: '1', display: 'block' })}>
                 💡 Long-press map to copy coordinates
               </span>
             </Popup>

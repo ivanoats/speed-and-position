@@ -1,4 +1,5 @@
-import { css } from '../../../styled-system/css'
+import { css, cx } from '../../../styled-system/css'
+import { button } from '../../../styled-system/recipes'
 
 export interface HeaderProps {
   onSettingsClick?: () => void
@@ -15,7 +16,7 @@ export interface HeaderProps {
 export function Header({ onSettingsClick, hasGpsSignal = false }: HeaderProps) {
   return (
     <header className={css({
-      bg: 'blue.600',
+      bg: 'accent.default',
       color: 'white',
       padding: '4',
       position: 'sticky',
@@ -49,28 +50,18 @@ export function Header({ onSettingsClick, hasGpsSignal = false }: HeaderProps) {
           <button
             type="button"
             onClick={onSettingsClick}
-            className={css({
-              bg: 'transparent',
-              border: '2px solid white',
+            className={cx(button({ variant: 'ghost', size: 'md' }), css({
               color: 'white',
-              padding: '2',
-              borderRadius: 'md',
-              cursor: 'pointer',
-              fontSize: 'xl',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              width: '10',
-              height: '10',
-              transition: 'background 0.2s',
+              borderColor: 'white',
+              border: '2px solid',
               _hover: {
-                bg: 'rgba(255, 255, 255, 0.1)',
+                bg: 'rgba(255, 255, 255, 0.15)',
               },
               _active: {
-                bg: 'rgba(255, 255, 255, 0.2)',
+                bg: 'rgba(255, 255, 255, 0.25)',
               },
               touchAction: 'manipulation',
-            })}
+            }))}
             aria-label="Open settings"
           >
             ⚙️
