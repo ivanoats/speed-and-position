@@ -1,4 +1,5 @@
 import { css } from '../../../styled-system/css'
+import { card } from '../../../styled-system/recipes'
 import type { Position } from '../../types/position'
 import { useState } from 'react'
 import { useTouchGestures } from '../../hooks/useTouchGestures'
@@ -14,6 +15,7 @@ export interface LocationInfoProps {
  */
 export function LocationInfo({ position }: LocationInfoProps) {
   const [isExpanded, setIsExpanded] = useState(false)
+  const cardStyles = card()
 
   // Touch gesture support for mobile
   const ref = useTouchGestures<HTMLDivElement>({
@@ -24,13 +26,9 @@ export function LocationInfo({ position }: LocationInfoProps) {
   return (
     <div 
       ref={ref}
-      className={css({
-        bg: 'white',
-        borderRadius: 'lg',
-        padding: '4',
-        boxShadow: 'md',
-        transition: 'all 0.3s ease',
+      className={cardStyles.root + ' ' + css({
         cursor: 'pointer',
+        transition: 'all 0.3s ease',
         _hover: {
           boxShadow: 'lg',
         },
@@ -48,26 +46,27 @@ export function LocationInfo({ position }: LocationInfoProps) {
         }
       }}
     >
-      <div className={css({ 
-        display: 'flex', 
-        justifyContent: 'space-between', 
+      <div className={cardStyles.header + ' ' + css({
+        display: 'flex',
+        justifyContent: 'space-between',
         alignItems: 'center',
-        marginBottom: isExpanded ? '3' : '0',
+        paddingBottom: isExpanded ? '3' : '0',
       })}>
-        <h2 className={css({ fontSize: 'xl', fontWeight: 'semibold' })}>
+        <h2 className={cardStyles.title}>
           Location
         </h2>
         <span className={css({ 
           fontSize: '2xl',
           transition: 'transform 0.3s ease',
           transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)',
+          color: 'fg.muted',
         })} aria-hidden="true">
           {isExpanded ? '▼' : '▲'}
         </span>
       </div>
       
       {isExpanded && (
-        <div className={css({ fontSize: 'sm', color: 'gray.700' })}>
+        <div className={cardStyles.body + ' ' + css({ fontSize: 'sm', color: 'fg.default' })}>
           <div className={css({ marginBottom: '2' })}>
             <strong>Latitude:</strong> {position.latitude.toFixed(6)}
           </div>
@@ -81,9 +80,9 @@ export function LocationInfo({ position }: LocationInfoProps) {
             marginTop: '3', 
             paddingTop: '3', 
             borderTop: '1px solid',
-            borderColor: 'gray.200',
+            borderColor: 'border.subtle',
             fontSize: 'xs',
-            color: 'gray.500',
+            color: 'fg.subtle',
             textAlign: 'center',
           })}>
             💡 Tip: Swipe up/down or click to expand/collapse
@@ -92,10 +91,10 @@ export function LocationInfo({ position }: LocationInfoProps) {
       )}
       
       {!isExpanded && (
-        <div id="location-hint" className={css({ 
+        <div id="location-hint" className={cardStyles.body + ' ' + css({ 
           fontSize: 'xs', 
-          color: 'gray.500',
-          marginTop: '2',
+          color: 'fg.subtle',
+          paddingTop: '2',
         })}>
           Tap to view coordinates • Swipe up to expand
         </div>
