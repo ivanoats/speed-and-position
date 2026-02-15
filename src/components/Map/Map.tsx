@@ -5,7 +5,7 @@ import iconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png'
 import shadowUrl from 'leaflet/dist/images/marker-shadow.png'
 import { css } from '../../../styled-system/css'
 import type { Position } from '../../types/position'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { useTouchGestures } from '../../hooks/useTouchGestures'
 
 // Fix Leaflet default marker icons not loading with module bundlers
@@ -58,6 +58,7 @@ export function Map({ position }: MapProps) {
   const [tileError, setTileError] = useState(false)
   const [notification, setNotification] = useState<string>('')
   const [consecutiveTileErrors, setConsecutiveTileErrors] = useState(0)
+  const notificationTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   
   // Only show tile error warning after multiple consecutive failures
   // This prevents false positives from transient network issues
@@ -69,12 +70,25 @@ export function Map({ position }: MapProps) {
     }
   }, [consecutiveTileErrors])
   
+  // Cleanup notification timeouts on unmount
+  useEffect(() => {
+    return () => {
+      if (notificationTimeoutRef.current) {
+        clearTimeout(notificationTimeoutRef.current)
+      }
+    }
+  }, [])
+  
   // Handle double tap to center map
   const handleDoubleTap = () => {
     if (position) {
+      // Clear any existing notification timeout
+      if (notificationTimeoutRef.current) {
+        clearTimeout(notificationTimeoutRef.current)
+      }
       // The MapUpdater will handle centering
       setNotification('Map centered on your location')
-      setTimeout(() => setNotification(''), 2000)
+      notificationTimeoutRef.current = setTimeout(() => setNotification(''), 2000)
     }
   }
 
@@ -82,13 +96,17 @@ export function Map({ position }: MapProps) {
   const handleLongPress = async () => {
     if (position) {
       const coords = `${position.latitude.toFixed(6)}, ${position.longitude.toFixed(6)}`
+      // Clear any existing notification timeout
+      if (notificationTimeoutRef.current) {
+        clearTimeout(notificationTimeoutRef.current)
+      }
       try {
         await navigator.clipboard.writeText(coords)
         setNotification('Coordinates copied to clipboard!')
       } catch {
         setNotification('Failed to copy coordinates')
       }
-      setTimeout(() => setNotification(''), 2000)
+      notificationTimeoutRef.current = setTimeout(() => setNotification(''), 2000)
     }
   }
 
@@ -126,7 +144,7 @@ export function Map({ position }: MapProps) {
       aria-label="Interactive map"
       aria-describedby="map-instructions"
     >
-      <span id="map-instructions" className={css({ srOnly: true })}>
+      <span id="map-instructions" className="srOnly">
         Double-tap to center map on your location. Long-press to copy coordinates to clipboard.
       </span>
       {notification && (

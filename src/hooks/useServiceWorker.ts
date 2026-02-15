@@ -7,6 +7,8 @@ import { useEffect } from 'react'
 export function useServiceWorker() {
   useEffect(() => {
     if ('serviceWorker' in navigator) {
+      let intervalId: ReturnType<typeof setInterval> | null = null
+      
       const handleLoad = () => {
         navigator.serviceWorker
           .register('/sw.js')
@@ -14,12 +16,9 @@ export function useServiceWorker() {
             console.log('Service Worker registered:', registration.scope)
             
             // Check for updates periodically
-            const intervalId = setInterval(() => {
+            intervalId = setInterval(() => {
               registration.update()
             }, 60000) // Check every minute
-            
-            // Clean up interval on unmount
-            return () => clearInterval(intervalId)
           })
           .catch((error) => {
             console.error('Service Worker registration failed:', error)
@@ -30,6 +29,9 @@ export function useServiceWorker() {
 
       return () => {
         window.removeEventListener('load', handleLoad)
+        if (intervalId) {
+          clearInterval(intervalId)
+        }
       }
     }
   }, [])
