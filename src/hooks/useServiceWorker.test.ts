@@ -2,6 +2,8 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { renderHook } from '@testing-library/react'
 import { useServiceWorker } from './useServiceWorker'
 
+/* eslint-disable no-undef */
+
 describe('useServiceWorker', () => {
   let originalNavigator: typeof navigator
   let mockRegistration: {
