@@ -11,11 +11,12 @@ export interface GeolocationState {
 /**
  * Custom hook for accessing geolocation with high accuracy
  * Includes debouncing for performance optimization
+ * @param enabled - Whether to start requesting geolocation (default: true for backwards compatibility)
  * @returns GeolocationState with position, loading, and error states
  */
-export function useGeolocation(): GeolocationState {
+export function useGeolocation(enabled: boolean = true): GeolocationState {
   const [position, setPosition] = useState<Position | null>(null)
-  const [loading, setLoading] = useState<boolean>(true)
+  const [loading, setLoading] = useState<boolean>(enabled)
   const [error, setError] = useState<string | null>(null)
 
   // Store debounced function in ref to maintain same instance
@@ -26,6 +27,11 @@ export function useGeolocation(): GeolocationState {
   )
 
   useEffect(() => {
+    // Don't request geolocation if not enabled
+    if (!enabled) {
+      return
+    }
+
     if (!navigator.geolocation) {
       setError('Geolocation is not supported by your browser')
       setLoading(false)
@@ -77,7 +83,7 @@ export function useGeolocation(): GeolocationState {
     )
 
     return () => navigator.geolocation.clearWatch(watchId)
-  }, []) // Empty dependency array - effect should only run once
+  }, [enabled]) // Add enabled to dependency array
 
   return { position, loading, error }
 }
