@@ -1,20 +1,8 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { render, screen, waitFor } from '@testing-library/react'
+import { describe, it, expect } from 'vitest'
+import { render, screen } from '@testing-library/react'
 import { Map } from './Map'
 
-// Mock clipboard API
-const mockWriteText = vi.fn()
-Object.assign(navigator, {
-  clipboard: {
-    writeText: mockWriteText,
-  },
-})
-
 describe('Map', () => {
-  beforeEach(() => {
-    mockWriteText.mockReset()
-  })
-
   it('renders the map container', () => {
     const { container } = render(<Map position={null} />)
     const mapElement = container.querySelector('.leaflet-container')
