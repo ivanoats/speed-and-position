@@ -16,7 +16,7 @@ export interface GeolocationState {
  */
 export function useGeolocation(enabled: boolean = true): GeolocationState {
   const [position, setPosition] = useState<Position | null>(null)
-  const [loading, setLoading] = useState<boolean>(enabled)
+  const [loading, setLoading] = useState<boolean>(false)
   const [error, setError] = useState<string | null>(null)
 
   // Store debounced function in ref to maintain same instance
@@ -29,8 +29,12 @@ export function useGeolocation(enabled: boolean = true): GeolocationState {
   useEffect(() => {
     // Don't request geolocation if not enabled
     if (!enabled) {
+      setLoading(false)
       return
     }
+
+    // Set loading to true when starting geolocation request
+    setLoading(true)
 
     if (!navigator.geolocation) {
       setError('Geolocation is not supported by your browser')
