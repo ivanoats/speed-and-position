@@ -13,7 +13,7 @@ describe('useServiceWorker', () => {
 
   beforeEach(() => {
     vi.useFakeTimers()
-    originalNavigator = global.navigator
+    originalNavigator = globalThis.navigator
     
     mockRegistration = {
       scope: '/test-scope',
@@ -21,7 +21,7 @@ describe('useServiceWorker', () => {
     }
 
     // Mock navigator.serviceWorker
-    Object.defineProperty(global, 'navigator', {
+    Object.defineProperty(globalThis, 'navigator', {
       value: {
         serviceWorker: {
           register: vi.fn().mockResolvedValue(mockRegistration),
@@ -32,14 +32,14 @@ describe('useServiceWorker', () => {
     })
 
     // Mock window.addEventListener
-    global.window.addEventListener = vi.fn()
-    global.window.removeEventListener = vi.fn()
+    globalThis.window.addEventListener = vi.fn()
+    globalThis.window.removeEventListener = vi.fn()
   })
 
   afterEach(() => {
     vi.useRealTimers()
     vi.restoreAllMocks()
-    Object.defineProperty(global, 'navigator', {
+    Object.defineProperty(globalThis, 'navigator', {
       value: originalNavigator,
       writable: true,
       configurable: true,
