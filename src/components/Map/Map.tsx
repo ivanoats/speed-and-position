@@ -43,6 +43,9 @@ function MapUpdater({ position }: { position: Position | null }) {
   return null
 }
 
+// Threshold for showing tile error warning (number of consecutive errors)
+const TILE_ERROR_THRESHOLD = 5
+
 /**
  * Map component - Interactive map with React-Leaflet
  * Shows current position with auto-centering
@@ -54,6 +57,17 @@ function MapUpdater({ position }: { position: Position | null }) {
 export function Map({ position }: MapProps) {
   const [tileError, setTileError] = useState(false)
   const [notification, setNotification] = useState<string>('')
+  const [consecutiveTileErrors, setConsecutiveTileErrors] = useState(0)
+  
+  // Only show tile error warning after multiple consecutive failures
+  // This prevents false positives from transient network issues
+  useEffect(() => {
+    if (consecutiveTileErrors >= TILE_ERROR_THRESHOLD) {
+      setTileError(true)
+    } else {
+      setTileError(false)
+    }
+  }, [consecutiveTileErrors])
   
   // Handle double tap to center map
   const handleDoubleTap = () => {
@@ -181,7 +195,14 @@ export function Map({ position }: MapProps) {
           maxZoom={19}
           errorTileUrl="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
           eventHandlers={{
-            tileerror: () => setTileError(true),
+            tileerror: () => {
+              // Increment error count on tile load failure
+              setConsecutiveTileErrors(prev => prev + 1)
+            },
+            tileload: () => {
+              // Reset error count on successful tile load
+              setConsecutiveTileErrors(0)
+            },
           }}
         />
         {position && (
