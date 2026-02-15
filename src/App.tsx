@@ -1,0 +1,134 @@
+import { css } from '../styled-system/css'
+import { container } from '../styled-system/patterns'
+import { useState, memo } from 'react'
+import { useGeolocation } from './hooks/useGeolocation'
+import { useSpeedCalculation, type SpeedUnit } from './hooks/useSpeedCalculation'
+import { useServiceWorker } from './hooks/useServiceWorker'
+import { Header } from './components/Header'
+import { SpeedDisplay } from './components/SpeedDisplay'
+import { LocationInfo } from './components/LocationInfo'
+import { Map } from './components/Map'
+import { Footer } from './components/Footer'
+import { Settings } from './components/Settings'
+
+// Memoized components to prevent unnecessary re-renders
+const MemoizedSpeedDisplay = memo(SpeedDisplay)
+const MemoizedLocationInfo = memo(LocationInfo)
+const MemoizedMap = memo(Map)
+const MemoizedFooter = memo(Footer)
+const MemoizedSettings = memo(Settings)
+
+/**
+ * Main App Component for Speed and Position
+ * Mobile-first redesign using component architecture
+ * Phase 4: Enhanced with PWA support, touch gestures, and performance optimizations
+ */
+function App() {
+  const { position, loading, error } = useGeolocation()
+  const [unit, setUnit] = useState<SpeedUnit>('mph')
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false)
+  const speed = useSpeedCalculation(position?.speed ?? null, unit)
+
+  // Register service worker for PWA support
+  useServiceWorker()
+
+  const toggleUnit = () => {
+    setUnit(prev => prev === 'mph' ? 'kph' : 'mph')
+  }
+
+  const handleUnitChange = (newUnit: SpeedUnit) => {
+    setUnit(newUnit)
+  }
+
+  return (
+    <div className={css({ minHeight: '100vh', display: 'flex', flexDirection: 'column' })}>
+      <Header 
+        onSettingsClick={() => setIsSettingsOpen(true)}
+        hasGpsSignal={!!position && !loading}
+      />
+
+      <main className={css({ flex: 1, padding: '4' })}>
+        <div className={container()}>
+          {error && (
+            <div className={css({
+              bg: 'red.100',
+              border: '2px solid',
+              borderColor: 'red.500',
+              color: 'red.800',
+              padding: '4',
+              borderRadius: 'md',
+              marginBottom: '4',
+            })} role="alert">
+              Error: {error}
+            </div>
+          )}
+
+          {loading && !position && (
+            <div className={css({ 
+              textAlign: 'center', 
+              fontSize: 'xl',
+              padding: '8',
+              bg: 'blue.50',
+              borderRadius: 'md',
+              marginBottom: '4',
+              border: '2px solid',
+              borderColor: 'blue.200',
+            })}
+            role="status"
+            aria-label="Requesting location access"
+            aria-live="polite"
+            >
+              <span aria-hidden="true">📍</span> Requesting location access...
+              <div className={css({ fontSize: 'sm', color: 'gray.600', marginTop: '2' })}>
+                Please allow location access in your browser to see your position
+              </div>
+            </div>
+          )}
+
+          {position ? (
+            <>
+              <MemoizedSpeedDisplay speed={speed} unit={unit} onToggleUnit={toggleUnit} />
+              <MemoizedLocationInfo position={position} />
+              <MemoizedMap position={position} />
+            </>
+          ) : (
+            <>
+              <div className={css({
+                bg: 'white',
+                borderRadius: 'lg',
+                padding: '6',
+                marginBottom: '4',
+                boxShadow: 'lg',
+                textAlign: 'center',
+              })}>
+                <div className={css({
+                  fontSize: { base: '5xl', md: '6xl' },
+                  fontWeight: 'bold',
+                  color: 'gray.400',
+                  marginBottom: '2',
+                })}>
+                  -- <span className={css({ fontSize: '3xl' })}>{unit}</span>
+                </div>
+                <div className={css({ fontSize: 'sm', color: 'gray.500' })}>
+                  Waiting for GPS signal...
+                </div>
+              </div>
+              <MemoizedMap position={null} />
+            </>
+          )}
+        </div>
+      </main>
+
+      <MemoizedFooter />
+
+      <MemoizedSettings
+        isOpen={isSettingsOpen}
+        onClose={() => setIsSettingsOpen(false)}
+        unit={unit}
+        onUnitChange={handleUnitChange}
+      />
+    </div>
+  )
+}
+
+export default App

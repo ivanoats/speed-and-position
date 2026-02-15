@@ -39,5 +39,13 @@ node_modules
 #Mac
 .DS_Store
 
-# Panda CSS generated files
+# Vite
+dist
+dist-ssr
+*.local
+
+# Panda CSS
 styled-system
+
+# TypeScript
+*.tsbuildinfo
