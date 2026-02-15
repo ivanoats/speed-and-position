@@ -1,3 +1,5 @@
 {
-  "editor.fontFamily": "\"Fira Code\", Menlo, Monaco, 'Courier New', monospace"
+  "editor.fontFamily": "\"Fira Code\", Menlo, Monaco, 'Courier New', monospace",
+  "snyk.advanced.organization": "2f45bdb7-3694-4a12-9a76-8797c796ecdc",
+  "snyk.advanced.autoSelectOrganization": true
 }
