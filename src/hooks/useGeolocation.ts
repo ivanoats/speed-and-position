@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import type { Position } from '../types/position'
+import { debounce } from '../utils/accessibility'
 
 export interface GeolocationState {
   position: Position | null
@@ -9,12 +10,20 @@ export interface GeolocationState {
 
 /**
  * Custom hook for accessing geolocation with high accuracy
+ * Includes debouncing for performance optimization
  * @returns GeolocationState with position, loading, and error states
  */
 export function useGeolocation(): GeolocationState {
   const [position, setPosition] = useState<Position | null>(null)
   const [loading, setLoading] = useState<boolean>(true)
   const [error, setError] = useState<string | null>(null)
+
+  // Store debounced function in ref to maintain same instance
+  const debouncedSetPositionRef = useRef(
+    debounce((newPosition: Position) => {
+      setPosition(newPosition)
+    }, 100)
+  )
 
   useEffect(() => {
     if (!navigator.geolocation) {
@@ -23,13 +32,24 @@ export function useGeolocation(): GeolocationState {
       return
     }
 
+    let isFirstPosition = true
+
     const successHandler = (pos: GeolocationPosition) => {
-      setPosition({
+      const newPosition = {
         latitude: pos.coords.latitude,
         longitude: pos.coords.longitude,
         accuracy: pos.coords.accuracy,
         speed: pos.coords.speed,
-      })
+      }
+      
+      // First position update is immediate, subsequent updates are debounced
+      if (isFirstPosition) {
+        setPosition(newPosition)
+        isFirstPosition = false
+      } else {
+        debouncedSetPositionRef.current(newPosition)
+      }
+      
       setLoading(false)
     }
 
@@ -51,13 +71,13 @@ export function useGeolocation(): GeolocationState {
       errorHandler,
       {
         enableHighAccuracy: true,
-        maximumAge: 0,
+        maximumAge: 1000, // Allow 1 second old position for performance
         timeout: 5000,
       }
     )
 
     return () => navigator.geolocation.clearWatch(watchId)
-  }, [])
+  }, []) // Empty dependency array - effect should only run once
 
   return { position, loading, error }
 }

@@ -21,3 +21,65 @@ body {
   display: flex;
   flex-direction: column;
 }
+
+/* Screen reader only (visually hidden but accessible) */
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Accessibility: Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Accessibility: High Contrast Mode Support */
+@media (prefers-contrast: more) {
+  * {
+    border-width: 2px !important;
+  }
+  
+  button,
+  a,
+  [role="button"] {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+  }
+}
+
+/* Animation for fade in */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+/* Touch-friendly focus styles */
+:focus-visible {
+  outline: 3px solid #2563eb;
+  outline-offset: 2px;
+}
+
+/* Ensure text is readable on all backgrounds */
+@media (prefers-color-scheme: dark) {
+  /* Future: Add dark mode support here */
+}
