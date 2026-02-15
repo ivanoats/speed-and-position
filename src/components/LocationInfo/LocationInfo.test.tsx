@@ -85,4 +85,42 @@ describe('LocationInfo', () => {
     render(<LocationInfo position={mockPosition} />)
     expect(screen.getByText(/Tap to view coordinates/)).toBeInTheDocument()
   })
+
+  it('toggles state when Enter key is pressed', async () => {
+    const user = userEvent.setup()
+    render(<LocationInfo position={mockPosition} />)
+    
+    const button = screen.getByRole('button')
+    
+    // Initially collapsed
+    expect(button).toHaveAttribute('aria-expanded', 'false')
+    
+    // Press Enter to expand
+    button.focus()
+    await user.keyboard('{Enter}')
+    expect(button).toHaveAttribute('aria-expanded', 'true')
+    
+    // Press Enter to collapse
+    await user.keyboard('{Enter}')
+    expect(button).toHaveAttribute('aria-expanded', 'false')
+  })
+
+  it('toggles state when Space key is pressed', async () => {
+    const user = userEvent.setup()
+    render(<LocationInfo position={mockPosition} />)
+    
+    const button = screen.getByRole('button')
+    
+    // Initially collapsed
+    expect(button).toHaveAttribute('aria-expanded', 'false')
+    
+    // Press Space to expand
+    button.focus()
+    await user.keyboard(' ')
+    expect(button).toHaveAttribute('aria-expanded', 'true')
+    
+    // Press Space to collapse
+    await user.keyboard(' ')
+    expect(button).toHaveAttribute('aria-expanded', 'false')
+  })
 })
