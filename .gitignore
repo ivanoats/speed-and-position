@@ -38,3 +38,17 @@ node_modules
 
 #Mac
 .DS_Store
+
+# Vite
+dist
+dist-ssr
+*.local
+
+# Panda CSS
+styled-system
+
+# TypeScript
+*.tsbuildinfo
+
+# Snyk Security Extension - AI Rules (auto-generated)
+.github/instructions/snyk_rules.instructions.md

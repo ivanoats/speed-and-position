@@ -1,33 +1,66 @@
 {
-  "name": "cold-enough-for-beer",
-  "version": "1.0.0",
+  "name": "speed-and-position",
+  "version": "2.0.0",
   "type": "module",
-  "description": "A web site that tells you if your location is cold enough to store beer outside",
-  "main": "index.js",
+  "description": "A mobile-first web app that shows your speed and position using TypeScript and React",
+  "main": "index.ts",
   "scripts": {
     "start": "npm run serve",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:run": "vitest run",
+    "test:coverage": "vitest run --coverage",
     "serve": "alive-server --ignore=.git/**/* --port=3000 --https=./node_modules/live-server-https",
-    "lint": "eslint index.js"
+    "lint": "eslint index.ts \"src/**/*.{ts,tsx}\"",
+    "prepare": "panda codegen",
+    "panda": "panda"
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:ivanoats/cold-enough-for-beer.git"
+    "url": "git@github.com:ivanoats/speed-and-position.git"
   },
   "author": "Ivan Storck",
   "license": "MIT",
-  "homepage": "https://coldout.beer",
+  "homepage": "https://howfastwhere.com",
   "devDependencies": {
+    "@pandacss/dev": "^0.45.0",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/leaflet": "^1.9.21",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "@types/react-leaflet": "^2.8.3",
+    "@typescript-eslint/eslint-plugin": "^8.55.0",
+    "@typescript-eslint/parser": "^8.55.0",
+    "@vitejs/plugin-react": "^4.3.0",
+    "@vitest/coverage-v8": "^4.0.18",
+    "@vitest/ui": "^4.0.18",
     "alive-server": "^1.3.0",
-    "eslint": "^10.0.0",
+    "eslint": "^9.39.2",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^5.5.5",
+    "eslint-plugin-react": "^7.35.0",
+    "eslint-plugin-react-hooks": "^5.2.0",
     "globals": "^17.3.0",
+    "jsdom": "^28.0.0",
     "live-server-https": "0.0.2",
-    "prettier": "^3.8.1"
+    "prettier": "^3.8.1",
+    "typescript": "^5.5.0",
+    "vite": "^5.4.0",
+    "vitest": "^4.0.18"
   },
   "dependencies": {
-    "@types/jquery": "^3.5.33"
+    "@ark-ui/react": "^3.0.0",
+    "@park-ui/panda-preset": "^0.43.0",
+    "@types/jquery": "^3.5.33",
+    "leaflet": "^1.9.4",
+    "react": "^18.3.0",
+    "react-dom": "^18.3.0",
+    "react-leaflet": "^4.2.1"
   }
 }
