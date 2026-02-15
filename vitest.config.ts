@@ -9,6 +9,16 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: ['./src/test/setup.ts'],
     css: true,
+    coverage: {
+      exclude: [
+        'styled-system/**',
+        '**/node_modules/**',
+        '**/dist/**',
+        '**/*.test.{ts,tsx}',
+        '**/*.spec.{ts,tsx}',
+        '**/index.ts',
+      ],
+    },
   },
   resolve: {
     alias: {
