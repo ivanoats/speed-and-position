@@ -1,5 +1,5 @@
 import { Dialog } from '@ark-ui/react'
-import { css } from '../../../styled-system/css'
+import { css, cx } from '../../../styled-system/css'
 import { dialog, button } from '../../../styled-system/recipes'
 import type { SpeedUnit } from '../../hooks/useSpeedCalculation'
 
@@ -50,20 +50,20 @@ export function Settings({ isOpen, onClose, unit, onUnitChange }: SettingsProps)
               <button
                 type="button"
                 onClick={() => onUnitChange('mph')}
-                className={button({ variant: unit === 'mph' ? 'solid' : 'outline', size: 'md' }) + ' ' + css({
+                className={cx(button({ variant: unit === 'mph' ? 'solid' : 'outline', size: 'md' }), css({
                   flex: 1,
                   touchAction: 'manipulation',
-                })}
+                }))}
               >
                 MPH
               </button>
               <button
                 type="button"
                 onClick={() => onUnitChange('kph')}
-                className={button({ variant: unit === 'kph' ? 'solid' : 'outline', size: 'md' }) + ' ' + css({
+                className={cx(button({ variant: unit === 'kph' ? 'solid' : 'outline', size: 'md' }), css({
                   flex: 1,
                   touchAction: 'manipulation',
-                })}
+                }))}
               >
                 KPH
               </button>
@@ -73,10 +73,10 @@ export function Settings({ isOpen, onClose, unit, onUnitChange }: SettingsProps)
           <Dialog.CloseTrigger asChild>
             <button
               type="button"
-              className={button({ variant: 'solid', size: 'md' }) + ' ' + css({
+              className={cx(button({ variant: 'solid', size: 'md' }), css({
                 width: '100%',
                 touchAction: 'manipulation',
-              })}
+              }))}
             >
               Close
             </button>

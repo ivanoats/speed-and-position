@@ -1,4 +1,4 @@
-import { css } from '../../../styled-system/css'
+import { css, cx } from '../../../styled-system/css'
 import { button } from '../../../styled-system/recipes'
 
 export interface HeaderProps {
@@ -50,7 +50,7 @@ export function Header({ onSettingsClick, hasGpsSignal = false }: HeaderProps) {
           <button
             type="button"
             onClick={onSettingsClick}
-            className={button({ variant: 'ghost', size: 'md' }) + ' ' + css({
+            className={cx(button({ variant: 'ghost', size: 'md' }), css({
               color: 'white',
               borderColor: 'white',
               border: '2px solid',
@@ -61,7 +61,7 @@ export function Header({ onSettingsClick, hasGpsSignal = false }: HeaderProps) {
                 bg: 'rgba(255, 255, 255, 0.25)',
               },
               touchAction: 'manipulation',
-            })}
+            }))}
             aria-label="Open settings"
           >
             ⚙️

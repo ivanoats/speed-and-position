@@ -1,4 +1,4 @@
-import { css } from '../../../styled-system/css'
+import { css, cx } from '../../../styled-system/css'
 import { card, button } from '../../../styled-system/recipes'
 
 interface LocationPermissionPromptProps {
@@ -12,11 +12,11 @@ interface LocationPermissionPromptProps {
 export function LocationPermissionPrompt({ onRequestPermission }: LocationPermissionPromptProps) {
   const cardStyles = card()
   return (
-    <div className={cardStyles.root + ' ' + css({
+    <div className={cx(cardStyles.root, css({
       maxWidth: '500px',
       margin: '0 auto',
-    })}>
-      <div className={cardStyles.header + ' ' + css({ textAlign: 'center' })}>
+    }))}>
+      <div className={cx(cardStyles.header, css({ textAlign: 'center' }))}>
         <div className={css({
           fontSize: '4xl',
           marginBottom: '4',
@@ -24,12 +24,12 @@ export function LocationPermissionPrompt({ onRequestPermission }: LocationPermis
           📍🚗
         </div>
         
-        <h2 className={cardStyles.title + ' ' + css({ fontSize: '2xl' })}>
+        <h2 className={cx(cardStyles.title, css({ fontSize: '2xl' }))}>
           Welcome to Speed & Position
         </h2>
       </div>
       
-      <div className={cardStyles.body + ' ' + css({ textAlign: 'center' })}>
+      <div className={cx(cardStyles.body, css({ textAlign: 'center' }))}>
         <p className={css({
           fontSize: 'lg',
           color: 'fg.default',
@@ -49,12 +49,12 @@ export function LocationPermissionPrompt({ onRequestPermission }: LocationPermis
         </p>
       </div>
 
-      <div className={cardStyles.footer + ' ' + css({ flexDirection: 'column', gap: '3' })}>
+      <div className={cx(cardStyles.footer, css({ flexDirection: 'column', gap: '3' }))}>
         <button
           onClick={onRequestPermission}
-          className={button({ variant: 'solid', size: 'lg' }) + ' ' + css({
+          className={cx(button({ variant: 'solid', size: 'lg' }), css({
             width: '100%',
-          })}
+          }))}
         >
           Enable Location Access
         </button>

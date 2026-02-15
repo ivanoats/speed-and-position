@@ -1,4 +1,4 @@
-import { css } from '../../../styled-system/css'
+import { css, cx } from '../../../styled-system/css'
 import { card } from '../../../styled-system/recipes'
 import type { Position } from '../../types/position'
 import { useState } from 'react'
@@ -26,13 +26,13 @@ export function LocationInfo({ position }: LocationInfoProps) {
   return (
     <div 
       ref={ref}
-      className={cardStyles.root + ' ' + css({
+      className={cx(cardStyles.root, css({
         cursor: 'pointer',
         transition: 'all 0.3s ease',
         _hover: {
           boxShadow: 'lg',
         },
-      })}
+      }))}
       onClick={() => setIsExpanded(!isExpanded)}
       role="button"
       tabIndex={0}
@@ -46,12 +46,12 @@ export function LocationInfo({ position }: LocationInfoProps) {
         }
       }}
     >
-      <div className={cardStyles.header + ' ' + css({
+      <div className={cx(cardStyles.header, css({
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
         paddingBottom: isExpanded ? '3' : '0',
-      })}>
+      }))}>
         <h2 className={cardStyles.title}>
           Location
         </h2>
@@ -66,7 +66,7 @@ export function LocationInfo({ position }: LocationInfoProps) {
       </div>
       
       {isExpanded && (
-        <div className={cardStyles.body + ' ' + css({ fontSize: 'sm', color: 'fg.default' })}>
+        <div className={cx(cardStyles.body, css({ fontSize: 'sm', color: 'fg.default' }))}>
           <div className={css({ marginBottom: '2' })}>
             <strong>Latitude:</strong> {position.latitude.toFixed(6)}
           </div>
@@ -91,11 +91,11 @@ export function LocationInfo({ position }: LocationInfoProps) {
       )}
       
       {!isExpanded && (
-        <div id="location-hint" className={cardStyles.body + ' ' + css({ 
+        <div id="location-hint" className={cx(cardStyles.body, css({ 
           fontSize: 'xs', 
           color: 'fg.subtle',
           paddingTop: '2',
-        })}>
+        }))}>
           Tap to view coordinates • Swipe up to expand
         </div>
       )}
