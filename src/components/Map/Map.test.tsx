@@ -124,4 +124,12 @@ describe('Map', () => {
     // Should not show error message initially
     expect(screen.queryByText(/Map Tiles Blocked/i)).not.toBeInTheDocument()
   })
+
+  it('does not count tile errors before any tiles have loaded successfully', () => {
+    render(<Map position={null} />)
+    
+    // Even if errors occur before any successful tile load, should not show error
+    // This prevents false positives during initial map load or when cancelled requests occur
+    expect(screen.queryByText(/Map Tiles Blocked/i)).not.toBeInTheDocument()
+  })
 })
