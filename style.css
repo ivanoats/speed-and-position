@@ -1,3 +1,7 @@
-#map { height: 400px; }
+#map {
+  height: 400px;
+}
 
-.titlerow { font-size: 2em; }
+.titlerow {
+  font-size: 2em;
+}

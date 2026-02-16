@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect } from 'react';
 
 /**
  * Hook to register the service worker for PWA functionality
@@ -7,32 +7,32 @@ import { useEffect } from 'react'
 export function useServiceWorker() {
   useEffect(() => {
     if ('serviceWorker' in navigator) {
-      let intervalId: ReturnType<typeof setInterval> | null = null
-      
+      let intervalId: ReturnType<typeof setInterval> | null = null;
+
       const handleLoad = () => {
         navigator.serviceWorker
           .register('/sw.js')
           .then((registration) => {
-            console.log('Service Worker registered:', registration.scope)
-            
+            console.log('Service Worker registered:', registration.scope);
+
             // Check for updates periodically
             intervalId = setInterval(() => {
-              registration.update()
-            }, 60000) // Check every minute
+              registration.update();
+            }, 60000); // Check every minute
           })
           .catch((error) => {
-            console.error('Service Worker registration failed:', error)
-          })
-      }
+            console.error('Service Worker registration failed:', error);
+          });
+      };
 
-      window.addEventListener('load', handleLoad)
+      window.addEventListener('load', handleLoad);
 
       return () => {
-        window.removeEventListener('load', handleLoad)
+        window.removeEventListener('load', handleLoad);
         if (intervalId) {
-          clearInterval(intervalId)
+          clearInterval(intervalId);
         }
-      }
+      };
     }
-  }, [])
+  }, []);
 }

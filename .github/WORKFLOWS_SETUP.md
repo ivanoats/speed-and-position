@@ -29,15 +29,18 @@ Runs static code analysis using SonarQube for code quality and security scanning
 To enable all features, configure the following repository secrets in GitHub Settings > Secrets and variables > Actions:
 
 ### Codecov (Optional but Recommended)
+
 - `CODECOV_TOKEN`: Your Codecov token for uploading coverage reports
   - Sign up at [codecov.io](https://codecov.io)
   - Link your repository and copy the token
 
 ### SonarQube (Required for SonarQube workflow)
+
 - `SONAR_TOKEN`: Authentication token for SonarQube
 - `SONAR_HOST_URL`: Your SonarQube server URL (e.g., `https://sonarcloud.io` or your self-hosted instance)
 
 **Setting up SonarQube:**
+
 1. For SonarCloud (free for open source):
    - Sign up at [sonarcloud.io](https://sonarcloud.io)
    - Import your GitHub repository
@@ -52,6 +55,7 @@ To enable all features, configure the following repository secrets in GitHub Set
 ## Dependabot
 
 Dependabot is configured to automatically create pull requests for:
+
 - npm package updates (weekly)
 - GitHub Actions version updates (weekly)
 
