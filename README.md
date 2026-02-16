@@ -36,8 +36,7 @@ This project has been redesigned using modern web technologies:
 ### 🚀 Getting Started
 
 #### Prerequisites
-
-- Node.js 18+
+- Node.js 22+ 
 - npm or yarn
 
 #### Installation

@@ -44,7 +44,10 @@ function MapUpdater({ position }: { position: Position | null }) {
 }
 
 // Threshold for showing tile error warning (number of consecutive errors)
-const TILE_ERROR_THRESHOLD = 5;
+const TILE_ERROR_THRESHOLD = 5
+// Debounce delay for counting tile errors (milliseconds)
+// This prevents counting rapid consecutive errors from cancelled tile requests
+const TILE_ERROR_DEBOUNCE_MS = 500
 
 /**
  * Map component - Interactive map with React-Leaflet
@@ -55,13 +58,13 @@ const TILE_ERROR_THRESHOLD = 5;
  * @param position - Current position data from geolocation
  */
 export function Map({ position }: MapProps) {
-  const [tileError, setTileError] = useState(false);
-  const [notification, setNotification] = useState<string>('');
-  const [consecutiveTileErrors, setConsecutiveTileErrors] = useState(0);
-  const notificationTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(
-    null,
-  );
-
+  const [tileError, setTileError] = useState(false)
+  const [notification, setNotification] = useState<string>('')
+  const [consecutiveTileErrors, setConsecutiveTileErrors] = useState(0)
+  const [hasLoadedTile, setHasLoadedTile] = useState(false)
+  const notificationTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const tileErrorTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  
   // Only show tile error warning after multiple consecutive failures
   // This prevents false positives from transient network issues
   useEffect(() => {
@@ -70,17 +73,20 @@ export function Map({ position }: MapProps) {
     } else {
       setTileError(false);
     }
-  }, [consecutiveTileErrors]);
-
-  // Cleanup notification timeouts on unmount
+  }, [consecutiveTileErrors])
+  
+  // Cleanup notification and error timeouts on unmount
   useEffect(() => {
     return () => {
       if (notificationTimeoutRef.current) {
         clearTimeout(notificationTimeoutRef.current);
       }
-    };
-  }, []);
-
+      if (tileErrorTimeoutRef.current) {
+        clearTimeout(tileErrorTimeoutRef.current)
+      }
+    }
+  }, [])
+  
   // Handle double tap to center map
   const handleDoubleTap = () => {
     if (position) {
@@ -238,10 +244,30 @@ export function Map({ position }: MapProps) {
           errorTileUrl="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
           eventHandlers={{
             tileerror: () => {
-              // Increment error count on tile load failure
-              setConsecutiveTileErrors((prev) => prev + 1);
+              // Only count tile errors after we've successfully loaded at least one tile
+              // This prevents false positives from cancelled requests during map panning
+              if (hasLoadedTile) {
+                // Clear any pending error timeout
+                if (tileErrorTimeoutRef.current) {
+                  clearTimeout(tileErrorTimeoutRef.current)
+                }
+                
+                // Debounce error counting to avoid counting rapid consecutive errors
+                // from cancelled tile requests during map movement
+                tileErrorTimeoutRef.current = setTimeout(() => {
+                  setConsecutiveTileErrors(prev => prev + 1)
+                }, TILE_ERROR_DEBOUNCE_MS)
+              }
             },
             tileload: () => {
+              // Mark that we've loaded at least one tile successfully
+              setHasLoadedTile(true)
+              
+              // Clear any pending error timeout
+              if (tileErrorTimeoutRef.current) {
+                clearTimeout(tileErrorTimeoutRef.current)
+              }
+              
               // Reset error count on successful tile load
               setConsecutiveTileErrors(0);
             },
