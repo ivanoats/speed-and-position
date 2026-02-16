@@ -13,6 +13,7 @@ describe('App Component', () => {
 
   afterEach(() => {
     // Restore geolocation after each test
+    // @ts-expect-error - Assigning to readonly property for test cleanup
     globalThis.navigator.geolocation = originalGeolocation
   })
 
@@ -94,14 +95,16 @@ describe('App Component', () => {
         altitudeAccuracy: null,
         heading: null,
         speed: 10, // 10 m/s
+        toJSON: () => ({}),
       },
       timestamp: Date.now(),
+      toJSON: () => ({}),
     }
 
-    mockGeolocation.getCurrentPosition.mockImplementation((success) => {
+    mockGeolocation.getCurrentPosition.mockImplementation((success: (position: GeolocationPosition) => void) => {
       success(mockPosition)
     })
-    mockGeolocation.watchPosition.mockImplementation((success) => {
+    mockGeolocation.watchPosition.mockImplementation((success: (position: GeolocationPosition) => void) => {
       success(mockPosition)
       return 1 // mock watch ID
     })

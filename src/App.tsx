@@ -108,7 +108,8 @@ function App() {
                     const cardStyles = card()
                     return (
                       <div className={cx(cardStyles.root, css({ marginBottom: '4' }))}>
-                        <div className={cx(cardStyles.body, css({ textAlign: 'center' }))}>                          <div className={css({
+                        <div className={cx(cardStyles.body, css({ textAlign: 'center' }))}>
+                          <div className={css({
                             fontSize: { base: '5xl', md: '6xl' },
                             fontWeight: 'bold',
                             color: 'fg.subtle',

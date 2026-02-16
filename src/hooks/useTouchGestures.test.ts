@@ -1,9 +1,19 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { renderHook, act } from '@testing-library/react'
 import { useTouchGestures } from './useTouchGestures'
+import type { MutableRefObject } from 'react'
 
 describe('useTouchGestures', () => {
   let mockElement: HTMLDivElement
+
+  // Helper to set ref current value (bypassing readonly restriction for testing)
+  const setRefCurrent = <T,>(ref: MutableRefObject<T>, value: T) => {
+    Object.defineProperty(ref, 'current', {
+      value,
+      writable: true,
+      configurable: true,
+    })
+  }
 
   beforeEach(() => {
     vi.useFakeTimers()
@@ -28,7 +38,7 @@ describe('useTouchGestures', () => {
     const { result, rerender } = renderHook(() => useTouchGestures({}))
     
     act(() => {
-      result.current.current = mockElement
+      setRefCurrent(result.current, mockElement)
     })
     
     // Trigger effect by re-rendering
@@ -44,7 +54,7 @@ describe('useTouchGestures', () => {
     const { result, rerender } = renderHook(() => useTouchGestures({ onSwipeUp }))
     
     act(() => {
-      result.current.current = mockElement
+      setRefCurrent(result.current, mockElement)
     })
     rerender()
 
@@ -72,7 +82,7 @@ describe('useTouchGestures', () => {
     const { result, rerender } = renderHook(() => useTouchGestures({ onSwipeDown }))
     
     act(() => {
-      result.current.current = mockElement
+      setRefCurrent(result.current, mockElement)
     })
     rerender()
 
@@ -100,7 +110,7 @@ describe('useTouchGestures', () => {
     const { result, rerender } = renderHook(() => useTouchGestures({ onSwipeLeft }))
     
     act(() => {
-      result.current.current = mockElement
+      setRefCurrent(result.current, mockElement)
     })
     rerender()
 
@@ -128,7 +138,7 @@ describe('useTouchGestures', () => {
     const { result, rerender } = renderHook(() => useTouchGestures({ onSwipeRight }))
     
     act(() => {
-      result.current.current = mockElement
+      setRefCurrent(result.current, mockElement)
     })
     rerender()
 
@@ -156,7 +166,7 @@ describe('useTouchGestures', () => {
     const { result, rerender } = renderHook(() => useTouchGestures({ onDoubleTap }))
     
     act(() => {
-      result.current.current = mockElement
+      setRefCurrent(result.current, mockElement)
     })
     rerender()
 
@@ -198,7 +208,7 @@ describe('useTouchGestures', () => {
     const { result, rerender } = renderHook(() => useTouchGestures({ onLongPress }))
     
     act(() => {
-      result.current.current = mockElement
+      setRefCurrent(result.current, mockElement)
     })
     rerender()
 
@@ -223,7 +233,7 @@ describe('useTouchGestures', () => {
     const { result, rerender } = renderHook(() => useTouchGestures({ onLongPress }))
     
     act(() => {
-      result.current.current = mockElement
+      setRefCurrent(result.current, mockElement)
     })
     rerender()
 
@@ -255,7 +265,7 @@ describe('useTouchGestures', () => {
     const { result, rerender } = renderHook(() => useTouchGestures({ onLongPress }))
     
     act(() => {
-      result.current.current = mockElement
+      setRefCurrent(result.current, mockElement)
     })
     rerender()
 
@@ -289,7 +299,7 @@ describe('useTouchGestures', () => {
     const { result, rerender } = renderHook(() => useTouchGestures({ onSwipeUp }))
     
     act(() => {
-      result.current.current = mockElement
+      setRefCurrent(result.current, mockElement)
     })
     rerender()
 
@@ -317,7 +327,7 @@ describe('useTouchGestures', () => {
     const { result, rerender } = renderHook(() => useTouchGestures({ onSwipeUp }))
     
     act(() => {
-      result.current.current = mockElement
+      setRefCurrent(result.current, mockElement)
     })
     rerender()
 
@@ -351,7 +361,7 @@ describe('useTouchGestures', () => {
     const { result, rerender, unmount } = renderHook(() => useTouchGestures({}))
     
     act(() => {
-      result.current.current = mockElement
+      setRefCurrent(result.current, mockElement)
     })
     rerender()
 
@@ -367,7 +377,7 @@ describe('useTouchGestures', () => {
     const { result, rerender, unmount } = renderHook(() => useTouchGestures({ onLongPress }))
     
     act(() => {
-      result.current.current = mockElement
+      setRefCurrent(result.current, mockElement)
     })
     rerender()
 

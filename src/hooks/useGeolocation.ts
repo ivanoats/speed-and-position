@@ -21,7 +21,7 @@ export function useGeolocation(enabled: boolean = true): GeolocationState {
 
   // Store debounced function in ref to maintain same instance
   const debouncedSetPositionRef = useRef(
-    debounce((newPosition: Position) => {
+    debounce<[Position]>((newPosition: Position) => {
       setPosition(newPosition)
     }, 100)
   )

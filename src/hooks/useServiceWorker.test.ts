@@ -2,8 +2,6 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { renderHook } from '@testing-library/react'
 import { useServiceWorker } from './useServiceWorker'
 
-/* eslint-disable no-undef */
-
 describe('useServiceWorker', () => {
   let originalNavigator: typeof navigator
   let mockRegistration: {
@@ -118,7 +116,7 @@ describe('useServiceWorker', () => {
     expect(navigator.serviceWorker.register).toHaveBeenCalled()
 
     // Spy on clearInterval
-    const clearIntervalSpy = vi.spyOn(global, 'clearInterval')
+    const clearIntervalSpy = vi.spyOn(globalThis, 'clearInterval')
 
     unmount()
 
@@ -133,7 +131,7 @@ describe('useServiceWorker', () => {
     
     // Mock failed registration
     const mockRegister = vi.fn().mockRejectedValue(error)
-    Object.defineProperty(global, 'navigator', {
+    Object.defineProperty(globalThis, 'navigator', {
       value: {
         serviceWorker: {
           register: mockRegister,
@@ -165,7 +163,7 @@ describe('useServiceWorker', () => {
 
   it('should not register service worker if not supported', () => {
     // Mock no service worker support
-    Object.defineProperty(global, 'navigator', {
+    Object.defineProperty(globalThis, 'navigator', {
       value: {},
       writable: true,
       configurable: true,
