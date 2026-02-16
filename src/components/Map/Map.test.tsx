@@ -128,8 +128,10 @@ describe('Map', () => {
   it('does not count tile errors before any tiles have loaded successfully', () => {
     render(<Map position={null} />)
     
-    // Even if errors occur before any successful tile load, should not show error
-    // This prevents false positives during initial map load or when cancelled requests occur
+    // The error dialog should not appear initially because:
+    // 1. No tiles have loaded yet (hasLoadedTile is false)
+    // 2. Even if tileerror events fire, they won't be counted until after first successful tile load
+    // This prevents false positives from cancelled requests during initial map render or panning
     expect(screen.queryByText(/Map Tiles Blocked/i)).not.toBeInTheDocument()
   })
 })

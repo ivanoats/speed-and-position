@@ -45,6 +45,9 @@ function MapUpdater({ position }: { position: Position | null }) {
 
 // Threshold for showing tile error warning (number of consecutive errors)
 const TILE_ERROR_THRESHOLD = 5
+// Debounce delay for counting tile errors (milliseconds)
+// This prevents counting rapid consecutive errors from cancelled tile requests
+const TILE_ERROR_DEBOUNCE_MS = 500
 
 /**
  * Map component - Interactive map with React-Leaflet
@@ -231,7 +234,7 @@ export function Map({ position }: MapProps) {
                 // from cancelled tile requests during map movement
                 tileErrorTimeoutRef.current = setTimeout(() => {
                   setConsecutiveTileErrors(prev => prev + 1)
-                }, 500) // Wait 500ms before counting the error
+                }, TILE_ERROR_DEBOUNCE_MS)
               }
             },
             tileload: () => {
