@@ -1,13 +1,13 @@
-import { Dialog } from '@ark-ui/react';
-import { css, cx } from '../../../styled-system/css';
-import { dialog, button } from '../../../styled-system/recipes';
-import type { SpeedUnit } from '../../hooks/useSpeedCalculation';
+import { Dialog } from '@ark-ui/react'
+import { css, cx } from '../../../styled-system/css'
+import { dialog, button } from '../../../styled-system/recipes'
+import type { SpeedUnit } from '../../hooks/useSpeedCalculation'
 
 export interface SettingsProps {
-  isOpen: boolean;
-  onClose: () => void;
-  unit: SpeedUnit;
-  onUnitChange: (unit: SpeedUnit) => void;
+  isOpen: boolean
+  onClose: () => void
+  unit: SpeedUnit
+  onUnitChange: (unit: SpeedUnit) => void
 }
 
 /**
@@ -25,7 +25,7 @@ export function Settings({
   unit,
   onUnitChange,
 }: SettingsProps) {
-  const dialogStyles = dialog();
+  const dialogStyles = dialog()
   return (
     <Dialog.Root
       open={isOpen}
@@ -64,7 +64,7 @@ export function Settings({
                   css({
                     flex: 1,
                     touchAction: 'manipulation',
-                  }),
+                  })
                 )}
               >
                 MPH
@@ -80,7 +80,7 @@ export function Settings({
                   css({
                     flex: 1,
                     touchAction: 'manipulation',
-                  }),
+                  })
                 )}
               >
                 KPH
@@ -96,7 +96,7 @@ export function Settings({
                 css({
                   width: '100%',
                   touchAction: 'manipulation',
-                }),
+                })
               )}
             >
               Close
@@ -105,5 +105,5 @@ export function Settings({
         </Dialog.Content>
       </Dialog.Positioner>
     </Dialog.Root>
-  );
+  )
 }

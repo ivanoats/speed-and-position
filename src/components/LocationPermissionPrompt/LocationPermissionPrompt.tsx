@@ -1,8 +1,8 @@
-import { css, cx } from '../../../styled-system/css';
-import { card, button } from '../../../styled-system/recipes';
+import { css, cx } from '../../../styled-system/css'
+import { card, button } from '../../../styled-system/recipes'
 
 interface LocationPermissionPromptProps {
-  onRequestPermission: () => void;
+  onRequestPermission: () => void
 }
 
 /**
@@ -12,7 +12,7 @@ interface LocationPermissionPromptProps {
 export function LocationPermissionPrompt({
   onRequestPermission,
 }: LocationPermissionPromptProps) {
-  const cardStyles = card();
+  const cardStyles = card()
   return (
     <div
       className={cx(
@@ -20,7 +20,7 @@ export function LocationPermissionPrompt({
         css({
           maxWidth: '500px',
           margin: '0 auto',
-        }),
+        })
       )}
     >
       <div className={cx(cardStyles.header, css({ textAlign: 'center' }))}>
@@ -69,7 +69,7 @@ export function LocationPermissionPrompt({
       <div
         className={cx(
           cardStyles.footer,
-          css({ flexDirection: 'column', gap: '3' }),
+          css({ flexDirection: 'column', gap: '3' })
         )}
       >
         <button
@@ -78,7 +78,7 @@ export function LocationPermissionPrompt({
             button({ variant: 'solid', size: 'lg' }),
             css({
               width: '100%',
-            }),
+            })
           )}
         >
           Enable Location Access
@@ -95,5 +95,5 @@ export function LocationPermissionPrompt({
         </p>
       </div>
     </div>
-  );
+  )
 }

@@ -10,8 +10,8 @@
  * @property speed - Speed in meters per second, or null if unavailable
  */
 export interface Position {
-  latitude: number;
-  longitude: number;
-  accuracy: number;
-  speed: number | null;
+  latitude: number
+  longitude: number
+  accuracy: number
+  speed: number | null
 }

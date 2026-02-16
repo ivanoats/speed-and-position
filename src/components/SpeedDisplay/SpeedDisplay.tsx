@@ -1,12 +1,12 @@
-import { css, cx } from '../../../styled-system/css';
-import { card, button } from '../../../styled-system/recipes';
+import { css, cx } from '../../../styled-system/css'
+import { card, button } from '../../../styled-system/recipes'
 
-export type SpeedUnit = 'mph' | 'kph';
+export type SpeedUnit = 'mph' | 'kph'
 
 export interface SpeedDisplayProps {
-  speed: number;
-  unit?: SpeedUnit;
-  onToggleUnit?: () => void;
+  speed: number
+  unit?: SpeedUnit
+  onToggleUnit?: () => void
 }
 
 /**
@@ -18,7 +18,7 @@ export function SpeedDisplay({
   unit = 'mph',
   onToggleUnit,
 }: SpeedDisplayProps) {
-  const cardStyles = card();
+  const cardStyles = card()
   return (
     <div className={cx(cardStyles.root, css({ marginBottom: '4' }))}>
       <div className={cx(cardStyles.body, css({ textAlign: 'center' }))}>
@@ -45,5 +45,5 @@ export function SpeedDisplay({
         )}
       </div>
     </div>
-  );
+  )
 }

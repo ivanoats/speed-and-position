@@ -1,28 +1,28 @@
-import { css, cx } from '../styled-system/css';
-import { container } from '../styled-system/patterns';
-import { card } from '../styled-system/recipes';
-import { useState, memo } from 'react';
-import { useGeolocation } from './hooks/useGeolocation';
+import { css, cx } from '../styled-system/css'
+import { container } from '../styled-system/patterns'
+import { card } from '../styled-system/recipes'
+import { useState, memo } from 'react'
+import { useGeolocation } from './hooks/useGeolocation'
 import {
   useSpeedCalculation,
   type SpeedUnit,
-} from './hooks/useSpeedCalculation';
-import { useServiceWorker } from './hooks/useServiceWorker';
-import { Header } from './components/Header';
-import { SpeedDisplay } from './components/SpeedDisplay';
-import { LocationInfo } from './components/LocationInfo';
-import { Map } from './components/Map';
-import { Footer } from './components/Footer';
-import { Settings } from './components/Settings';
-import { LocationPermissionPrompt } from './components/LocationPermissionPrompt';
+} from './hooks/useSpeedCalculation'
+import { useServiceWorker } from './hooks/useServiceWorker'
+import { Header } from './components/Header'
+import { SpeedDisplay } from './components/SpeedDisplay'
+import { LocationInfo } from './components/LocationInfo'
+import { Map } from './components/Map'
+import { Footer } from './components/Footer'
+import { Settings } from './components/Settings'
+import { LocationPermissionPrompt } from './components/LocationPermissionPrompt'
 
 // Memoized components to prevent unnecessary re-renders
-const MemoizedSpeedDisplay = memo(SpeedDisplay);
-const MemoizedLocationInfo = memo(LocationInfo);
-const MemoizedMap = memo(Map);
-const MemoizedFooter = memo(Footer);
-const MemoizedSettings = memo(Settings);
-const MemoizedLocationPermissionPrompt = memo(LocationPermissionPrompt);
+const MemoizedSpeedDisplay = memo(SpeedDisplay)
+const MemoizedLocationInfo = memo(LocationInfo)
+const MemoizedMap = memo(Map)
+const MemoizedFooter = memo(Footer)
+const MemoizedSettings = memo(Settings)
+const MemoizedLocationPermissionPrompt = memo(LocationPermissionPrompt)
 
 /**
  * Main App Component for Speed and Position
@@ -32,28 +32,26 @@ const MemoizedLocationPermissionPrompt = memo(LocationPermissionPrompt);
  */
 function App() {
   const [locationPermissionGranted, setLocationPermissionGranted] =
-    useState(false);
-  const { position, loading, error } = useGeolocation(
-    locationPermissionGranted,
-  );
-  const [unit, setUnit] = useState<SpeedUnit>('mph');
-  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-  const speed = useSpeedCalculation(position?.speed ?? null, unit);
+    useState(false)
+  const { position, loading, error } = useGeolocation(locationPermissionGranted)
+  const [unit, setUnit] = useState<SpeedUnit>('mph')
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false)
+  const speed = useSpeedCalculation(position?.speed ?? null, unit)
 
   // Register service worker for PWA support
-  useServiceWorker();
+  useServiceWorker()
 
   const handleRequestPermission = () => {
-    setLocationPermissionGranted(true);
-  };
+    setLocationPermissionGranted(true)
+  }
 
   const toggleUnit = () => {
-    setUnit((prev) => (prev === 'mph' ? 'kph' : 'mph'));
-  };
+    setUnit((prev) => (prev === 'mph' ? 'kph' : 'mph'))
+  }
 
   const handleUnitChange = (newUnit: SpeedUnit) => {
-    setUnit(newUnit);
-  };
+    setUnit(newUnit)
+  }
 
   return (
     <div
@@ -97,18 +95,18 @@ function App() {
               {loading &&
                 !position &&
                 (() => {
-                  const cardStyles = card();
+                  const cardStyles = card()
                   return (
                     <div
                       className={cx(
                         cardStyles.root,
-                        css({ marginBottom: '4' }),
+                        css({ marginBottom: '4' })
                       )}
                     >
                       <div
                         className={cx(
                           cardStyles.body,
-                          css({ textAlign: 'center' }),
+                          css({ textAlign: 'center' })
                         )}
                         role="status"
                         aria-label="Requesting location access"
@@ -128,7 +126,7 @@ function App() {
                         </div>
                       </div>
                     </div>
-                  );
+                  )
                 })()}
 
               {position ? (
@@ -144,18 +142,18 @@ function App() {
               ) : (
                 <>
                   {(() => {
-                    const cardStyles = card();
+                    const cardStyles = card()
                     return (
                       <div
                         className={cx(
                           cardStyles.root,
-                          css({ marginBottom: '4' }),
+                          css({ marginBottom: '4' })
                         )}
                       >
                         <div
                           className={cx(
                             cardStyles.body,
-                            css({ textAlign: 'center' }),
+                            css({ textAlign: 'center' })
                           )}
                         >
                           <div
@@ -181,7 +179,7 @@ function App() {
                           </div>
                         </div>
                       </div>
-                    );
+                    )
                   })()}
                   <MemoizedMap position={null} />
                 </>
@@ -200,7 +198,7 @@ function App() {
         onUnitChange={handleUnitChange}
       />
     </div>
-  );
+  )
 }
 
-export default App;
+export default App

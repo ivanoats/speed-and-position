@@ -1,1 +1,1 @@
-export { LocationPermissionPrompt } from './LocationPermissionPrompt';
+export { LocationPermissionPrompt } from './LocationPermissionPrompt'

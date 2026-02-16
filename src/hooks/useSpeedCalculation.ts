@@ -1,7 +1,7 @@
-import { useMemo } from 'react';
-import { metersPerSecToMph, metersPerSecToKph } from '../utils/conversions';
+import { useMemo } from 'react'
+import { metersPerSecToMph, metersPerSecToKph } from '../utils/conversions'
 
-export type SpeedUnit = 'mph' | 'kph';
+export type SpeedUnit = 'mph' | 'kph'
 
 /**
  * Custom hook for calculating speed from position data
@@ -11,12 +11,12 @@ export type SpeedUnit = 'mph' | 'kph';
  */
 export function useSpeedCalculation(
   speed: number | null,
-  unit: SpeedUnit = 'mph',
+  unit: SpeedUnit = 'mph'
 ): number {
   return useMemo(() => {
     if (speed === null) {
-      return 0;
+      return 0
     }
-    return unit === 'mph' ? metersPerSecToMph(speed) : metersPerSecToKph(speed);
-  }, [speed, unit]);
+    return unit === 'mph' ? metersPerSecToMph(speed) : metersPerSecToKph(speed)
+  }, [speed, unit])
 }

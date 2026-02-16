@@ -1,11 +1,11 @@
-import { css, cx } from '../../../styled-system/css';
-import { card } from '../../../styled-system/recipes';
-import type { Position } from '../../types/position';
-import { useState } from 'react';
-import { useTouchGestures } from '../../hooks/useTouchGestures';
+import { css, cx } from '../../../styled-system/css'
+import { card } from '../../../styled-system/recipes'
+import type { Position } from '../../types/position'
+import { useState } from 'react'
+import { useTouchGestures } from '../../hooks/useTouchGestures'
 
 export interface LocationInfoProps {
-  position: Position;
+  position: Position
 }
 
 /**
@@ -14,14 +14,14 @@ export interface LocationInfoProps {
  * Supports swipe gestures to expand/collapse on mobile
  */
 export function LocationInfo({ position }: LocationInfoProps) {
-  const [isExpanded, setIsExpanded] = useState(false);
-  const cardStyles = card();
+  const [isExpanded, setIsExpanded] = useState(false)
+  const cardStyles = card()
 
   // Touch gesture support for mobile
   const ref = useTouchGestures<HTMLDivElement>({
     onSwipeUp: () => setIsExpanded(true),
     onSwipeDown: () => setIsExpanded(false),
-  });
+  })
 
   return (
     <div
@@ -34,7 +34,7 @@ export function LocationInfo({ position }: LocationInfoProps) {
           _hover: {
             boxShadow: 'lg',
           },
-        }),
+        })
       )}
       onClick={() => setIsExpanded(!isExpanded)}
       role="button"
@@ -44,8 +44,8 @@ export function LocationInfo({ position }: LocationInfoProps) {
       aria-describedby="location-hint"
       onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          setIsExpanded(!isExpanded);
+          e.preventDefault()
+          setIsExpanded(!isExpanded)
         }
       }}
     >
@@ -57,7 +57,7 @@ export function LocationInfo({ position }: LocationInfoProps) {
             justifyContent: 'space-between',
             alignItems: 'center',
             paddingBottom: isExpanded ? '3' : '0',
-          }),
+          })
         )}
       >
         <h2 className={cardStyles.title}>Location</h2>
@@ -78,7 +78,7 @@ export function LocationInfo({ position }: LocationInfoProps) {
         <div
           className={cx(
             cardStyles.body,
-            css({ fontSize: 'sm', color: 'fg.default' }),
+            css({ fontSize: 'sm', color: 'fg.default' })
           )}
         >
           <div className={css({ marginBottom: '2' })}>
@@ -115,12 +115,12 @@ export function LocationInfo({ position }: LocationInfoProps) {
               fontSize: 'xs',
               color: 'fg.subtle',
               paddingTop: '2',
-            }),
+            })
           )}
         >
           Tap to view coordinates • Swipe up to expand
         </div>
       )}
     </div>
-  );
+  )
 }

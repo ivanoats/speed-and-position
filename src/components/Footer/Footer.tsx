@@ -1,5 +1,5 @@
-import { css } from '../../../styled-system/css';
-import { link } from '../../../styled-system/recipes';
+import { css } from '../../../styled-system/css'
+import { link } from '../../../styled-system/recipes'
 
 /**
  * Footer component - Attribution and links
@@ -24,5 +24,5 @@ export function Footer() {
         </a>
       </div>
     </footer>
-  );
+  )
 }

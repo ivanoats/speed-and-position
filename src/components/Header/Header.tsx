@@ -1,9 +1,9 @@
-import { css, cx } from '../../../styled-system/css';
-import { button } from '../../../styled-system/recipes';
+import { css, cx } from '../../../styled-system/css'
+import { button } from '../../../styled-system/recipes'
 
 export interface HeaderProps {
-  onSettingsClick?: () => void;
-  hasGpsSignal?: boolean;
+  onSettingsClick?: () => void
+  hasGpsSignal?: boolean
 }
 
 /**
@@ -65,7 +65,7 @@ export function Header({ onSettingsClick, hasGpsSignal = false }: HeaderProps) {
                   bg: 'rgba(255, 255, 255, 0.25)',
                 },
                 touchAction: 'manipulation',
-              }),
+              })
             )}
             aria-label="Open settings"
           >
@@ -74,5 +74,5 @@ export function Header({ onSettingsClick, hasGpsSignal = false }: HeaderProps) {
         )}
       </div>
     </header>
-  );
+  )
 }

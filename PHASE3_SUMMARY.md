@@ -88,9 +88,9 @@ useEffect(() => {
 
 ```typescript
 interface SpeedDisplayProps {
-  speed: number;
-  unit?: SpeedUnit; // 'mph' | 'kph'
-  onToggleUnit?: () => void;
+  speed: number
+  unit?: SpeedUnit // 'mph' | 'kph'
+  onToggleUnit?: () => void
 }
 ```
 
@@ -100,11 +100,11 @@ interface SpeedDisplayProps {
 // useSpeedCalculation now accepts unit parameter
 export function useSpeedCalculation(
   speed: number | null,
-  unit: SpeedUnit = "mph",
-): number;
+  unit: SpeedUnit = 'mph'
+): number
 
 // Supports both conversions
-return unit === "mph" ? metersPerSecToMph(speed) : metersPerSecToKph(speed);
+return unit === 'mph' ? metersPerSecToMph(speed) : metersPerSecToKph(speed)
 ```
 
 ## ⚙️ Settings Panel Implementation (Section 3.5)
@@ -123,10 +123,10 @@ return unit === "mph" ? metersPerSecToMph(speed) : metersPerSecToKph(speed);
 
 ```typescript
 interface SettingsProps {
-  isOpen: boolean;
-  onClose: () => void;
-  unit: SpeedUnit;
-  onUnitChange: (unit: SpeedUnit) => void;
+  isOpen: boolean
+  onClose: () => void
+  unit: SpeedUnit
+  onUnitChange: (unit: SpeedUnit) => void
 }
 ```
 
@@ -153,8 +153,8 @@ interface SettingsProps {
 
 ```typescript
 interface HeaderProps {
-  onSettingsClick?: () => void;
-  hasGpsSignal?: boolean;
+  onSettingsClick?: () => void
+  hasGpsSignal?: boolean
 }
 ```
 
@@ -236,19 +236,19 @@ Duration   5.27s
 
 ```typescript
 // App-level state for unit preference
-const [unit, setUnit] = useState<SpeedUnit>("mph");
-const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+const [unit, setUnit] = useState<SpeedUnit>('mph')
+const [isSettingsOpen, setIsSettingsOpen] = useState(false)
 
 // Two ways to change unit:
 // 1. Toggle button in SpeedDisplay
 const toggleUnit = () => {
-  setUnit((prev) => (prev === "mph" ? "kph" : "mph"));
-};
+  setUnit((prev) => (prev === 'mph' ? 'kph' : 'mph'))
+}
 
 // 2. Unit selection in Settings Panel
 const handleUnitChange = (newUnit: SpeedUnit) => {
-  setUnit(newUnit);
-};
+  setUnit(newUnit)
+}
 ```
 
 ### Component Communication

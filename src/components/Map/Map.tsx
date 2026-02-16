@@ -1,46 +1,46 @@
-import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
-import L from 'leaflet';
-import iconUrl from 'leaflet/dist/images/marker-icon.png';
-import iconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png';
-import shadowUrl from 'leaflet/dist/images/marker-shadow.png';
-import { css } from '../../../styled-system/css';
-import type { Position } from '../../types/position';
-import { useEffect, useState, useRef } from 'react';
-import { useTouchGestures } from '../../hooks/useTouchGestures';
+import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet'
+import L from 'leaflet'
+import iconUrl from 'leaflet/dist/images/marker-icon.png'
+import iconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png'
+import shadowUrl from 'leaflet/dist/images/marker-shadow.png'
+import { css } from '../../../styled-system/css'
+import type { Position } from '../../types/position'
+import { useEffect, useState, useRef } from 'react'
+import { useTouchGestures } from '../../hooks/useTouchGestures'
 
 // Fix Leaflet default marker icons not loading with module bundlers
 L.Icon.Default.mergeOptions({
   iconUrl,
   iconRetinaUrl,
   shadowUrl,
-});
+})
 
 interface MapProps {
-  position: Position | null;
+  position: Position | null
 }
 
 /**
  * Component to handle map view updates when position changes
  */
 function MapUpdater({ position }: { position: Position | null }) {
-  const map = useMap();
+  const map = useMap()
 
   useEffect(() => {
     if (position) {
       map.setView([position.latitude, position.longitude], 15, {
         animate: true,
-      });
+      })
     }
-  }, [position, map]);
+  }, [position, map])
 
   // Ensure map is properly sized on mount
   useEffect(() => {
     setTimeout(() => {
-      map.invalidateSize();
-    }, 100);
-  }, [map]);
+      map.invalidateSize()
+    }, 100)
+  }, [map])
 
-  return null;
+  return null
 }
 
 // Threshold for showing tile error warning (number of consecutive errors)
@@ -62,83 +62,85 @@ export function Map({ position }: MapProps) {
   const [notification, setNotification] = useState<string>('')
   const [consecutiveTileErrors, setConsecutiveTileErrors] = useState(0)
   const [hasLoadedTile, setHasLoadedTile] = useState(false)
-  const notificationTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const notificationTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(
+    null
+  )
   const tileErrorTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
-  
+
   // Only show tile error warning after multiple consecutive failures
   // This prevents false positives from transient network issues
   useEffect(() => {
     if (consecutiveTileErrors >= TILE_ERROR_THRESHOLD) {
-      setTileError(true);
+      setTileError(true)
     } else {
-      setTileError(false);
+      setTileError(false)
     }
   }, [consecutiveTileErrors])
-  
+
   // Cleanup notification and error timeouts on unmount
   useEffect(() => {
     return () => {
       if (notificationTimeoutRef.current) {
-        clearTimeout(notificationTimeoutRef.current);
+        clearTimeout(notificationTimeoutRef.current)
       }
       if (tileErrorTimeoutRef.current) {
         clearTimeout(tileErrorTimeoutRef.current)
       }
     }
   }, [])
-  
+
   // Handle double tap to center map
   const handleDoubleTap = () => {
     if (position) {
       // Clear any existing notification timeout
       if (notificationTimeoutRef.current) {
-        clearTimeout(notificationTimeoutRef.current);
+        clearTimeout(notificationTimeoutRef.current)
       }
       // The MapUpdater will handle centering
-      setNotification('Map centered on your location');
+      setNotification('Map centered on your location')
       notificationTimeoutRef.current = setTimeout(
         () => setNotification(''),
-        2000,
-      );
+        2000
+      )
     }
-  };
+  }
 
   // Handle long press to copy coordinates
   const handleLongPress = async () => {
     if (position) {
-      const coords = `${position.latitude.toFixed(6)}, ${position.longitude.toFixed(6)}`;
+      const coords = `${position.latitude.toFixed(6)}, ${position.longitude.toFixed(6)}`
       // Clear any existing notification timeout
       if (notificationTimeoutRef.current) {
-        clearTimeout(notificationTimeoutRef.current);
+        clearTimeout(notificationTimeoutRef.current)
       }
       try {
-        await navigator.clipboard.writeText(coords);
-        setNotification('Coordinates copied to clipboard!');
+        await navigator.clipboard.writeText(coords)
+        setNotification('Coordinates copied to clipboard!')
       } catch {
-        setNotification('Failed to copy coordinates');
+        setNotification('Failed to copy coordinates')
       }
       notificationTimeoutRef.current = setTimeout(
         () => setNotification(''),
-        2000,
-      );
+        2000
+      )
     }
-  };
+  }
 
   // Touch gesture support
   const gestureRef = useTouchGestures<HTMLDivElement>({
     onDoubleTap: handleDoubleTap,
     onLongPress: handleLongPress,
-  });
+  })
 
   // Default center (Seattle, WA) if no position yet
   const center: [number, number] = position
     ? [position.latitude, position.longitude]
-    : [47.6062, -122.3321]; // Seattle, WA
+    : [47.6062, -122.3321] // Seattle, WA
 
   // Use a key to force MapContainer to re-render when center changes significantly
   const mapKey = position
     ? `${position.latitude.toFixed(2)}-${position.longitude.toFixed(2)}`
-    : 'default-seattle';
+    : 'default-seattle'
 
   return (
     <div
@@ -251,25 +253,25 @@ export function Map({ position }: MapProps) {
                 if (tileErrorTimeoutRef.current) {
                   clearTimeout(tileErrorTimeoutRef.current)
                 }
-                
+
                 // Debounce error counting to avoid counting rapid consecutive errors
                 // from cancelled tile requests during map movement
                 tileErrorTimeoutRef.current = setTimeout(() => {
-                  setConsecutiveTileErrors(prev => prev + 1)
+                  setConsecutiveTileErrors((prev) => prev + 1)
                 }, TILE_ERROR_DEBOUNCE_MS)
               }
             },
             tileload: () => {
               // Mark that we've loaded at least one tile successfully
               setHasLoadedTile(true)
-              
+
               // Clear any pending error timeout
               if (tileErrorTimeoutRef.current) {
                 clearTimeout(tileErrorTimeoutRef.current)
               }
-              
+
               // Reset error count on successful tile load
-              setConsecutiveTileErrors(0);
+              setConsecutiveTileErrors(0)
             },
           }}
         />
@@ -298,5 +300,5 @@ export function Map({ position }: MapProps) {
         )}
       </MapContainer>
     </div>
-  );
+  )
 }
