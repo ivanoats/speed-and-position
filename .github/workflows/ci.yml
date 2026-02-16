@@ -76,10 +76,7 @@ jobs:
       - name: Generate Panda CSS
         run: npm run prepare
         
-      - name: Run tests
-        run: npm run test:run
-        
-      - name: Generate coverage report
+      - name: Run tests with coverage
         run: npm run test:coverage
         
       - name: Upload coverage to Codecov
