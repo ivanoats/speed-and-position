@@ -118,7 +118,7 @@ Add these badges to your README.md to show workflow status:
 
 ## Notes
 
-- The CI workflow uses Node.js 18 (matches the README prerequisites)
+- The CI workflow uses Node.js 22
 - Build artifacts are retained for 7 days
 - Coverage reports require the `CODECOV_TOKEN` secret (fails gracefully if not set)
 - All workflows use `npm ci` for faster, reproducible installations
