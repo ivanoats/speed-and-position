@@ -55,8 +55,8 @@
     "vitest": "^4.0.18"
   },
   "dependencies": {
-    "@ark-ui/react": "^3.0.0",
-    "@park-ui/panda-preset": "^0.43.0",
+    "@ark-ui/react": "^5.31.0",
+    "@park-ui/panda-preset": "^0.43.1",
     "@types/jquery": "^3.5.33",
     "leaflet": "^1.9.4",
     "react": "^18.3.0",
