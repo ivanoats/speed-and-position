@@ -18,7 +18,7 @@
     "lint:fix": "eslint index.ts \"src/**/*.{ts,tsx}\" --fix",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,css,md}\"",
     "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,json,css,md}\"",
-    "prepare": "panda codegen && husky",
+    "prepare": "panda codegen && husky install",
     "panda": "panda"
   },
   "repository": {
