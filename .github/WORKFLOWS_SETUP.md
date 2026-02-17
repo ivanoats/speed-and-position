@@ -10,7 +10,7 @@ Runs on every push to `main` and on all pull requests. Includes:
 
 - **Lint and Format Check**: Runs ESLint and Prettier to ensure code quality and consistent formatting
 - **TypeScript Type Check**: Validates TypeScript types across the codebase
-- **Test**: Runs the full test suite (114 tests) with coverage reporting
+- **Test**: Runs the full test suite (115 tests) with coverage reporting
 - **Build**: Builds the production bundle to ensure the project compiles successfully
 
 **Coverage Reporting**: Test coverage is automatically uploaded to Codecov.

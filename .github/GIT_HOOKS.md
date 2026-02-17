@@ -17,7 +17,7 @@ Only staged files are checked, making commits fast and efficient.
 
 Runs automatically before every push:
 
-- **Test Suite**: Runs all 114 tests to ensure nothing is broken
+- **Test Suite**: Runs all 115 tests to ensure nothing is broken
 
 ## Installation
 
