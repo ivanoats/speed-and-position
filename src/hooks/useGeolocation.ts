@@ -21,7 +21,7 @@ export function useGeolocation(enabled: boolean = true): GeolocationState {
 
   // Store debounced function in ref to maintain same instance
   const debouncedSetPositionRef = useRef(
-    debounce((newPosition: Position) => {
+    debounce<[Position]>((newPosition: Position) => {
       setPosition(newPosition)
     }, 100)
   )
@@ -51,7 +51,7 @@ export function useGeolocation(enabled: boolean = true): GeolocationState {
         accuracy: pos.coords.accuracy,
         speed: pos.coords.speed,
       }
-      
+
       // First position update is immediate, subsequent updates are debounced
       if (isFirstPosition) {
         setPosition(newPosition)
@@ -59,7 +59,7 @@ export function useGeolocation(enabled: boolean = true): GeolocationState {
       } else {
         debouncedSetPositionRef.current(newPosition)
       }
-      
+
       setLoading(false)
     }
 

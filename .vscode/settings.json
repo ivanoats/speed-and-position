@@ -1,5 +1,11 @@
 {
   "editor.fontFamily": "\"Fira Code\", Menlo, Monaco, 'Courier New', monospace",
   "snyk.advanced.organization": "2f45bdb7-3694-4a12-9a76-8797c796ecdc",
-  "snyk.advanced.autoSelectOrganization": true
+  "snyk.advanced.autoSelectOrganization": true,
+  "chat.tools.terminal.autoApprove": {
+    "/^git config --list \\| grep -E \"\\(user\\\\\\.\\|commit\\\\\\.\\|gpg\\\\\\.\\|signing\\)\" \\| head -20$/": {
+      "approve": true,
+      "matchCommandLine": true
+    }
+  }
 }

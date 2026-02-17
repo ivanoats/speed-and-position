@@ -13,6 +13,7 @@ Visit [https://howfastwhere.com](https://howfastwhere.com)
 ## 🎨 Mobile-First Redesign
 
 This project has been redesigned using modern web technologies:
+
 - **TypeScript** - Type-safe development
 - **React 18** - Modern UI framework
 - **Ark UI** - Accessible, headless UI primitives
@@ -35,7 +36,8 @@ This project has been redesigned using modern web technologies:
 ### 🚀 Getting Started
 
 #### Prerequisites
-- Node.js 22+ 
+
+- Node.js 22+
 - npm or yarn
 
 #### Installation
@@ -131,6 +133,7 @@ npm run serve
 ### 📋 Redesign Plan
 
 See [REDESIGN_PLAN.md](./REDESIGN_PLAN.md) for the complete mobile-first redesign strategy, including:
+
 - Architecture decisions
 - Component structure
 - Mobile-first design principles
@@ -181,9 +184,9 @@ MIT
 ### 👤 Author
 
 **Ivan Storck**
+
 - Website: [ivanstorck.com](https://www.ivanstorck.com)
 
 ---
 
 Made with ♥ using ParkUI
-

@@ -5,18 +5,18 @@
 /**
  * Debounce utility function
  * Delays function execution until after a specified delay
- * 
+ *
  * @param func - Function to debounce
  * @param delay - Delay in milliseconds
  * @returns Debounced function
  */
-export function debounce<T extends (...args: unknown[]) => void>(
-  func: T,
+export function debounce<T extends unknown[]>(
+  func: (...args: T) => void,
   delay: number
-): (...args: Parameters<T>) => void {
+): (...args: T) => void {
   let timeoutId: ReturnType<typeof setTimeout> | null = null
 
-  return function debounced(...args: Parameters<T>) {
+  return function debounced(...args: T) {
     if (timeoutId) {
       clearTimeout(timeoutId)
     }

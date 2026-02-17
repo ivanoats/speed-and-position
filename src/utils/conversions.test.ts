@@ -1,9 +1,9 @@
 import { describe, it, expect } from 'vitest'
-import { 
-  metersPerSecToMph, 
+import {
+  metersPerSecToMph,
   metersPerSecToKph,
   METERS_PER_SEC_TO_MPH,
-  METERS_PER_SEC_TO_KPH 
+  METERS_PER_SEC_TO_KPH,
 } from './conversions'
 
 describe('conversions', () => {

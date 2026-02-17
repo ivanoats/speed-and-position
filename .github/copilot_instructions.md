@@ -44,7 +44,7 @@ Try to follow the W3C Web Sustainability Guidelines (WSG) <https://www.w3.org/TR
 ## Security
 
 - Use SAST tools such as CodeQL to find potential security issues
-Use Dependabot to keep npm packages up to date
+- Use Dependabot to keep npm packages up to date
 
 ## Accessibility
 

@@ -1,5 +1,9 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { debounce, prefersReducedMotion, prefersHighContrast } from './accessibility'
+import {
+  debounce,
+  prefersReducedMotion,
+  prefersHighContrast,
+} from './accessibility'
 
 describe('accessibility utilities', () => {
   describe('debounce', () => {
@@ -30,10 +34,10 @@ describe('accessibility utilities', () => {
 
       debouncedFn()
       vi.advanceTimersByTime(100)
-      
+
       debouncedFn()
       vi.advanceTimersByTime(100)
-      
+
       debouncedFn()
       vi.advanceTimersByTime(299)
 
@@ -61,10 +65,10 @@ describe('accessibility utilities', () => {
 
       debouncedFn('first')
       vi.advanceTimersByTime(100)
-      
+
       debouncedFn('second')
       vi.advanceTimersByTime(100)
-      
+
       debouncedFn('third')
       vi.advanceTimersByTime(300)
 
@@ -94,7 +98,7 @@ describe('accessibility utilities', () => {
       const debouncedFn = debounce(mockFn, 0)
 
       debouncedFn()
-      
+
       expect(mockFn).not.toHaveBeenCalled()
 
       vi.advanceTimersByTime(0)
@@ -147,7 +151,9 @@ describe('accessibility utilities', () => {
 
       prefersReducedMotion()
 
-      expect(matchMediaMock).toHaveBeenCalledWith('(prefers-reduced-motion: reduce)')
+      expect(matchMediaMock).toHaveBeenCalledWith(
+        '(prefers-reduced-motion: reduce)'
+      )
     })
   })
 

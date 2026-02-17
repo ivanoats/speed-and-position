@@ -9,7 +9,10 @@ export type SpeedUnit = 'mph' | 'kph'
  * @param unit - Unit to convert to (mph or kph)
  * @returns Speed in the specified unit
  */
-export function useSpeedCalculation(speed: number | null, unit: SpeedUnit = 'mph'): number {
+export function useSpeedCalculation(
+  speed: number | null,
+  unit: SpeedUnit = 'mph'
+): number {
   return useMemo(() => {
     if (speed === null) {
       return 0
