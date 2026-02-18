@@ -93,7 +93,7 @@ const TILE_ERROR_DEBOUNCE_MS = 500
  *
  * @param position - Current position data from geolocation
  * @param isTrackingPaused - Whether automatic tracking is paused
- * @param onToggleTracking - Callback when tracking should be paused
+ * @param onToggleTracking - Callback to toggle tracking between paused and active states
  */
 export function LocationMap({
   position,
