@@ -152,7 +152,7 @@ function App() {
                   <MemoizedMap
                     position={position}
                     isTrackingPaused={isTrackingPaused}
-                    onTrackingPause={handleTrackingPause}
+                    onToggleTracking={handleTrackingPause}
                   />
                 </>
               ) : (
@@ -200,7 +200,7 @@ function App() {
                   <MemoizedMap
                     position={null}
                     isTrackingPaused={isTrackingPaused}
-                    onTrackingPause={handleTrackingPause}
+                    onToggleTracking={handleTrackingPause}
                   />
                 </>
               )}

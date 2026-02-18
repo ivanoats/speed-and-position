@@ -10,7 +10,7 @@ describe('Map', () => {
       <Map
         position={null}
         isTrackingPaused={false}
-        onTrackingPause={mockOnTrackingPause}
+        onToggleTracking={mockOnTrackingPause}
       />
     )
     const mapElement = container.querySelector('.leaflet-container')
@@ -28,7 +28,7 @@ describe('Map', () => {
       <Map
         position={position}
         isTrackingPaused={false}
-        onTrackingPause={mockOnTrackingPause}
+        onToggleTracking={mockOnTrackingPause}
       />
     )
     const mapElement = container.querySelector('.leaflet-container')
@@ -44,7 +44,7 @@ describe('Map', () => {
       <Map
         position={null}
         isTrackingPaused={false}
-        onTrackingPause={mockOnTrackingPause}
+        onToggleTracking={mockOnTrackingPause}
       />
     )
     const attribution = screen.getByText(/OpenStreetMap/i)
@@ -56,7 +56,7 @@ describe('Map', () => {
       <Map
         position={null}
         isTrackingPaused={false}
-        onTrackingPause={mockOnTrackingPause}
+        onToggleTracking={mockOnTrackingPause}
       />
     )
     const zoomIn = screen.getByRole('button', { name: /Zoom in/i })
@@ -70,7 +70,7 @@ describe('Map', () => {
       <Map
         position={null}
         isTrackingPaused={false}
-        onTrackingPause={mockOnTrackingPause}
+        onToggleTracking={mockOnTrackingPause}
       />
     )
     const instructions = document.getElementById('map-instructions')
@@ -86,7 +86,7 @@ describe('Map', () => {
       <Map
         position={null}
         isTrackingPaused={false}
-        onTrackingPause={mockOnTrackingPause}
+        onToggleTracking={mockOnTrackingPause}
       />
     )
     const mapRegion = screen.getByRole('region', { name: /Interactive map/i })
@@ -106,7 +106,7 @@ describe('Map', () => {
       <Map
         position={position}
         isTrackingPaused={false}
-        onTrackingPause={mockOnTrackingPause}
+        onToggleTracking={mockOnTrackingPause}
       />
     )
 
@@ -121,7 +121,7 @@ describe('Map', () => {
       <Map
         position={null}
         isTrackingPaused={false}
-        onTrackingPause={mockOnTrackingPause}
+        onToggleTracking={mockOnTrackingPause}
       />
     )
     const mapElement = container.querySelector('.leaflet-container')
@@ -141,7 +141,7 @@ describe('Map', () => {
       <Map
         position={position1}
         isTrackingPaused={false}
-        onTrackingPause={mockOnTrackingPause}
+        onToggleTracking={mockOnTrackingPause}
       />
     )
     let mapElement = container.querySelector('.leaflet-container')
@@ -159,7 +159,7 @@ describe('Map', () => {
       <Map
         position={position2}
         isTrackingPaused={false}
-        onTrackingPause={mockOnTrackingPause}
+        onToggleTracking={mockOnTrackingPause}
       />
     )
     mapElement = container.querySelector('.leaflet-container')
@@ -180,7 +180,7 @@ describe('Map', () => {
       <Map
         position={position}
         isTrackingPaused={false}
-        onTrackingPause={mockOnTrackingPause}
+        onToggleTracking={mockOnTrackingPause}
       />
     )
 
@@ -193,7 +193,7 @@ describe('Map', () => {
       <Map
         position={null}
         isTrackingPaused={false}
-        onTrackingPause={mockOnTrackingPause}
+        onToggleTracking={mockOnTrackingPause}
       />
     )
 
@@ -206,7 +206,7 @@ describe('Map', () => {
       <Map
         position={null}
         isTrackingPaused={false}
-        onTrackingPause={mockOnTrackingPause}
+        onToggleTracking={mockOnTrackingPause}
       />
     )
 
@@ -222,7 +222,7 @@ describe('Map', () => {
       <Map
         position={null}
         isTrackingPaused={true}
-        onTrackingPause={mockOnTrackingPause}
+        onToggleTracking={mockOnTrackingPause}
       />
     )
 
@@ -237,7 +237,7 @@ describe('Map', () => {
       <Map
         position={null}
         isTrackingPaused={false}
-        onTrackingPause={mockOnTrackingPause}
+        onToggleTracking={mockOnTrackingPause}
       />
     )
 
@@ -252,7 +252,7 @@ describe('Map', () => {
       <Map
         position={null}
         isTrackingPaused={true}
-        onTrackingPause={mockOnTrackingPause}
+        onToggleTracking={mockOnTrackingPause}
       />
     )
 
@@ -260,13 +260,13 @@ describe('Map', () => {
     expect(notification).toBeInTheDocument()
   })
 
-  it('calls onTrackingPause when resume button is clicked', () => {
+  it('calls onToggleTracking when resume button is clicked', () => {
     const mockCallback = vi.fn()
     render(
       <Map
         position={null}
         isTrackingPaused={true}
-        onTrackingPause={mockCallback}
+        onToggleTracking={mockCallback}
       />
     )
 

@@ -25,7 +25,7 @@ L.Icon.Default.mergeOptions({
 interface MapProps {
   position: Position | null
   isTrackingPaused: boolean
-  onTrackingPause: () => void
+  onToggleTracking: () => void
 }
 
 /**
@@ -35,11 +35,11 @@ interface MapProps {
 function MapUpdater({
   position,
   isTrackingPaused,
-  onTrackingPause,
+  onToggleTracking,
 }: {
   position: Position | null
   isTrackingPaused: boolean
-  onTrackingPause: () => void
+  onToggleTracking: () => void
 }) {
   const map = useMap()
 
@@ -48,13 +48,13 @@ function MapUpdater({
     zoomstart: () => {
       // Pause tracking when user manually zooms
       if (!isTrackingPaused) {
-        onTrackingPause()
+        onToggleTracking()
       }
     },
     dragstart: () => {
       // Pause tracking when user manually pans/drags
       if (!isTrackingPaused) {
-        onTrackingPause()
+        onToggleTracking()
       }
     },
   })
@@ -93,9 +93,13 @@ const TILE_ERROR_DEBOUNCE_MS = 500
  *
  * @param position - Current position data from geolocation
  * @param isTrackingPaused - Whether automatic tracking is paused
- * @param onTrackingPause - Callback when tracking should be paused
+ * @param onToggleTracking - Callback when tracking should be paused
  */
-export function Map({ position, isTrackingPaused, onTrackingPause }: MapProps) {
+export function Map({
+  position,
+  isTrackingPaused,
+  onToggleTracking,
+}: MapProps) {
   const [tileError, setTileError] = useState(false)
   const [notification, setNotification] = useState<string>('')
   const [consecutiveTileErrors, setConsecutiveTileErrors] = useState(0)
@@ -152,7 +156,7 @@ export function Map({ position, isTrackingPaused, onTrackingPause }: MapProps) {
     if (position) {
       // Resume tracking when user manually centers the map
       if (isTrackingPaused) {
-        onTrackingPause()
+        onToggleTracking()
       }
       showNotification('Map centered on your location')
     }
@@ -258,7 +262,7 @@ export function Map({ position, isTrackingPaused, onTrackingPause }: MapProps) {
               outlineOffset: '2px',
             },
           })}
-          onClick={onTrackingPause}
+          onClick={onToggleTracking}
           aria-label="Resume tracking your location"
         >
           Resume Tracking
@@ -318,7 +322,7 @@ export function Map({ position, isTrackingPaused, onTrackingPause }: MapProps) {
         <MapUpdater
           position={position}
           isTrackingPaused={isTrackingPaused}
-          onTrackingPause={onTrackingPause}
+          onToggleTracking={onToggleTracking}
         />
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
