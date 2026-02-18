@@ -1,0 +1,15 @@
+{
+  "image": "mcr.microsoft.com/devcontainers/universal:2",
+  "features": {
+    "ghcr.io/stu-bell/devcontainer-features/neovim:0": {},
+    "ghcr.io/stuartleeks/dev-container-features/dev-tunnels:0": {},
+    "ghcr.io/shyim/devcontainers-features/bun:0": {},
+    "ghcr.io/jungaretti/features/ripgrep:1":{},
+    "ghcr.io/jsburckhardt/devcontainer-features/bat:1":{},
+    "ghcr.io/jckimble/devcontainer-features/ngrok:3": {},
+    "ghcr.io/braun-daniel/devcontainer-features/fzf:1": {},
+    "ghcr.io/devcontainers-extra/features/eza:1":{},
+    "ghcr.io/devcontainers-extra/features/fd:1":{},
+    "ghcr.io/devcontainers-extra/features/netlify-cli:1":{}
+  }
+}
