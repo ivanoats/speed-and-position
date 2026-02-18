@@ -1,4 +1,11 @@
-import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet'
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  Popup,
+  useMap,
+  useMapEvents,
+} from 'react-leaflet'
 import L from 'leaflet'
 import iconUrl from 'leaflet/dist/images/marker-icon.png'
 import iconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png'
@@ -17,21 +24,49 @@ L.Icon.Default.mergeOptions({
 
 interface MapProps {
   position: Position | null
+  isTrackingPaused: boolean
+  onTrackingPause: () => void
 }
 
 /**
  * Component to handle map view updates when position changes
+ * and detect user interactions that should pause tracking
  */
-function MapUpdater({ position }: { position: Position | null }) {
+function MapUpdater({
+  position,
+  isTrackingPaused,
+  onTrackingPause,
+}: {
+  position: Position | null
+  isTrackingPaused: boolean
+  onTrackingPause: () => void
+}) {
   const map = useMap()
 
+  // Listen for zoom and drag events to pause tracking
+  useMapEvents({
+    zoomstart: () => {
+      // Pause tracking when user manually zooms
+      if (!isTrackingPaused) {
+        onTrackingPause()
+      }
+    },
+    dragstart: () => {
+      // Pause tracking when user manually pans/drags
+      if (!isTrackingPaused) {
+        onTrackingPause()
+      }
+    },
+  })
+
+  // Only update map view if tracking is not paused
   useEffect(() => {
-    if (position) {
+    if (position && !isTrackingPaused) {
       map.setView([position.latitude, position.longitude], 15, {
         animate: true,
       })
     }
-  }, [position, map])
+  }, [position, map, isTrackingPaused])
 
   // Ensure map is properly sized on mount
   useEffect(() => {
@@ -54,10 +89,13 @@ const TILE_ERROR_DEBOUNCE_MS = 500
  * Shows current position with auto-centering
  * Defaults to Seattle, WA when no position available
  * Supports double-tap to center and long-press to copy coordinates
+ * Pauses tracking when user manually zooms or pans the map
  *
  * @param position - Current position data from geolocation
+ * @param isTrackingPaused - Whether automatic tracking is paused
+ * @param onTrackingPause - Callback when tracking should be paused
  */
-export function Map({ position }: MapProps) {
+export function Map({ position, isTrackingPaused, onTrackingPause }: MapProps) {
   const [tileError, setTileError] = useState(false)
   const [notification, setNotification] = useState<string>('')
   const [consecutiveTileErrors, setConsecutiveTileErrors] = useState(0)
@@ -89,19 +127,30 @@ export function Map({ position }: MapProps) {
     }
   }, [])
 
+  // Helper to show a notification
+  const showNotification = (message: string, duration = 2000) => {
+    // Clear any existing notification timeout
+    if (notificationTimeoutRef.current) {
+      clearTimeout(notificationTimeoutRef.current)
+    }
+    setNotification(message)
+    notificationTimeoutRef.current = setTimeout(
+      () => setNotification(''),
+      duration
+    )
+  }
+
+  // Show notification when tracking is paused
+  useEffect(() => {
+    if (isTrackingPaused) {
+      showNotification('Tracking paused - Explore the map', 3000)
+    }
+  }, [isTrackingPaused])
+
   // Handle double tap to center map
   const handleDoubleTap = () => {
     if (position) {
-      // Clear any existing notification timeout
-      if (notificationTimeoutRef.current) {
-        clearTimeout(notificationTimeoutRef.current)
-      }
-      // The MapUpdater will handle centering
-      setNotification('Map centered on your location')
-      notificationTimeoutRef.current = setTimeout(
-        () => setNotification(''),
-        2000
-      )
+      showNotification('Map centered on your location')
     }
   }
 
@@ -109,20 +158,12 @@ export function Map({ position }: MapProps) {
   const handleLongPress = async () => {
     if (position) {
       const coords = `${position.latitude.toFixed(6)}, ${position.longitude.toFixed(6)}`
-      // Clear any existing notification timeout
-      if (notificationTimeoutRef.current) {
-        clearTimeout(notificationTimeoutRef.current)
-      }
       try {
         await navigator.clipboard.writeText(coords)
-        setNotification('Coordinates copied to clipboard!')
+        showNotification('Coordinates copied to clipboard!')
       } catch {
-        setNotification('Failed to copy coordinates')
+        showNotification('Failed to copy coordinates')
       }
-      notificationTimeoutRef.current = setTimeout(
-        () => setNotification(''),
-        2000
-      )
     }
   }
 
@@ -187,6 +228,38 @@ export function Map({ position }: MapProps) {
           {notification}
         </div>
       )}
+      {isTrackingPaused && (
+        <button
+          className={css({
+            position: 'absolute',
+            bottom: '4',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            bg: 'colorPalette.solid',
+            color: 'colorPalette.contrast',
+            padding: '2 4',
+            borderRadius: 'md',
+            zIndex: 1000,
+            fontSize: 'sm',
+            fontWeight: 'semibold',
+            boxShadow: 'lg',
+            cursor: 'pointer',
+            border: 'none',
+            _hover: {
+              bg: 'colorPalette.emphasized',
+            },
+            _focus: {
+              outline: '2px solid',
+              outlineColor: 'colorPalette.focusRing',
+              outlineOffset: '2px',
+            },
+          })}
+          onClick={onTrackingPause}
+          aria-label="Resume tracking your location"
+        >
+          Resume Tracking
+        </button>
+      )}
       {tileError && (
         <div
           className={css({
@@ -238,7 +311,11 @@ export function Map({ position }: MapProps) {
         zoomControl={true}
         attributionControl={true}
       >
-        <MapUpdater position={position} />
+        <MapUpdater
+          position={position}
+          isTrackingPaused={isTrackingPaused}
+          onTrackingPause={onTrackingPause}
+        />
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

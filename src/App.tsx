@@ -36,6 +36,7 @@ function App() {
   const { position, loading, error } = useGeolocation(locationPermissionGranted)
   const [unit, setUnit] = useState<SpeedUnit>('mph')
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
+  const [isTrackingPaused, setIsTrackingPaused] = useState(false)
   const speed = useSpeedCalculation(position?.speed ?? null, unit)
 
   // Register service worker for PWA support
@@ -51,6 +52,10 @@ function App() {
 
   const handleUnitChange = (newUnit: SpeedUnit) => {
     setUnit(newUnit)
+  }
+
+  const handleTrackingPause = () => {
+    setIsTrackingPaused((prev) => !prev)
   }
 
   return (
@@ -137,7 +142,11 @@ function App() {
                     onToggleUnit={toggleUnit}
                   />
                   <MemoizedLocationInfo position={position} />
-                  <MemoizedMap position={position} />
+                  <MemoizedMap
+                    position={position}
+                    isTrackingPaused={isTrackingPaused}
+                    onTrackingPause={handleTrackingPause}
+                  />
                 </>
               ) : (
                 <>
@@ -181,7 +190,11 @@ function App() {
                       </div>
                     )
                   })()}
-                  <MemoizedMap position={null} />
+                  <MemoizedMap
+                    position={null}
+                    isTrackingPaused={isTrackingPaused}
+                    onTrackingPause={handleTrackingPause}
+                  />
                 </>
               )}
             </>
