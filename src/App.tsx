@@ -58,14 +58,12 @@ function App() {
     setIsTrackingPaused((prev) => !prev)
   }
 
-  // Temporary alias to maintain backwards compatibility; prefer handleToggleTracking.
-  const handleTrackingPause = handleToggleTracking
-  // Reset tracking pause when position becomes null or location permission changes
+  // Reset tracking pause when location permission changes (e.g. revoked)
   useEffect(() => {
-    if (!position || !locationPermissionGranted) {
+    if (!locationPermissionGranted) {
       setIsTrackingPaused(false)
     }
-  }, [position, locationPermissionGranted])
+  }, [locationPermissionGranted])
 
   return (
     <div
@@ -154,7 +152,7 @@ function App() {
                   <MemoizedMap
                     position={position}
                     isTrackingPaused={isTrackingPaused}
-                    onToggleTracking={handleTrackingPause}
+                    onToggleTracking={handleToggleTracking}
                   />
                 </>
               ) : (
@@ -202,7 +200,7 @@ function App() {
                   <MemoizedMap
                     position={null}
                     isTrackingPaused={isTrackingPaused}
-                    onToggleTracking={handleTrackingPause}
+                    onToggleTracking={handleToggleTracking}
                   />
                 </>
               )}

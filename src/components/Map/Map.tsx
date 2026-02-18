@@ -12,7 +12,7 @@ import iconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png'
 import shadowUrl from 'leaflet/dist/images/marker-shadow.png'
 import { css } from '../../../styled-system/css'
 import type { Position } from '../../types/position'
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState, useRef, useCallback } from 'react'
 import { useTouchGestures } from '../../hooks/useTouchGestures'
 
 // Fix Leaflet default marker icons not loading with module bundlers
@@ -36,12 +36,21 @@ function MapUpdater({
   position,
   isTrackingPaused,
   onToggleTracking,
+  onMapReady,
 }: {
   position: Position | null
   isTrackingPaused: boolean
   onToggleTracking: () => void
+  onMapReady?: (map: L.Map) => void
 }) {
   const map = useMap()
+
+  // Provide map instance to parent on mount
+  useEffect(() => {
+    if (onMapReady) {
+      onMapReady(map)
+    }
+  }, [map, onMapReady])
 
   // Listen for zoom and drag events to pause tracking
   useMapEvents({
@@ -108,6 +117,8 @@ export function LocationMap({
     null
   )
   const tileErrorTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const mapRef = useRef<L.Map | null>(null)
+  const prevIsTrackingPausedRef = useRef(isTrackingPaused)
 
   // Only show tile error warning after multiple consecutive failures
   // This prevents false positives from transient network issues
@@ -132,7 +143,7 @@ export function LocationMap({
   }, [])
 
   // Helper to show a notification
-  const showNotification = (message: string, duration = 2000) => {
+  const showNotification = useCallback((message: string, duration = 2000) => {
     // Clear any existing notification timeout
     if (notificationTimeoutRef.current) {
       clearTimeout(notificationTimeoutRef.current)
@@ -142,31 +153,40 @@ export function LocationMap({
       () => setNotification(''),
       duration
     )
-  }
+  }, [])
 
   // Show notification when tracking is paused (only on transition from false -> true)
-  const prevIsTrackingPausedRef = useRef(isTrackingPaused)
-
   useEffect(() => {
     if (isTrackingPaused && !prevIsTrackingPausedRef.current) {
       showNotification('Tracking paused - Explore the map', 3000)
     }
     prevIsTrackingPausedRef.current = isTrackingPaused
-  }, [isTrackingPaused])
+  }, [isTrackingPaused, showNotification])
 
   // Handle double tap to center map
-  const handleDoubleTap = () => {
+  const handleDoubleTap = useCallback(() => {
     if (position) {
       // Resume tracking when user manually centers the map
       if (isTrackingPaused) {
         onToggleTracking()
+        // Clear the paused notification to avoid confusion
+        if (notificationTimeoutRef.current) {
+          clearTimeout(notificationTimeoutRef.current)
+          setNotification('')
+        }
+      }
+      // Immediately center the map on user's location
+      if (mapRef.current) {
+        mapRef.current.setView([position.latitude, position.longitude], 15, {
+          animate: true,
+        })
       }
       showNotification('Map centered on your location')
     }
-  }
+  }, [position, isTrackingPaused, onToggleTracking, showNotification])
 
   // Handle long press to copy coordinates
-  const handleLongPress = async () => {
+  const handleLongPress = useCallback(async () => {
     if (position) {
       const coords = `${position.latitude.toFixed(6)}, ${position.longitude.toFixed(6)}`
       try {
@@ -176,7 +196,7 @@ export function LocationMap({
         showNotification('Failed to copy coordinates')
       }
     }
-  }
+  }, [position, showNotification])
 
   // Touch gesture support
   const gestureRef = useTouchGestures<HTMLDivElement>({
@@ -326,6 +346,9 @@ export function LocationMap({
           position={position}
           isTrackingPaused={isTrackingPaused}
           onToggleTracking={onToggleTracking}
+          onMapReady={(map) => {
+            mapRef.current = map
+          }}
         />
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

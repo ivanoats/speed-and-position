@@ -247,8 +247,22 @@ describe('LocationMap', () => {
     expect(resumeButton).not.toBeInTheDocument()
   })
 
-  it('shows notification when tracking is paused', () => {
-    render(
+  it('shows notification when tracking transitions to paused', () => {
+    const { rerender } = render(
+      <LocationMap
+        position={null}
+        isTrackingPaused={false}
+        onToggleTracking={mockOnTrackingPause}
+      />
+    )
+
+    // Initially no notification
+    expect(
+      screen.queryByText(/Tracking paused - Explore the map/i)
+    ).not.toBeInTheDocument()
+
+    // Transition to paused
+    rerender(
       <LocationMap
         position={null}
         isTrackingPaused={true}
@@ -256,6 +270,7 @@ describe('LocationMap', () => {
       />
     )
 
+    // Notification should appear
     const notification = screen.getByText(/Tracking paused - Explore the map/i)
     expect(notification).toBeInTheDocument()
   })
