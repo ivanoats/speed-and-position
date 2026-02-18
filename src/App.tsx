@@ -45,6 +45,11 @@ function App() {
     setLocationPermissionGranted(true)
   }
 
+  const handleRetryPermission = () => {
+    // Reset state to allow user to try again
+    setLocationPermissionGranted(false)
+  }
+
   const toggleUnit = () => {
     setUnit((prev) => (prev === 'mph' ? 'kph' : 'mph'))
   }
@@ -88,7 +93,43 @@ function App() {
                   })}
                   role="alert"
                 >
-                  Error: {error}
+                  <div className={css({ marginBottom: '2' })}>
+                    <strong>Location Error:</strong> {error}
+                  </div>
+                  {error.toLowerCase().includes('denied') ||
+                  error.toLowerCase().includes('permission') ? (
+                    <div className={css({ marginTop: '3' })}>
+                      <div
+                        className={css({
+                          fontSize: 'sm',
+                          marginBottom: '2',
+                          color: 'fg.error',
+                        })}
+                      >
+                        To use this app, you need to allow location access in
+                        your browser settings.
+                      </div>
+                      <button
+                        onClick={handleRetryPermission}
+                        className={css({
+                          bg: 'white',
+                          color: 'red.700',
+                          border: '2px solid',
+                          borderColor: 'red.700',
+                          padding: '2 4',
+                          borderRadius: 'md',
+                          fontSize: 'sm',
+                          fontWeight: 'semibold',
+                          cursor: 'pointer',
+                          _hover: {
+                            bg: 'red.50',
+                          },
+                        })}
+                      >
+                        Try Again
+                      </button>
+                    </div>
+                  ) : null}
                 </div>
               )}
 
