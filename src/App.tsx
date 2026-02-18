@@ -54,10 +54,12 @@ function App() {
     setUnit(newUnit)
   }
 
-  const handleTrackingPause = () => {
+  const handleToggleTracking = () => {
     setIsTrackingPaused((prev) => !prev)
   }
 
+  // Temporary alias to maintain backwards compatibility; prefer handleToggleTracking.
+  const handleTrackingPause = handleToggleTracking
   // Reset tracking pause when position becomes null or location permission changes
   useEffect(() => {
     if (!position || !locationPermissionGranted) {
