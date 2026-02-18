@@ -150,6 +150,10 @@ export function Map({ position, isTrackingPaused, onTrackingPause }: MapProps) {
   // Handle double tap to center map
   const handleDoubleTap = () => {
     if (position) {
+      // Resume tracking when user manually centers the map
+      if (isTrackingPaused) {
+        onTrackingPause()
+      }
       showNotification('Map centered on your location')
     }
   }

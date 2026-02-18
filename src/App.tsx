@@ -1,7 +1,7 @@
 import { css, cx } from '../styled-system/css'
 import { container } from '../styled-system/patterns'
 import { card } from '../styled-system/recipes'
-import { useState, memo } from 'react'
+import { useState, memo, useEffect } from 'react'
 import { useGeolocation } from './hooks/useGeolocation'
 import {
   useSpeedCalculation,
@@ -57,6 +57,13 @@ function App() {
   const handleTrackingPause = () => {
     setIsTrackingPaused((prev) => !prev)
   }
+
+  // Reset tracking pause when position becomes null or location permission changes
+  useEffect(() => {
+    if (!position || !locationPermissionGranted) {
+      setIsTrackingPaused(false)
+    }
+  }, [position, locationPermissionGranted])
 
   return (
     <div
