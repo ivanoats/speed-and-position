@@ -144,11 +144,14 @@ export function LocationMap({
     )
   }
 
-  // Show notification when tracking is paused
+  // Show notification when tracking is paused (only on transition from false -> true)
+  const prevIsTrackingPausedRef = useRef(isTrackingPaused)
+
   useEffect(() => {
-    if (isTrackingPaused) {
+    if (isTrackingPaused && !prevIsTrackingPausedRef.current) {
       showNotification('Tracking paused - Explore the map', 3000)
     }
+    prevIsTrackingPausedRef.current = isTrackingPaused
   }, [isTrackingPaused])
 
   // Handle double tap to center map
