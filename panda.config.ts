@@ -31,7 +31,10 @@ export default defineConfig({
     extend: {
       tokens: {
         fonts: {
-          body: { value: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif' },
+          body: {
+            value:
+              '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+          },
         },
       },
     },

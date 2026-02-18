@@ -37,23 +37,27 @@ describe('SpeedDisplay', () => {
   it('shows toggle button when onToggleUnit is provided', () => {
     const onToggleUnit = vi.fn()
     render(<SpeedDisplay speed={30} unit="mph" onToggleUnit={onToggleUnit} />)
-    expect(screen.getByRole('button', { name: /Switch to KPH/i })).toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: /Switch to KPH/i })
+    ).toBeInTheDocument()
   })
 
   it('calls onToggleUnit when toggle button is clicked', async () => {
     const user = userEvent.setup()
     const onToggleUnit = vi.fn()
     render(<SpeedDisplay speed={30} unit="mph" onToggleUnit={onToggleUnit} />)
-    
+
     const button = screen.getByRole('button', { name: /Switch to KPH/i })
     await user.click(button)
-    
+
     expect(onToggleUnit).toHaveBeenCalledTimes(1)
   })
 
   it('shows correct toggle button text for kph unit', () => {
     const onToggleUnit = vi.fn()
     render(<SpeedDisplay speed={30} unit="kph" onToggleUnit={onToggleUnit} />)
-    expect(screen.getByRole('button', { name: /Switch to MPH/i })).toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: /Switch to MPH/i })
+    ).toBeInTheDocument()
   })
 })

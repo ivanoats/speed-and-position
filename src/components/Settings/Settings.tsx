@@ -13,29 +13,35 @@ export interface SettingsProps {
 /**
  * Settings component - Modal dialog for app preferences
  * Mobile-friendly with Ark UI Dialog and ParkUI styling
- * 
+ *
  * @param isOpen - Whether the dialog is open
  * @param onClose - Callback when dialog is closed
  * @param unit - Current speed unit preference
  * @param onUnitChange - Callback when unit preference changes
  */
-export function Settings({ isOpen, onClose, unit, onUnitChange }: SettingsProps) {
+export function Settings({
+  isOpen,
+  onClose,
+  unit,
+  onUnitChange,
+}: SettingsProps) {
   const dialogStyles = dialog()
   return (
-    <Dialog.Root open={isOpen} onOpenChange={(details) => !details.open && onClose()}>
+    <Dialog.Root
+      open={isOpen}
+      onOpenChange={(details) => !details.open && onClose()}
+    >
       <Dialog.Backdrop className={dialogStyles.backdrop} />
       <Dialog.Positioner className={dialogStyles.positioner}>
         <Dialog.Content className={dialogStyles.content}>
-          <Dialog.Title className={dialogStyles.title}>
-            Settings
-          </Dialog.Title>
-          
+          <Dialog.Title className={dialogStyles.title}>Settings</Dialog.Title>
+
           <Dialog.Description className={dialogStyles.description}>
             Configure your preferences for the Speed & Location app.
           </Dialog.Description>
 
           <div className={css({ marginBottom: '6' })}>
-            <label 
+            <label
               className={css({
                 display: 'block',
                 fontSize: 'sm',
@@ -50,20 +56,32 @@ export function Settings({ isOpen, onClose, unit, onUnitChange }: SettingsProps)
               <button
                 type="button"
                 onClick={() => onUnitChange('mph')}
-                className={cx(button({ variant: unit === 'mph' ? 'solid' : 'outline', size: 'md' }), css({
-                  flex: 1,
-                  touchAction: 'manipulation',
-                }))}
+                className={cx(
+                  button({
+                    variant: unit === 'mph' ? 'solid' : 'outline',
+                    size: 'md',
+                  }),
+                  css({
+                    flex: 1,
+                    touchAction: 'manipulation',
+                  })
+                )}
               >
                 MPH
               </button>
               <button
                 type="button"
                 onClick={() => onUnitChange('kph')}
-                className={cx(button({ variant: unit === 'kph' ? 'solid' : 'outline', size: 'md' }), css({
-                  flex: 1,
-                  touchAction: 'manipulation',
-                }))}
+                className={cx(
+                  button({
+                    variant: unit === 'kph' ? 'solid' : 'outline',
+                    size: 'md',
+                  }),
+                  css({
+                    flex: 1,
+                    touchAction: 'manipulation',
+                  })
+                )}
               >
                 KPH
               </button>
@@ -73,10 +91,13 @@ export function Settings({ isOpen, onClose, unit, onUnitChange }: SettingsProps)
           <Dialog.CloseTrigger asChild>
             <button
               type="button"
-              className={cx(button({ variant: 'solid', size: 'md' }), css({
-                width: '100%',
-                touchAction: 'manipulation',
-              }))}
+              className={cx(
+                button({ variant: 'solid', size: 'md' }),
+                css({
+                  width: '100%',
+                  touchAction: 'manipulation',
+                })
+              )}
             >
               Close
             </button>

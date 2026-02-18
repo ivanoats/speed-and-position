@@ -34,16 +34,18 @@ describe('Header', () => {
     const user = userEvent.setup()
     const onSettingsClick = vi.fn()
     render(<Header onSettingsClick={onSettingsClick} />)
-    
+
     const settingsButton = screen.getByLabelText('Open settings')
     await user.click(settingsButton)
-    
+
     expect(onSettingsClick).toHaveBeenCalledTimes(1)
   })
 
   it('does not render GPS indicator when hasGpsSignal is false', () => {
     render(<Header hasGpsSignal={false} />)
-    expect(screen.queryByLabelText('GPS signal detected')).not.toBeInTheDocument()
+    expect(
+      screen.queryByLabelText('GPS signal detected')
+    ).not.toBeInTheDocument()
   })
 
   it('renders GPS indicator when hasGpsSignal is true', () => {

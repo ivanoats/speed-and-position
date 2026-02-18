@@ -1,9 +1,19 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { renderHook, act } from '@testing-library/react'
 import { useTouchGestures } from './useTouchGestures'
+import type { MutableRefObject } from 'react'
 
 describe('useTouchGestures', () => {
   let mockElement: HTMLDivElement
+
+  // Helper to set ref current value (bypassing readonly restriction for testing)
+  const setRefCurrent = <T>(ref: MutableRefObject<T>, value: T) => {
+    Object.defineProperty(ref, 'current', {
+      value,
+      writable: true,
+      configurable: true,
+    })
+  }
 
   beforeEach(() => {
     vi.useFakeTimers()
@@ -24,27 +34,41 @@ describe('useTouchGestures', () => {
 
   it('should attach touch event listeners when ref is set', () => {
     const addEventListenerSpy = vi.spyOn(mockElement, 'addEventListener')
-    
+
     const { result, rerender } = renderHook(() => useTouchGestures({}))
-    
+
     act(() => {
-      result.current.current = mockElement
+      setRefCurrent(result.current, mockElement)
     })
-    
+
     // Trigger effect by re-rendering
     rerender()
 
-    expect(addEventListenerSpy).toHaveBeenCalledWith('touchstart', expect.any(Function), { passive: true })
-    expect(addEventListenerSpy).toHaveBeenCalledWith('touchend', expect.any(Function), { passive: true })
-    expect(addEventListenerSpy).toHaveBeenCalledWith('touchmove', expect.any(Function), { passive: true })
+    expect(addEventListenerSpy).toHaveBeenCalledWith(
+      'touchstart',
+      expect.any(Function),
+      { passive: true }
+    )
+    expect(addEventListenerSpy).toHaveBeenCalledWith(
+      'touchend',
+      expect.any(Function),
+      { passive: true }
+    )
+    expect(addEventListenerSpy).toHaveBeenCalledWith(
+      'touchmove',
+      expect.any(Function),
+      { passive: true }
+    )
   })
 
   it('should detect swipe up gesture', () => {
     const onSwipeUp = vi.fn()
-    const { result, rerender } = renderHook(() => useTouchGestures({ onSwipeUp }))
-    
+    const { result, rerender } = renderHook(() =>
+      useTouchGestures({ onSwipeUp })
+    )
+
     act(() => {
-      result.current.current = mockElement
+      setRefCurrent(result.current, mockElement)
     })
     rerender()
 
@@ -69,10 +93,12 @@ describe('useTouchGestures', () => {
 
   it('should detect swipe down gesture', () => {
     const onSwipeDown = vi.fn()
-    const { result, rerender } = renderHook(() => useTouchGestures({ onSwipeDown }))
-    
+    const { result, rerender } = renderHook(() =>
+      useTouchGestures({ onSwipeDown })
+    )
+
     act(() => {
-      result.current.current = mockElement
+      setRefCurrent(result.current, mockElement)
     })
     rerender()
 
@@ -97,10 +123,12 @@ describe('useTouchGestures', () => {
 
   it('should detect swipe left gesture', () => {
     const onSwipeLeft = vi.fn()
-    const { result, rerender } = renderHook(() => useTouchGestures({ onSwipeLeft }))
-    
+    const { result, rerender } = renderHook(() =>
+      useTouchGestures({ onSwipeLeft })
+    )
+
     act(() => {
-      result.current.current = mockElement
+      setRefCurrent(result.current, mockElement)
     })
     rerender()
 
@@ -125,10 +153,12 @@ describe('useTouchGestures', () => {
 
   it('should detect swipe right gesture', () => {
     const onSwipeRight = vi.fn()
-    const { result, rerender } = renderHook(() => useTouchGestures({ onSwipeRight }))
-    
+    const { result, rerender } = renderHook(() =>
+      useTouchGestures({ onSwipeRight })
+    )
+
     act(() => {
-      result.current.current = mockElement
+      setRefCurrent(result.current, mockElement)
     })
     rerender()
 
@@ -153,10 +183,12 @@ describe('useTouchGestures', () => {
 
   it('should detect double tap gesture', () => {
     const onDoubleTap = vi.fn()
-    const { result, rerender } = renderHook(() => useTouchGestures({ onDoubleTap }))
-    
+    const { result, rerender } = renderHook(() =>
+      useTouchGestures({ onDoubleTap })
+    )
+
     act(() => {
-      result.current.current = mockElement
+      setRefCurrent(result.current, mockElement)
     })
     rerender()
 
@@ -195,10 +227,12 @@ describe('useTouchGestures', () => {
 
   it('should detect long press gesture', () => {
     const onLongPress = vi.fn()
-    const { result, rerender } = renderHook(() => useTouchGestures({ onLongPress }))
-    
+    const { result, rerender } = renderHook(() =>
+      useTouchGestures({ onLongPress })
+    )
+
     act(() => {
-      result.current.current = mockElement
+      setRefCurrent(result.current, mockElement)
     })
     rerender()
 
@@ -220,10 +254,12 @@ describe('useTouchGestures', () => {
 
   it('should cancel long press on touch move', () => {
     const onLongPress = vi.fn()
-    const { result, rerender } = renderHook(() => useTouchGestures({ onLongPress }))
-    
+    const { result, rerender } = renderHook(() =>
+      useTouchGestures({ onLongPress })
+    )
+
     act(() => {
-      result.current.current = mockElement
+      setRefCurrent(result.current, mockElement)
     })
     rerender()
 
@@ -252,10 +288,12 @@ describe('useTouchGestures', () => {
 
   it('should cancel long press on touch end', () => {
     const onLongPress = vi.fn()
-    const { result, rerender } = renderHook(() => useTouchGestures({ onLongPress }))
-    
+    const { result, rerender } = renderHook(() =>
+      useTouchGestures({ onLongPress })
+    )
+
     act(() => {
-      result.current.current = mockElement
+      setRefCurrent(result.current, mockElement)
     })
     rerender()
 
@@ -286,10 +324,12 @@ describe('useTouchGestures', () => {
 
   it('should not detect swipe if distance is too small', () => {
     const onSwipeUp = vi.fn()
-    const { result, rerender } = renderHook(() => useTouchGestures({ onSwipeUp }))
-    
+    const { result, rerender } = renderHook(() =>
+      useTouchGestures({ onSwipeUp })
+    )
+
     act(() => {
-      result.current.current = mockElement
+      setRefCurrent(result.current, mockElement)
     })
     rerender()
 
@@ -314,10 +354,12 @@ describe('useTouchGestures', () => {
 
   it('should not detect swipe if time is too long', () => {
     const onSwipeUp = vi.fn()
-    const { result, rerender } = renderHook(() => useTouchGestures({ onSwipeUp }))
-    
+    const { result, rerender } = renderHook(() =>
+      useTouchGestures({ onSwipeUp })
+    )
+
     act(() => {
-      result.current.current = mockElement
+      setRefCurrent(result.current, mockElement)
     })
     rerender()
 
@@ -347,27 +389,38 @@ describe('useTouchGestures', () => {
 
   it('should clean up event listeners on unmount', () => {
     const removeEventListenerSpy = vi.spyOn(mockElement, 'removeEventListener')
-    
+
     const { result, rerender, unmount } = renderHook(() => useTouchGestures({}))
-    
+
     act(() => {
-      result.current.current = mockElement
+      setRefCurrent(result.current, mockElement)
     })
     rerender()
 
     unmount()
 
-    expect(removeEventListenerSpy).toHaveBeenCalledWith('touchstart', expect.any(Function))
-    expect(removeEventListenerSpy).toHaveBeenCalledWith('touchend', expect.any(Function))
-    expect(removeEventListenerSpy).toHaveBeenCalledWith('touchmove', expect.any(Function))
+    expect(removeEventListenerSpy).toHaveBeenCalledWith(
+      'touchstart',
+      expect.any(Function)
+    )
+    expect(removeEventListenerSpy).toHaveBeenCalledWith(
+      'touchend',
+      expect.any(Function)
+    )
+    expect(removeEventListenerSpy).toHaveBeenCalledWith(
+      'touchmove',
+      expect.any(Function)
+    )
   })
 
   it('should clear timeout on unmount', () => {
     const onLongPress = vi.fn()
-    const { result, rerender, unmount } = renderHook(() => useTouchGestures({ onLongPress }))
-    
+    const { result, rerender, unmount } = renderHook(() =>
+      useTouchGestures({ onLongPress })
+    )
+
     act(() => {
-      result.current.current = mockElement
+      setRefCurrent(result.current, mockElement)
     })
     rerender()
 
@@ -383,7 +436,7 @@ describe('useTouchGestures', () => {
     act(() => {
       vi.advanceTimersByTime(250)
     })
-    
+
     unmount()
 
     // Advance time past when timeout would have fired

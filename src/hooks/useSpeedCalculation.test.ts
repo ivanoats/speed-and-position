@@ -43,7 +43,7 @@ describe('useSpeedCalculation', () => {
       ({ speed, unit }) => useSpeedCalculation(speed, unit),
       { initialProps: { speed: 10, unit: 'mph' as const } }
     )
-    
+
     const firstResult = result.current
     rerender({ speed: 10, unit: 'mph' as const })
     expect(result.current).toBe(firstResult)
@@ -52,13 +52,18 @@ describe('useSpeedCalculation', () => {
   it('recalculates when unit changes', () => {
     const { result, rerender } = renderHook(
       ({ speed, unit }) => useSpeedCalculation(speed, unit),
-      { initialProps: { speed: 10, unit: 'mph' as const } }
+      {
+        initialProps: { speed: 10, unit: 'mph' } as {
+          speed: number
+          unit: 'mph' | 'kph'
+        },
+      }
     )
-    
+
     const mphResult = result.current
     expect(mphResult).toBeCloseTo(22.3694, 2)
-    
-    rerender({ speed: 10, unit: 'kph' as const })
+
+    rerender({ speed: 10, unit: 'kph' })
     expect(result.current).toBe(36)
     expect(result.current).not.toBe(mphResult)
   })

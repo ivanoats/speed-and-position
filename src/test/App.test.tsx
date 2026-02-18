@@ -13,18 +13,23 @@ describe('App Component', () => {
 
   afterEach(() => {
     // Restore geolocation after each test
+    // @ts-expect-error - Assigning to readonly property for test cleanup
     globalThis.navigator.geolocation = originalGeolocation
   })
 
   it('should show permission prompt on initial load', () => {
     render(<App />)
-    expect(screen.getByRole('heading', { name: /Welcome to Speed & Position/i })).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: /Enable Location Access/i })).toBeInTheDocument()
+    expect(
+      screen.getByRole('heading', { name: /Welcome to Speed & Position/i })
+    ).toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: /Enable Location Access/i })
+    ).toBeInTheDocument()
   })
 
   it('should render loading state after permission is granted', async () => {
     const user = userEvent.setup()
-    
+
     // Mock geolocation to not call callbacks immediately (simulating loading state)
     mockGeolocation.getCurrentPosition.mockImplementation(() => {
       // Don't call success or error - simulate waiting for permission
@@ -32,12 +37,14 @@ describe('App Component', () => {
     mockGeolocation.watchPosition.mockImplementation(() => {
       return 1 // mock watch ID
     })
-    
+
     render(<App />)
-    
-    const enableButton = screen.getByRole('button', { name: /Enable Location Access/i })
+
+    const enableButton = screen.getByRole('button', {
+      name: /Enable Location Access/i,
+    })
     await user.click(enableButton)
-    
+
     // Should see placeholder and waiting messages (since we're waiting for GPS)
     await waitFor(() => {
       expect(screen.getByText(/Waiting for GPS signal/i)).toBeInTheDocument()
@@ -46,7 +53,7 @@ describe('App Component', () => {
 
   it('should show placeholder speed display when no position after permission granted', async () => {
     const user = userEvent.setup()
-    
+
     // Mock geolocation to not call callbacks immediately
     mockGeolocation.getCurrentPosition.mockImplementation(() => {
       // Don't call success or error
@@ -54,12 +61,14 @@ describe('App Component', () => {
     mockGeolocation.watchPosition.mockImplementation(() => {
       return 1 // mock watch ID
     })
-    
+
     render(<App />)
-    
-    const enableButton = screen.getByRole('button', { name: /Enable Location Access/i })
+
+    const enableButton = screen.getByRole('button', {
+      name: /Enable Location Access/i,
+    })
     await user.click(enableButton)
-    
+
     // Should show placeholder while waiting for position
     await waitFor(() => {
       expect(screen.getByText(/--/)).toBeInTheDocument()
@@ -74,12 +83,16 @@ describe('App Component', () => {
     globalThis.navigator.geolocation = undefined
 
     render(<App />)
-    
-    const enableButton = screen.getByRole('button', { name: /Enable Location Access/i })
+
+    const enableButton = screen.getByRole('button', {
+      name: /Enable Location Access/i,
+    })
     await user.click(enableButton)
 
     await waitFor(() => {
-      expect(screen.getByText(/Geolocation is not supported/i)).toBeInTheDocument()
+      expect(
+        screen.getByText(/Geolocation is not supported/i)
+      ).toBeInTheDocument()
     })
   })
 
@@ -94,21 +107,29 @@ describe('App Component', () => {
         altitudeAccuracy: null,
         heading: null,
         speed: 10, // 10 m/s
+        toJSON: () => ({}),
       },
       timestamp: Date.now(),
+      toJSON: () => ({}),
     }
 
-    mockGeolocation.getCurrentPosition.mockImplementation((success) => {
-      success(mockPosition)
-    })
-    mockGeolocation.watchPosition.mockImplementation((success) => {
-      success(mockPosition)
-      return 1 // mock watch ID
-    })
+    mockGeolocation.getCurrentPosition.mockImplementation(
+      (success: (position: GeolocationPosition) => void) => {
+        success(mockPosition)
+      }
+    )
+    mockGeolocation.watchPosition.mockImplementation(
+      (success: (position: GeolocationPosition) => void) => {
+        success(mockPosition)
+        return 1 // mock watch ID
+      }
+    )
 
     render(<App />)
 
-    const enableButton = screen.getByRole('button', { name: /Enable Location Access/i })
+    const enableButton = screen.getByRole('button', {
+      name: /Enable Location Access/i,
+    })
     await user.click(enableButton)
 
     await waitFor(() => {
@@ -120,15 +141,19 @@ describe('App Component', () => {
     expect(screen.getAllByText(/mph/i).length).toBeGreaterThan(0)
 
     // Location info should be present but collapsed initially
-    expect(screen.getByRole('button', { name: /Location information/i })).toBeInTheDocument()
-    
+    expect(
+      screen.getByRole('button', { name: /Location information/i })
+    ).toBeInTheDocument()
+
     // The component should show hint text when collapsed
     expect(screen.getByText(/Tap to view coordinates/i)).toBeInTheDocument()
   })
 
   it('should render header with correct title', () => {
     render(<App />)
-    expect(screen.getByRole('heading', { name: /Speed & Location/i })).toBeInTheDocument()
+    expect(
+      screen.getByRole('heading', { name: /Speed & Location/i })
+    ).toBeInTheDocument()
   })
 
   it('should render footer with author link', () => {

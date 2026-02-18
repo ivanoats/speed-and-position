@@ -24,7 +24,7 @@ interface MapProps {
  */
 function MapUpdater({ position }: { position: Position | null }) {
   const map = useMap()
-  
+
   useEffect(() => {
     if (position) {
       map.setView([position.latitude, position.longitude], 15, {
@@ -32,14 +32,14 @@ function MapUpdater({ position }: { position: Position | null }) {
       })
     }
   }, [position, map])
-  
+
   // Ensure map is properly sized on mount
   useEffect(() => {
     setTimeout(() => {
       map.invalidateSize()
     }, 100)
   }, [map])
-  
+
   return null
 }
 
@@ -54,7 +54,7 @@ const TILE_ERROR_DEBOUNCE_MS = 500
  * Shows current position with auto-centering
  * Defaults to Seattle, WA when no position available
  * Supports double-tap to center and long-press to copy coordinates
- * 
+ *
  * @param position - Current position data from geolocation
  */
 export function Map({ position }: MapProps) {
@@ -62,9 +62,11 @@ export function Map({ position }: MapProps) {
   const [notification, setNotification] = useState<string>('')
   const [consecutiveTileErrors, setConsecutiveTileErrors] = useState(0)
   const [hasLoadedTile, setHasLoadedTile] = useState(false)
-  const notificationTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const notificationTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(
+    null
+  )
   const tileErrorTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
-  
+
   // Only show tile error warning after multiple consecutive failures
   // This prevents false positives from transient network issues
   useEffect(() => {
@@ -74,7 +76,7 @@ export function Map({ position }: MapProps) {
       setTileError(false)
     }
   }, [consecutiveTileErrors])
-  
+
   // Cleanup notification and error timeouts on unmount
   useEffect(() => {
     return () => {
@@ -86,7 +88,7 @@ export function Map({ position }: MapProps) {
       }
     }
   }, [])
-  
+
   // Handle double tap to center map
   const handleDoubleTap = () => {
     if (position) {
@@ -96,7 +98,10 @@ export function Map({ position }: MapProps) {
       }
       // The MapUpdater will handle centering
       setNotification('Map centered on your location')
-      notificationTimeoutRef.current = setTimeout(() => setNotification(''), 2000)
+      notificationTimeoutRef.current = setTimeout(
+        () => setNotification(''),
+        2000
+      )
     }
   }
 
@@ -114,7 +119,10 @@ export function Map({ position }: MapProps) {
       } catch {
         setNotification('Failed to copy coordinates')
       }
-      notificationTimeoutRef.current = setTimeout(() => setNotification(''), 2000)
+      notificationTimeoutRef.current = setTimeout(
+        () => setNotification(''),
+        2000
+      )
     }
   }
 
@@ -123,19 +131,19 @@ export function Map({ position }: MapProps) {
     onDoubleTap: handleDoubleTap,
     onLongPress: handleLongPress,
   })
-  
+
   // Default center (Seattle, WA) if no position yet
-  const center: [number, number] = position 
+  const center: [number, number] = position
     ? [position.latitude, position.longitude]
     : [47.6062, -122.3321] // Seattle, WA
-  
+
   // Use a key to force MapContainer to re-render when center changes significantly
-  const mapKey = position 
+  const mapKey = position
     ? `${position.latitude.toFixed(2)}-${position.longitude.toFixed(2)}`
     : 'default-seattle'
 
   return (
-    <div 
+    <div
       ref={gestureRef}
       className={css({
         marginTop: '4',
@@ -153,48 +161,63 @@ export function Map({ position }: MapProps) {
       aria-describedby="map-instructions"
     >
       <span id="map-instructions" className="srOnly">
-        Double-tap to center map on your location. Long-press to copy coordinates to clipboard.
+        Double-tap to center map on your location. Long-press to copy
+        coordinates to clipboard.
       </span>
       {notification && (
-        <div className={css({
-          position: 'absolute',
-          top: '4',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          bg: 'rgba(0, 0, 0, 0.8)',
-          color: 'white',
-          padding: '2 4',
-          borderRadius: 'md',
-          zIndex: 1000,
-          fontSize: 'sm',
-          fontWeight: 'semibold',
-          boxShadow: 'lg',
-          animation: 'fadeIn 0.3s ease',
-        })} role="status" aria-live="polite">
+        <div
+          className={css({
+            position: 'absolute',
+            top: '4',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            bg: 'rgba(0, 0, 0, 0.8)',
+            color: 'white',
+            padding: '2 4',
+            borderRadius: 'md',
+            zIndex: 1000,
+            fontSize: 'sm',
+            fontWeight: 'semibold',
+            boxShadow: 'lg',
+            animation: 'fadeIn 0.3s ease',
+          })}
+          role="status"
+          aria-live="polite"
+        >
           {notification}
         </div>
       )}
       {tileError && (
-        <div className={css({
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          bg: 'rgba(255, 255, 255, 0.95)',
-          padding: '4',
-          borderRadius: 'md',
-          boxShadow: 'lg',
-          zIndex: 1000,
-          textAlign: 'center',
-          maxWidth: '80%',
-          border: '2px solid',
-          borderColor: 'orange.500',
-        })}>
-          <div className={css({ fontSize: 'lg', fontWeight: 'bold', color: 'orange.700', marginBottom: '2' })}>
+        <div
+          className={css({
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            bg: 'rgba(255, 255, 255, 0.95)',
+            padding: '4',
+            borderRadius: 'md',
+            boxShadow: 'lg',
+            zIndex: 1000,
+            textAlign: 'center',
+            maxWidth: '80%',
+            border: '2px solid',
+            borderColor: 'orange.500',
+          })}
+        >
+          <div
+            className={css({
+              fontSize: 'lg',
+              fontWeight: 'bold',
+              color: 'orange.700',
+              marginBottom: '2',
+            })}
+          >
             ⚠️ Map Tiles Blocked
           </div>
           <div className={css({ fontSize: 'sm', color: 'fg.default' })}>
-            Map tiles are blocked by a browser extension.<br />
+            Map tiles are blocked by a browser extension.
+            <br />
             Please disable your ad blocker for this site to see the map.
           </div>
         </div>
@@ -203,12 +226,13 @@ export function Map({ position }: MapProps) {
         key={mapKey}
         center={center}
         zoom={15}
-        style={{ 
-          height: '100%', 
-          width: '100%', 
-          background: 'linear-gradient(45deg, #e0e0e0 25%, transparent 25%, transparent 75%, #e0e0e0 75%, #e0e0e0), linear-gradient(45deg, #e0e0e0 25%, transparent 25%, transparent 75%, #e0e0e0 75%, #e0e0e0)',
+        style={{
+          height: '100%',
+          width: '100%',
+          background:
+            'linear-gradient(45deg, #e0e0e0 25%, transparent 25%, transparent 75%, #e0e0e0 75%, #e0e0e0), linear-gradient(45deg, #e0e0e0 25%, transparent 25%, transparent 75%, #e0e0e0 75%, #e0e0e0)',
           backgroundSize: '20px 20px',
-          backgroundPosition: '0 0, 10px 10px'
+          backgroundPosition: '0 0, 10px 10px',
         }}
         scrollWheelZoom={true}
         zoomControl={true}
@@ -229,23 +253,23 @@ export function Map({ position }: MapProps) {
                 if (tileErrorTimeoutRef.current) {
                   clearTimeout(tileErrorTimeoutRef.current)
                 }
-                
+
                 // Debounce error counting to avoid counting rapid consecutive errors
                 // from cancelled tile requests during map movement
                 tileErrorTimeoutRef.current = setTimeout(() => {
-                  setConsecutiveTileErrors(prev => prev + 1)
+                  setConsecutiveTileErrors((prev) => prev + 1)
                 }, TILE_ERROR_DEBOUNCE_MS)
               }
             },
             tileload: () => {
               // Mark that we've loaded at least one tile successfully
               setHasLoadedTile(true)
-              
+
               // Clear any pending error timeout
               if (tileErrorTimeoutRef.current) {
                 clearTimeout(tileErrorTimeoutRef.current)
               }
-              
+
               // Reset error count on successful tile load
               setConsecutiveTileErrors(0)
             },
@@ -254,11 +278,21 @@ export function Map({ position }: MapProps) {
         {position && (
           <Marker position={[position.latitude, position.longitude]}>
             <Popup>
-              You are here<br />
-              Latitude: {position.latitude.toFixed(6)}<br />
-              Longitude: {position.longitude.toFixed(6)}<br />
+              You are here
+              <br />
+              Latitude: {position.latitude.toFixed(6)}
+              <br />
+              Longitude: {position.longitude.toFixed(6)}
+              <br />
               Accuracy: {position.accuracy.toFixed(0)}m<br />
-              <span className={css({ fontSize: 'xs', color: 'fg.muted', marginTop: '1', display: 'block' })}>
+              <span
+                className={css({
+                  fontSize: 'xs',
+                  color: 'fg.muted',
+                  marginTop: '1',
+                  display: 'block',
+                })}
+              >
                 💡 Long-press map to copy coordinates
               </span>
             </Popup>

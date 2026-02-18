@@ -3,7 +3,10 @@ import { container } from '../styled-system/patterns'
 import { card } from '../styled-system/recipes'
 import { useState, memo } from 'react'
 import { useGeolocation } from './hooks/useGeolocation'
-import { useSpeedCalculation, type SpeedUnit } from './hooks/useSpeedCalculation'
+import {
+  useSpeedCalculation,
+  type SpeedUnit,
+} from './hooks/useSpeedCalculation'
 import { useServiceWorker } from './hooks/useServiceWorker'
 import { Header } from './components/Header'
 import { SpeedDisplay } from './components/SpeedDisplay'
@@ -28,7 +31,8 @@ const MemoizedLocationPermissionPrompt = memo(LocationPermissionPrompt)
  * Updated to request location permission with context (Lighthouse best practice)
  */
 function App() {
-  const [locationPermissionGranted, setLocationPermissionGranted] = useState(false)
+  const [locationPermissionGranted, setLocationPermissionGranted] =
+    useState(false)
   const { position, loading, error } = useGeolocation(locationPermissionGranted)
   const [unit, setUnit] = useState<SpeedUnit>('mph')
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
@@ -42,7 +46,7 @@ function App() {
   }
 
   const toggleUnit = () => {
-    setUnit(prev => prev === 'mph' ? 'kph' : 'mph')
+    setUnit((prev) => (prev === 'mph' ? 'kph' : 'mph'))
   }
 
   const handleUnitChange = (newUnit: SpeedUnit) => {
@@ -50,8 +54,15 @@ function App() {
   }
 
   return (
-    <div className={css({ minHeight: '100vh', display: 'flex', flexDirection: 'column', bg: 'bg.canvas' })}>
-      <Header 
+    <div
+      className={css({
+        minHeight: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        bg: 'bg.canvas',
+      })}
+    >
+      <Header
         onSettingsClick={() => setIsSettingsOpen(true)}
         hasGpsSignal={!!position && !loading}
       />
@@ -59,46 +70,72 @@ function App() {
       <main className={css({ flex: 1, padding: '4' })}>
         <div className={container()}>
           {!locationPermissionGranted ? (
-            <MemoizedLocationPermissionPrompt onRequestPermission={handleRequestPermission} />
+            <MemoizedLocationPermissionPrompt
+              onRequestPermission={handleRequestPermission}
+            />
           ) : (
             <>
               {error && (
-                <div className={css({
-                  bg: 'bg.error',
-                  border: '2px solid',
-                  borderColor: 'border.error',
-                  color: 'fg.error',
-                  padding: '4',
-                  borderRadius: 'l2',
-                  marginBottom: '4',
-                })} role="alert">
+                <div
+                  className={css({
+                    bg: 'bg.error',
+                    border: '2px solid',
+                    borderColor: 'border.error',
+                    color: 'fg.error',
+                    padding: '4',
+                    borderRadius: 'l2',
+                    marginBottom: '4',
+                  })}
+                  role="alert"
+                >
                   Error: {error}
                 </div>
               )}
 
-              {loading && !position && (() => {
-                const cardStyles = card()
-                return (
-                  <div className={cx(cardStyles.root, css({ marginBottom: '4' }))}>
-                    <div className={cx(cardStyles.body, css({ textAlign: 'center' }))}
-                      role="status"
-                      aria-label="Requesting location access"
-                      aria-live="polite"
+              {loading &&
+                !position &&
+                (() => {
+                  const cardStyles = card()
+                  return (
+                    <div
+                      className={cx(
+                        cardStyles.root,
+                        css({ marginBottom: '4' })
+                      )}
                     >
-                      <div className={css({ fontSize: 'xl', marginBottom: '2' })}>
-                        <span aria-hidden="true">📍</span> Requesting location access...
-                      </div>
-                      <div className={css({ fontSize: 'sm', color: 'fg.muted' })}>
-                        Please allow location access in your browser to see your position
+                      <div
+                        className={cx(
+                          cardStyles.body,
+                          css({ textAlign: 'center' })
+                        )}
+                        role="status"
+                        aria-label="Requesting location access"
+                        aria-live="polite"
+                      >
+                        <div
+                          className={css({ fontSize: 'xl', marginBottom: '2' })}
+                        >
+                          <span aria-hidden="true">📍</span> Requesting location
+                          access...
+                        </div>
+                        <div
+                          className={css({ fontSize: 'sm', color: 'fg.muted' })}
+                        >
+                          Please allow location access in your browser to see
+                          your position
+                        </div>
                       </div>
                     </div>
-                  </div>
-                )
-              })()}
+                  )
+                })()}
 
               {position ? (
                 <>
-                  <MemoizedSpeedDisplay speed={speed} unit={unit} onToggleUnit={toggleUnit} />
+                  <MemoizedSpeedDisplay
+                    speed={speed}
+                    unit={unit}
+                    onToggleUnit={toggleUnit}
+                  />
                   <MemoizedLocationInfo position={position} />
                   <MemoizedMap position={position} />
                 </>
@@ -107,16 +144,37 @@ function App() {
                   {(() => {
                     const cardStyles = card()
                     return (
-                      <div className={cx(cardStyles.root, css({ marginBottom: '4' }))}>
-                        <div className={cx(cardStyles.body, css({ textAlign: 'center' }))}>                          <div className={css({
-                            fontSize: { base: '5xl', md: '6xl' },
-                            fontWeight: 'bold',
-                            color: 'fg.subtle',
-                            marginBottom: '2',
-                          })}>
-                            -- <span className={css({ fontSize: '3xl' })}>{unit}</span>
+                      <div
+                        className={cx(
+                          cardStyles.root,
+                          css({ marginBottom: '4' })
+                        )}
+                      >
+                        <div
+                          className={cx(
+                            cardStyles.body,
+                            css({ textAlign: 'center' })
+                          )}
+                        >
+                          <div
+                            className={css({
+                              fontSize: { base: '5xl', md: '6xl' },
+                              fontWeight: 'bold',
+                              color: 'fg.subtle',
+                              marginBottom: '2',
+                            })}
+                          >
+                            --{' '}
+                            <span className={css({ fontSize: '3xl' })}>
+                              {unit}
+                            </span>
                           </div>
-                          <div className={css({ fontSize: 'sm', color: 'fg.muted' })}>
+                          <div
+                            className={css({
+                              fontSize: 'sm',
+                              color: 'fg.muted',
+                            })}
+                          >
                             Waiting for GPS signal...
                           </div>
                         </div>
