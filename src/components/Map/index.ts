@@ -1,1 +1,1 @@
-export { Map } from './Map'
+export { LocationMap } from './Map'

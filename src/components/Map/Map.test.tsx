@@ -1,13 +1,13 @@
 import { describe, it, expect, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
-import { Map } from './Map'
+import { LocationMap } from './Map'
 
-describe('Map', () => {
+describe('LocationMap', () => {
   const mockOnTrackingPause = vi.fn()
 
   it('renders the map container', () => {
     const { container } = render(
-      <Map
+      <LocationMap
         position={null}
         isTrackingPaused={false}
         onToggleTracking={mockOnTrackingPause}
@@ -25,7 +25,7 @@ describe('Map', () => {
       speed: 5,
     }
     const { container } = render(
-      <Map
+      <LocationMap
         position={position}
         isTrackingPaused={false}
         onToggleTracking={mockOnTrackingPause}
@@ -41,7 +41,7 @@ describe('Map', () => {
 
   it('displays OpenStreetMap attribution', () => {
     render(
-      <Map
+      <LocationMap
         position={null}
         isTrackingPaused={false}
         onToggleTracking={mockOnTrackingPause}
@@ -53,7 +53,7 @@ describe('Map', () => {
 
   it('displays zoom controls', () => {
     render(
-      <Map
+      <LocationMap
         position={null}
         isTrackingPaused={false}
         onToggleTracking={mockOnTrackingPause}
@@ -67,7 +67,7 @@ describe('Map', () => {
 
   it('displays interactive map instructions', () => {
     render(
-      <Map
+      <LocationMap
         position={null}
         isTrackingPaused={false}
         onToggleTracking={mockOnTrackingPause}
@@ -83,7 +83,7 @@ describe('Map', () => {
 
   it('renders map region with proper accessibility attributes', () => {
     render(
-      <Map
+      <LocationMap
         position={null}
         isTrackingPaused={false}
         onToggleTracking={mockOnTrackingPause}
@@ -103,7 +103,7 @@ describe('Map', () => {
     }
 
     render(
-      <Map
+      <LocationMap
         position={position}
         isTrackingPaused={false}
         onToggleTracking={mockOnTrackingPause}
@@ -118,7 +118,7 @@ describe('Map', () => {
 
   it('uses Seattle as default center when no position is provided', () => {
     const { container } = render(
-      <Map
+      <LocationMap
         position={null}
         isTrackingPaused={false}
         onToggleTracking={mockOnTrackingPause}
@@ -138,7 +138,7 @@ describe('Map', () => {
     }
 
     const { rerender, container } = render(
-      <Map
+      <LocationMap
         position={position1}
         isTrackingPaused={false}
         onToggleTracking={mockOnTrackingPause}
@@ -156,7 +156,7 @@ describe('Map', () => {
     }
 
     rerender(
-      <Map
+      <LocationMap
         position={position2}
         isTrackingPaused={false}
         onToggleTracking={mockOnTrackingPause}
@@ -177,7 +177,7 @@ describe('Map', () => {
     }
 
     const { unmount } = render(
-      <Map
+      <LocationMap
         position={position}
         isTrackingPaused={false}
         onToggleTracking={mockOnTrackingPause}
@@ -190,7 +190,7 @@ describe('Map', () => {
 
   it('does not display tile error warning initially', () => {
     render(
-      <Map
+      <LocationMap
         position={null}
         isTrackingPaused={false}
         onToggleTracking={mockOnTrackingPause}
@@ -203,7 +203,7 @@ describe('Map', () => {
 
   it('does not count tile errors before any tiles have loaded successfully', () => {
     render(
-      <Map
+      <LocationMap
         position={null}
         isTrackingPaused={false}
         onToggleTracking={mockOnTrackingPause}
@@ -219,7 +219,7 @@ describe('Map', () => {
 
   it('shows "Resume Tracking" button when tracking is paused', () => {
     render(
-      <Map
+      <LocationMap
         position={null}
         isTrackingPaused={true}
         onToggleTracking={mockOnTrackingPause}
@@ -234,7 +234,7 @@ describe('Map', () => {
 
   it('does not show "Resume Tracking" button when tracking is not paused', () => {
     render(
-      <Map
+      <LocationMap
         position={null}
         isTrackingPaused={false}
         onToggleTracking={mockOnTrackingPause}
@@ -249,7 +249,7 @@ describe('Map', () => {
 
   it('shows notification when tracking is paused', () => {
     render(
-      <Map
+      <LocationMap
         position={null}
         isTrackingPaused={true}
         onToggleTracking={mockOnTrackingPause}
@@ -263,7 +263,7 @@ describe('Map', () => {
   it('calls onToggleTracking when resume button is clicked', () => {
     const mockCallback = vi.fn()
     render(
-      <Map
+      <LocationMap
         position={null}
         isTrackingPaused={true}
         onToggleTracking={mockCallback}

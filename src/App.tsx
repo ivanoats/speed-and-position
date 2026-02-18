@@ -11,7 +11,7 @@ import { useServiceWorker } from './hooks/useServiceWorker'
 import { Header } from './components/Header'
 import { SpeedDisplay } from './components/SpeedDisplay'
 import { LocationInfo } from './components/LocationInfo'
-import { Map } from './components/Map'
+import { LocationMap } from './components/Map'
 import { Footer } from './components/Footer'
 import { Settings } from './components/Settings'
 import { LocationPermissionPrompt } from './components/LocationPermissionPrompt'
@@ -19,7 +19,7 @@ import { LocationPermissionPrompt } from './components/LocationPermissionPrompt'
 // Memoized components to prevent unnecessary re-renders
 const MemoizedSpeedDisplay = memo(SpeedDisplay)
 const MemoizedLocationInfo = memo(LocationInfo)
-const MemoizedMap = memo(Map)
+const MemoizedMap = memo(LocationMap)
 const MemoizedFooter = memo(Footer)
 const MemoizedSettings = memo(Settings)
 const MemoizedLocationPermissionPrompt = memo(LocationPermissionPrompt)

@@ -85,7 +85,7 @@ const TILE_ERROR_THRESHOLD = 5
 const TILE_ERROR_DEBOUNCE_MS = 500
 
 /**
- * Map component - Interactive map with React-Leaflet
+ * LocationMap component - Interactive map with React-Leaflet
  * Shows current position with auto-centering
  * Defaults to Seattle, WA when no position available
  * Supports double-tap to center and long-press to copy coordinates
@@ -95,7 +95,7 @@ const TILE_ERROR_DEBOUNCE_MS = 500
  * @param isTrackingPaused - Whether automatic tracking is paused
  * @param onToggleTracking - Callback when tracking should be paused
  */
-export function Map({
+export function LocationMap({
   position,
   isTrackingPaused,
   onToggleTracking,
