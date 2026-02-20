@@ -96,6 +96,51 @@ describe('App Component', () => {
     })
   })
 
+  it('should show retry button when permission is denied', async () => {
+    const user = userEvent.setup()
+
+    // Mock geolocation to simulate permission denied
+    mockGeolocation.getCurrentPosition.mockImplementation(
+      (
+        _success: (position: GeolocationPosition) => void,
+        error: (error: GeolocationPositionError) => void
+      ) => {
+        error({
+          code: 1,
+          message: 'User denied Geolocation',
+          PERMISSION_DENIED: 1,
+          POSITION_UNAVAILABLE: 2,
+          TIMEOUT: 3,
+        } as GeolocationPositionError)
+      }
+    )
+    mockGeolocation.watchPosition.mockImplementation(() => 1)
+
+    render(<App />)
+
+    const enableButton = screen.getByRole('button', {
+      name: /Enable Location Access/i,
+    })
+    await user.click(enableButton)
+
+    // Should show error with retry button
+    await waitFor(() => {
+      expect(screen.getByText(/User denied Geolocation/i)).toBeInTheDocument()
+    })
+
+    const retryButton = screen.getByRole('button', { name: /Try Again/i })
+    expect(retryButton).toBeInTheDocument()
+
+    // Click retry should go back to permission prompt
+    await user.click(retryButton)
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole('heading', { name: /Welcome to Speed & Position/i })
+      ).toBeInTheDocument()
+    })
+  })
+
   it('should display speed and position when geolocation succeeds', async () => {
     const user = userEvent.setup()
     const mockPosition: GeolocationPosition = {

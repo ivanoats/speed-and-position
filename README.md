@@ -15,7 +15,7 @@ Visit [https://howfastwhere.com](https://howfastwhere.com)
 This project has been redesigned using modern web technologies:
 
 - **TypeScript** - Type-safe development
-- **React 18** - Modern UI framework
+- **React 19** - Modern UI framework
 - **Ark UI** - Accessible, headless UI primitives
 - **Panda CSS** - Type-safe, zero-runtime CSS-in-JS
 - **Vite** - Fast build tooling
@@ -154,11 +154,11 @@ The redesign follows these principles:
 ### 🛠️ Technology Stack
 
 - **Language**: TypeScript 5.5+
-- **Frontend Framework**: React 18
+- **Frontend Framework**: React 19
 - **UI Components**: Ark UI primitives (Dialog, etc.)
 - **Styling**: Panda CSS (type-safe CSS-in-JS)
-- **Build Tool**: Vite 5
-- **Testing**: Vitest + React Testing Library (61 tests)
+- **Build Tool**: Vite 7
+- **Testing**: Vitest + React Testing Library (115 tests)
 - **Maps**: React-Leaflet with OpenStreetMap
 - **Geolocation**: Browser Geolocation API
 - **Linting**: ESLint 9 with TypeScript support

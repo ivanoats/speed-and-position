@@ -30,6 +30,7 @@ export function useGeolocation(enabled: boolean = true): GeolocationState {
     // Don't request geolocation if not enabled
     if (!enabled) {
       setLoading(false)
+      setError(null) // Clear any previous errors
       return
     }
 
