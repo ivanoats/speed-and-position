@@ -1,7 +1,7 @@
 import { css, cx } from '../styled-system/css'
 import { container } from '../styled-system/patterns'
 import { card } from '../styled-system/recipes'
-import { useState, memo } from 'react'
+import { useState, memo, useEffect } from 'react'
 import { useGeolocation } from './hooks/useGeolocation'
 import {
   useSpeedCalculation,
@@ -11,7 +11,7 @@ import { useServiceWorker } from './hooks/useServiceWorker'
 import { Header } from './components/Header'
 import { SpeedDisplay } from './components/SpeedDisplay'
 import { LocationInfo } from './components/LocationInfo'
-import { Map } from './components/Map'
+import { LocationMap } from './components/Map'
 import { Footer } from './components/Footer'
 import { Settings } from './components/Settings'
 import { LocationPermissionPrompt } from './components/LocationPermissionPrompt'
@@ -19,7 +19,7 @@ import { LocationPermissionPrompt } from './components/LocationPermissionPrompt'
 // Memoized components to prevent unnecessary re-renders
 const MemoizedSpeedDisplay = memo(SpeedDisplay)
 const MemoizedLocationInfo = memo(LocationInfo)
-const MemoizedMap = memo(Map)
+const MemoizedMap = memo(LocationMap)
 const MemoizedFooter = memo(Footer)
 const MemoizedSettings = memo(Settings)
 const MemoizedLocationPermissionPrompt = memo(LocationPermissionPrompt)
@@ -36,6 +36,7 @@ function App() {
   const { position, loading, error } = useGeolocation(locationPermissionGranted)
   const [unit, setUnit] = useState<SpeedUnit>('mph')
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
+  const [isTrackingPaused, setIsTrackingPaused] = useState(false)
   const speed = useSpeedCalculation(position?.speed ?? null, unit)
 
   // Register service worker for PWA support
@@ -52,6 +53,17 @@ function App() {
   const handleUnitChange = (newUnit: SpeedUnit) => {
     setUnit(newUnit)
   }
+
+  const handleToggleTracking = () => {
+    setIsTrackingPaused((prev) => !prev)
+  }
+
+  // Reset tracking pause when location permission changes (e.g. revoked)
+  useEffect(() => {
+    if (!locationPermissionGranted) {
+      setIsTrackingPaused(false)
+    }
+  }, [locationPermissionGranted])
 
   return (
     <div
@@ -137,7 +149,11 @@ function App() {
                     onToggleUnit={toggleUnit}
                   />
                   <MemoizedLocationInfo position={position} />
-                  <MemoizedMap position={position} />
+                  <MemoizedMap
+                    position={position}
+                    isTrackingPaused={isTrackingPaused}
+                    onToggleTracking={handleToggleTracking}
+                  />
                 </>
               ) : (
                 <>
@@ -181,7 +197,11 @@ function App() {
                       </div>
                     )
                   })()}
-                  <MemoizedMap position={null} />
+                  <MemoizedMap
+                    position={null}
+                    isTrackingPaused={isTrackingPaused}
+                    onToggleTracking={handleToggleTracking}
+                  />
                 </>
               )}
             </>
