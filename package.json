@@ -34,7 +34,7 @@
     "@testing-library/react": "^16.3.2",
     "@testing-library/user-event": "^14.6.1",
     "@types/leaflet": "^1.9.21",
-    "@types/react": "^18.2.0",
+    "@types/react": "^19.2.14",
     "@types/react-dom": "^18.2.0",
     "@types/react-leaflet": "^2.8.3",
     "@typescript-eslint/eslint-plugin": "^8.55.0",
@@ -64,7 +64,7 @@
     "@park-ui/panda-preset": "^0.43.1",
     "@types/jquery": "^3.5.33",
     "leaflet": "^1.9.4",
-    "react": "^18.3.0",
+    "react": "^19.2.4",
     "react-dom": "^18.3.0",
     "react-leaflet": "^4.2.1"
   },
